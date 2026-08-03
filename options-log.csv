@@ -1,0 +1,32 @@
+date_flagged,symbol,signal,direction,strike,exp,premium_or_oi,underlying_price_at_flag,catalyst_note,action_taken,price_after_3d,price_after_10d,outcome
+2026-07-31,GOOGL,Signal 1 — Panic Covering,bullish,410,2026-09-18,"OI Chg -55,008 at 410.00 strike, underlying moved +6.73% same day",356.13,,,,,pending
+2026-07-31,MSFT,Signal 1 — Panic Covering,bullish,480,2026-08-21,"OI Chg -47,108 at 480.00 strike, underlying moved +3.02% same day (+17 more strikes covering, total OI Chg -127,630)",464.72,,,,,pending
+2026-07-31,IREN,Signal 1 — Panic Covering,bearish,34,2026-08-21,"OI Chg -5,122 at 34.00 strike, underlying moved -3.82% same day (+1 more strikes covering, total OI Chg -7,410)",36.8,,,,,pending
+2026-07-31,AMZN,Signal 1 — Panic Covering,bullish,275,2026-11-20,"OI Chg -5,008 at 275.00 strike, underlying moved +15.32% same day (+4 more strikes covering, total OI Chg -13,575)",271.58,,,,,pending
+2026-07-31,AAPL,Signal 1 — Panic Covering,bearish,260,2026-09-18,"OI Chg -3,687 at 260.00 strike, underlying moved -7.35% same day (+3 more strikes covering, total OI Chg -9,719)",308.91,,,,,pending
+2026-07-31,SKHY,Signal 1 — Panic Covering,bearish,125,2026-08-07,"OI Chg -2,665 at 125.00 strike, underlying moved -3.54% same day",143.73,,,,,pending
+2026-07-31,SPCX,Signal 1 — Panic Covering,bearish,110,2026-08-07,"OI Chg -2,151 at 110.00 strike, underlying moved -3.41% same day (+1 more strikes covering, total OI Chg -3,157)",108.37,,,,,pending
+2026-07-31,BHC,Signal 1 — Panic Covering,bullish,6,2026-08-21,"OI Chg -1,963 at 6.00 strike, underlying moved +14.26% same day",6.89,,,,,pending
+2026-07-31,BABA,Signal 1 — Panic Covering,bullish,200,2027-01-15,"OI Chg -1,259 at 200.00 strike, underlying moved +5.10% same day",122.25,,,,,pending
+2026-07-31,CAR,Signal 2 — Aggressive Buy-to-Open,bearish,380,2026-10-16,17600600,137.44,,,,,pending
+2026-07-31,CAR,Signal 2 — Aggressive Buy-to-Open,bearish,650,2026-09-18,16760500,137.44,,,,,pending
+2026-07-31,MU,Signal 2 — Aggressive Buy-to-Open,bearish,820,2026-08-28,7252200,823.03,,,,,pending
+2026-07-31,SBUX,Signal 2 — Aggressive Buy-to-Open,bullish,105,2027-01-15,6825000,105.25,,,,,pending
+2026-07-31,INTC,Signal 2 — Aggressive Buy-to-Open,bullish,90,2026-08-21,6389400,90.2,,,,,pending
+2026-07-31,NFLX,Signal 2 — Aggressive Buy-to-Open,bearish,110,2026-09-18,5803200,71.71,,,,,pending
+2026-07-31,SNDK,Signal 2 — Aggressive Buy-to-Open,bullish,1340,2026-08-28,5376100,1214.83,,,,,pending
+2026-07-31,CAR,Signal 2 — Aggressive Buy-to-Open,bearish,370,2026-10-16,4266000,137.44,,,,,pending
+2026-07-31,COHR,Signal 2 — Aggressive Buy-to-Open,bearish,240,2026-08-14,3422600,262.89,,,,,pending
+2026-07-31,COHR,Signal 2 — Aggressive Buy-to-Open,bearish,240,2026-08-21,3271200,262.89,,,,,pending
+2026-07-31,ORCL,Signal 2 — Aggressive Buy-to-Open,bearish,240,2026-08-21,3144400,129.87,,,,,pending
+2026-07-31,NFLX,Signal 2 — Aggressive Buy-to-Open,bearish,120,2027-01-15,3061200,71.71,,,,,pending
+2026-07-31,SNDK,Signal 2 — Aggressive Buy-to-Open,bearish,1110,2026-08-28,2701300,1214.83,,,,,pending
+2026-07-31,GOOG,Signal 2 — Aggressive Buy-to-Open,bullish,375,2026-08-28,2700000,356.65,,,,,pending
+2026-07-31,HUT,Signal 2 — Aggressive Buy-to-Open,bearish,105,2026-09-18,2666600,107.63,,,,,pending
+2026-07-31,SHAZ,Signal 2 — Aggressive Buy-to-Open,bullish,50,2027-01-15,2540000,48.25,,,,,pending
+2026-07-31,SNDK,Signal 2 — Aggressive Buy-to-Open,bullish,1460,2026-08-07,2334600,1214.83,,,,,pending
+2026-07-31,CRWV,Signal 2 — Aggressive Buy-to-Open,bullish,110,2027-03-19,2295100,71.77,,,,,pending
+2026-07-31,PDD,Signal 2 — Aggressive Buy-to-Open,bearish,135,2026-09-18,2210300,88.56,,,,,pending
+2026-07-31,NFLX,Signal 2 — Aggressive Buy-to-Open,bearish,140,2027-01-15,2110500,71.71,,,,,pending
+2026-07-31,QCOM,Signal 2 — Aggressive Buy-to-Open,bearish,140,2026-11-20,2101100,147.61,,,,,pending
+2026-07-31,FSLR,Signal 2 — Aggressive Buy-to-Open,bullish,230,2026-08-21,1805000,211.03,,,,,pending
