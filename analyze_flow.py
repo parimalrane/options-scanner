@@ -9,6 +9,7 @@ Usage:
         --active most-active-stock-options-YYYY-MM-DD.csv \
         --flow options-flow-YYYY-MM-DD.csv \
         --decoi stocks-decrease-change-in-open-interest-YYYY-MM-DD.csv \
+        --incoi stocks-increase-change-in-open-interest-YYYY-MM-DD.csv \
         --unusual unusual-stock-options-activity-YYYY-MM-DD.csv \
         --liquidity-min 10000 --premium-min 50000 --move-min 3
 """
@@ -81,37 +82,120 @@ def dedup_flow_rows(flow_rows):
     return list(best.values())
 
 
-def scan_signal2(flow_rows, watchlist, voloi_map, premium_min):
+def scan_signal2_and_3(flow_rows, watchlist, voloi_map, premium_min):
     flow_rows = dedup_flow_rows(flow_rows)
-    out = []
+    
+    # Group by (Symbol, Exp Date)
+    groups = {}
     for r in flow_rows:
         sym = r.get('Symbol', '').strip()
         if sym not in watchlist:
             continue
-        side = (r.get('Side') or '').lower()
-        open_label = r.get('*') or ''
-        premium = to_num(r.get('Premium'))
-        if side != 'ask':
-            continue
-        if open_label not in ('BuyToOpen', 'ToOpen'):
-            continue
-        if not (premium >= premium_min):
-            continue
-        opt_type = r.get('Type')
-        direction = 'bullish' if opt_type == 'Call' else 'bearish'
-        key = (sym, r.get('Strike'), opt_type, r.get('Exp Date'))
-        out.append({
-            'signal': 'Signal 2 — Aggressive Buy-to-Open',
-            'symbol': sym,
-            'type': opt_type,
-            'strike': r.get('Strike'),
-            'exp': r.get('Exp Date'),
-            'direction': direction,
-            'premium': premium,
-            'underlying_price': watchlist[sym]['price'],
-            'vol_oi': voloi_map.get(key, ''),
-            'note': f"{open_label}, at ask, premium ${premium:,.0f}",
-        })
+        exp = r.get('Exp Date')
+        groups.setdefault((sym, exp), []).append(r)
+        
+    out = []
+    for (sym, exp), trades in groups.items():
+        long_calls = []
+        short_puts = []
+        long_puts = []
+        short_calls = []
+        
+        for r in trades:
+            opt_type = r.get('Type')
+            side = (r.get('Side') or '').lower()
+            open_label = r.get('*') or ''
+            premium = to_num(r.get('Premium'))
+            
+            if not (premium >= premium_min):
+                continue
+                
+            if opt_type == 'Call':
+                if side == 'ask' and open_label in ('BuyToOpen', 'ToOpen'):
+                    long_calls.append(r)
+                elif side == 'bid' and open_label in ('SellToOpen', 'ToOpen'):
+                    short_calls.append(r)
+            elif opt_type == 'Put':
+                if side == 'ask' and open_label in ('BuyToOpen', 'ToOpen'):
+                    long_puts.append(r)
+                elif side == 'bid' and open_label in ('SellToOpen', 'ToOpen'):
+                    short_puts.append(r)
+                    
+        # Check Signal 3: Bullish Risk Reversal (Long Call + Short Put)
+        if long_calls and short_puts:
+            lc = max(long_calls, key=lambda x: to_num(x.get('Premium')))
+            sp = max(short_puts, key=lambda x: to_num(x.get('Premium')))
+            long_calls.remove(lc)
+            short_puts.remove(sp)
+            total_prem = to_num(lc.get('Premium')) + to_num(sp.get('Premium'))
+            key = (sym, lc.get('Strike'), 'Call', exp)
+            out.append({
+                'signal': 'Signal 3 — Bullish Risk Reversal',
+                'symbol': sym,
+                'type': 'C+P',
+                'strike': f"{lc.get('Strike')}/{sp.get('Strike')}",
+                'exp': exp,
+                'direction': 'bullish',
+                'premium': total_prem,
+                'underlying_price': watchlist[sym]['price'],
+                'vol_oi': voloi_map.get(key, ''),
+                'note': f"Risk Rev (Bot C {lc.get('Strike')}, Sold P {sp.get('Strike')}) Total Prem: ${total_prem:,.0f}",
+            })
+            
+        # Check Signal 3: Bearish Risk Reversal (Long Put + Short Call)
+        if long_puts and short_calls:
+            lp = max(long_puts, key=lambda x: to_num(x.get('Premium')))
+            sc = max(short_calls, key=lambda x: to_num(x.get('Premium')))
+            long_puts.remove(lp)
+            short_calls.remove(sc)
+            total_prem = to_num(lp.get('Premium')) + to_num(sc.get('Premium'))
+            key = (sym, lp.get('Strike'), 'Put', exp) 
+            out.append({
+                'signal': 'Signal 3 — Bearish Risk Reversal',
+                'symbol': sym,
+                'type': 'P+C',
+                'strike': f"{lp.get('Strike')}/{sc.get('Strike')}",
+                'exp': exp,
+                'direction': 'bearish',
+                'premium': total_prem,
+                'underlying_price': watchlist[sym]['price'],
+                'vol_oi': voloi_map.get(key, ''),
+                'note': f"Risk Rev (Bot P {lp.get('Strike')}, Sold C {sc.get('Strike')}) Total Prem: ${total_prem:,.0f}",
+            })
+
+        # Signal 2: Naked Whale Sweeps (Remaining Long Calls and Long Puts)
+        for lc in long_calls:
+            prem = to_num(lc.get('Premium'))
+            key = (sym, lc.get('Strike'), 'Call', exp)
+            out.append({
+                'signal': 'Signal 2 — Naked Whale Sweep',
+                'symbol': sym,
+                'type': 'Call',
+                'strike': lc.get('Strike'),
+                'exp': exp,
+                'direction': 'bullish',
+                'premium': prem,
+                'underlying_price': watchlist[sym]['price'],
+                'vol_oi': voloi_map.get(key, ''),
+                'note': f"Aggressive Sweep, BuyToOpen at ask, Premium ${prem:,.0f}",
+            })
+            
+        for lp in long_puts:
+            prem = to_num(lp.get('Premium'))
+            key = (sym, lp.get('Strike'), 'Put', exp)
+            out.append({
+                'signal': 'Signal 2 — Naked Whale Sweep',
+                'symbol': sym,
+                'type': 'Put',
+                'strike': lp.get('Strike'),
+                'exp': exp,
+                'direction': 'bearish',
+                'premium': prem,
+                'underlying_price': watchlist[sym]['price'],
+                'vol_oi': voloi_map.get(key, ''),
+                'note': f"Aggressive Sweep, BuyToOpen at ask, Premium ${prem:,.0f}",
+            })
+            
     return out
 
 
@@ -173,12 +257,67 @@ def scan_signal1(decoi_rows, watchlist, voloi_map, move_min):
         })
     return out
 
+def scan_signal4(incoi_rows, watchlist, voloi_map, move_min):
+    groups = {}
+    for r in incoi_rows:
+        sym = r.get('Symbol', '').strip()
+        if sym not in watchlist:
+            continue
+        oi_chg = to_num(r.get('OI Chg'))
+        if not (oi_chg > 0):
+            continue
+        pct = watchlist[sym]['pct']
+        opt_type = r.get('Type')
+        direction = None
+        if opt_type == 'Call' and pct >= move_min:
+            direction = 'bullish'   # new calls opened into a rally
+        elif opt_type == 'Put' and pct <= -move_min:
+            direction = 'bearish'  # new puts opened into a selloff
+        if not direction:
+            continue
+        key = (sym, r.get('Strike'), opt_type, r.get('Exp Date'))
+        entry = {
+            'symbol': sym,
+            'type': opt_type,
+            'strike': r.get('Strike'),
+            'exp': r.get('Exp Date'),
+            'direction': direction,
+            'oi_chg': oi_chg,
+            'pct': pct,
+            'vol_oi': voloi_map.get(key, ''),
+        }
+        groups.setdefault((sym, direction), []).append(entry)
+
+    out = []
+    for (sym, direction), entries in groups.items():
+        entries.sort(key=lambda e: e['oi_chg'], reverse=True)  # most positive first
+        lead = entries[0]
+        other_count = len(entries) - 1
+        total_oi_chg = sum(e['oi_chg'] for e in entries)
+        note = f"OI Build +{lead['oi_chg']:,.0f} at {lead['strike']} strike, underlying moved {lead['pct']:+.2f}%"
+        if other_count:
+            note += f" (+{other_count} additional strikes building, total OI Build +{total_oi_chg:,.0f})"
+        out.append({
+            'signal': 'Signal 4 — Trend Conviction',
+            'symbol': sym,
+            'type': lead['type'],
+            'strike': lead['strike'],
+            'exp': lead['exp'],
+            'direction': lead['direction'],
+            'premium': float('nan'),
+            'underlying_price': watchlist[sym]['price'],
+            'vol_oi': lead['vol_oi'],
+            'note': note,
+        })
+    return out
+
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--active', required=True)
     ap.add_argument('--flow', required=True)
     ap.add_argument('--decoi', required=True)
+    ap.add_argument('--incoi', required=False, help='Increase in Open Interest CSV')
     ap.add_argument('--unusual', required=False)
     ap.add_argument('--liquidity-min', type=float, default=10000)
     ap.add_argument('--premium-min', type=float, default=50000)
@@ -189,20 +328,27 @@ def main():
     active_rows = read_csv(args.active)
     flow_rows = read_csv(args.flow)
     decoi_rows = read_csv(args.decoi)
+    incoi_rows = read_csv(args.incoi) if args.incoi else []
     unusual_rows = read_csv(args.unusual) if args.unusual else []
 
     watchlist = build_watchlist(active_rows, args.liquidity_min)
     voloi_map = build_voloi_map(unusual_rows)
 
-    sig2 = scan_signal2(flow_rows, watchlist, voloi_map, args.premium_min)
+    sig2_and_3 = scan_signal2_and_3(flow_rows, watchlist, voloi_map, args.premium_min)
     sig1 = scan_signal1(decoi_rows, watchlist, voloi_map, args.move_min)
+    sig4 = scan_signal4(incoi_rows, watchlist, voloi_map, args.move_min)
 
-    results = sig2 + sig1
+    results = sig2_and_3 + sig1 + sig4
     results.sort(key=lambda x: (x['signal'], -(x['premium'] or 0)))
+    
+    sig3_count = sum(1 for r in sig2_and_3 if 'Signal 3' in r['signal'])
+    sig2_count = len(sig2_and_3) - sig3_count
 
     print(f"Watchlist size (liquidity >= {args.liquidity_min:,.0f}): {len(watchlist)} names")
-    print(f"Signal 2 candidates: {len(sig2)}")
-    print(f"Signal 1 candidates: {len(sig1)}")
+    print(f"Signal 4 candidates (Trend Build): {len(sig4)}")
+    print(f"Signal 3 candidates (Risk Revs): {sig3_count}")
+    print(f"Signal 2 candidates (Sweeps): {sig2_count}")
+    print(f"Signal 1 candidates (Panic): {len(sig1)}")
     print()
 
     if args.out:
@@ -215,8 +361,10 @@ def main():
 
     if f_txt:
         f_txt.write(f"Watchlist size (liquidity >= {args.liquidity_min:,.0f}): {len(watchlist)} names\n")
-        f_txt.write(f"Signal 2 candidates: {len(sig2)}\n")
-        f_txt.write(f"Signal 1 candidates: {len(sig1)}\n\n")
+        f_txt.write(f"Signal 4 candidates (Trend Build): {len(sig4)}\n")
+        f_txt.write(f"Signal 3 candidates (Risk Revs): {sig3_count}\n")
+        f_txt.write(f"Signal 2 candidates (Sweeps): {sig2_count}\n")
+        f_txt.write(f"Signal 1 candidates (Panic): {len(sig1)}\n\n")
 
     header_line = f"[{'DIR':8}] {'SYMBOL':6} {'TYPE':4} {'STRIKE':>10} exp {'EXP_DATE':10} | SIGNAL | NOTE"
     print(header_line)
