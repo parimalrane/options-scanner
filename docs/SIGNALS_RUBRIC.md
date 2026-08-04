@@ -1,51 +1,53 @@
 # Options Flow Scanner: Signals & Rubric
 
-This scanner evaluates daily consolidated options flow to distill noise down to four primary directional signals based strictly on institutional or "smart money" behavior. 
+This scanner has been entirely refactored from a generic whale-flow observer into a highly specialized **ATM (At-The-Money) Options Sentiment Squeeze Engine**. This transition fundamentally shifts the philosophy from reacting to broad flow into detecting and confirming precise, price-action-driven institutional transitions (short-covering and short build-ups).
 
 ## Universe Selection
 Before any signal criteria are applied, the underlying stock must be vetted for **Liquidity**. The scanner parses the `Most Active Stock Options` report to ensure candidates have enough baseline options contract volume (default > 10,000 contracts). Illiquid names are automatically dropped to prevent false signals.
 
 ---
 
-## Signal 4: Trend Conviction
-*Detects whales opening massive new positions to aggressively ride an emerging trend or momentum surge.*
+## Foundational Squeeze Architecture
 
-### Methodology
-This logic scans the `Increase in Open Interest` report.
-- **Bullish Output:** When a stock rallies significantly (default >= 3% daily move), and there is a massive surge in Open Interest heavily centered on Call strikes, it implies institutions are driving the trend higher by initiating new long positions.
-- **Bearish Output:** When a stock plunges significantly (default <= -3%), and Put OI suddenly blasts upwards, it implies institutions are confidently riding the downtrend.
+### I. Price-Action Snapshotting
+Open Interest (OI) changes in a vacuum are meaningless noise. Genuine institutional sweeps can only be verified by how the options market prices them. The scanner now generates daily option `<MidPrice>` checkpoints for every strike (`snapshots/prices-<date>.csv`) and cross-references them against precisely the day prior to calculate true overnight momentum.
 
-The scanner consolidates the total OI builds across the strike chain to display the primary strike where the highest conviction was placed.
+### II. Moneyness Filter
+Institutions executing strategic structural sweeps do not buy deep out-of-the-money lotto tickets. The algorithm strictly filters all candidates against a maximum Moneyness threshold (Default `<= 5.0%`). This ensures the squeeze flags are strictly focused At-The-Money (ATM) or Near-The-Money where true Gamma exposure lives.
 
----
-
-## Signal 3: Institutional Risk Reversals
-*Detects structured, financed plays where a fund completely exposes themselves to directional risk by buying one out-of-the-money leg and financing it by selling the opposite leg.*
-
-### Methodology
-This logic scans the `Options Flow` report by grouping trades on the identical Expiry date.
-- **Bullish Risk Reversal:** A fund buys an Out-Of-The-Money Call at the Ask, AND simultaneously sells a Put at the Bid. 
-- **Bearish Risk Reversal:** A fund buys an Out-Of-The-Money Put at the Ask, AND simultaneously sells a Call at the Bid.
+### III. Minimum OI Magnitude Envelope
+A structural squeeze requires a verifiable explosion in Open Interest changes to filter out retail noise. The system actively screens all remaining candidates against a strict minimum Open Interest Percentage constraint (`--oi-chg-min`, default `>= 500%`). 
 
 ---
 
-## Signal 2: Naked Whale Sweeps
-*Detects whales hitting the ask to initiate massive, unhedged, short-term directional bets.*
+## Signal A: Short Covering
+*Detects situations where large market participants are being squeezed and aggressively forced to buy back (cover) underwater option positions.*
 
 ### Methodology
-This logic scans the remaining `Options Flow` tape after Risk Reversals have been extracted.
-- **Direction:** Must be explicitly labeled as 'BuyToOpen' or 'ToOpen'.
-- **At Ask:** The trade must have executed at or above the Ask price (indicating extreme urgency).
-- **Size:** The transaction premium must be highly significant (default >= $50,000 for a single trade).
-
-It flags Call orders as Bullish, and Put orders as Bearish, while displaying the Vol/OI fraction.
+This logic scans the strictly filtered `Decrease in Open Interest` (`--decoi`) grids.
+- It requires Open Interest to be definitively *dropping* (OI < 0).
+- It verifies the options pricing direction: the option Mid-Price must have gone **UP**.
+- **Bullish Short Covering:** Calls that saw dropping OI but rising prices.
+- **Bearish Short Covering:** Puts that saw dropping OI but rising prices.
 
 ---
 
-## Signal 1: Panic Covering
-*Detects situations where large market participants are forced to aggressively cover risky options positions in the face of a rapidly moving underlying stock.*
+## Signal B: Short Build-Up
+*Detects whales opening massive new short-sale exposure aggressively leaning into a directional bias.*
 
 ### Methodology
-This logic scans the `Decrease in Open Interest` report.
-- **Bullish Output:** When a stock rallies significantly (default >= 3% daily move), and there is a large, sudden drop in Open Interest heavily centered on Call strikes, it implies Call sellers (shorts) are being squeezed and forced to cover (buy back). 
-- **Bearish Output:** When a stock plumps significantly (default <= -3%), and Put OI suddenly drops, it implies Put sellers are capitulating.
+This logic scans the strictly filtered `Increase in Open Interest` (`--incoi`) grids.
+- It requires Open Interest to be definitively *surging* (OI > 0).
+- It verifies the options pricing direction: the option Mid-Price must have gone **DOWN**.
+- **Bullish Short Build-Up:** Puts that saw soaring OI but plummeting prices.
+- **Bearish Short Build-Up:** Calls that saw soaring OI but plummeting prices.
+
+---
+
+## Signal C: Confirmed Squeeze Setup
+*The absolute highest conviction setup generated by the engine. Represents a verified squeeze cascade in progress.*
+
+### Methodology
+This Super-Signal strictly dictates that a single ticker independently generated both a verified **Signal A** (Short-Covering) AND a verified **Signal B** (Short Build-Up) operating in the exact same directional polarity, on the exact same day.
+
+It guarantees a massive structural collision where deeply underwater sellers are being blown out of their historical options positions exactly as ferocious new capital initiates overlapping momentum-bets to crush them.

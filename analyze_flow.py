@@ -1,8 +1,8 @@
 """
 Daily Options Flow Scanner
 ---------------------------
-Reads the 4 Barchart Premier exports and flags Signal 1 (panic covering)
-and Signal 2 (aggressive buy-to-open) candidates per the trader's rubric.
+Reads the 4 Barchart Premier exports and flags Signal A (Short Covering),
+Signal B (Short Build-up), and Signal C (Confirmed Squeeze Setup).
 
 Usage:
     python3 analyze_flow.py \
@@ -11,20 +11,19 @@ Usage:
         --decoi stocks-decrease-change-in-open-interest-YYYY-MM-DD.csv \
         --incoi stocks-increase-change-in-open-interest-YYYY-MM-DD.csv \
         --unusual unusual-stock-options-activity-YYYY-MM-DD.csv \
-        --liquidity-min 10000 --premium-min 50000 --move-min 3
+        --liquidity-min 10000 --moneyness-max 5
 """
 
 import argparse
 import csv
 import os
-import sys
-from datetime import datetime, timezone
-
+import glob
+import re
+from datetime import datetime
 
 def read_csv(path):
     with open(path, newline='', encoding='utf-8-sig') as f:
         return list(csv.DictReader(f))
-
 
 def to_num(v):
     if v is None:
@@ -35,21 +34,26 @@ def to_num(v):
     except ValueError:
         return float('nan')
 
+def extract_file_date(filepath):
+    base = os.path.basename(filepath)
+    m = re.search(r'(\d{2}-\d{2}-\d{4})', base)
+    if m:
+        try:
+            return datetime.strptime(m.group(1), '%m-%d-%Y')
+        except ValueError:
+            pass
+    return None
 
 def build_watchlist(active_rows, liquidity_min):
     watchlist = {}
     for r in active_rows:
         sym = r.get('Symbol', '').strip()
         vol = to_num(r.get('Options Vol'))
-        pct = to_num(r.get('%Change'))
         if sym and vol >= liquidity_min:
             watchlist[sym] = {
-                'vol': vol,
-                'pct': 0.0 if pct != pct else pct,  # NaN check
                 'price': to_num(r.get('Latest')),
             }
     return watchlist
-
 
 def build_voloi_map(unusual_rows):
     m = {}
@@ -58,275 +62,244 @@ def build_voloi_map(unusual_rows):
         m[key] = r.get('Vol/OI')
     return m
 
-
-def dedup_flow_rows(flow_rows):
-    """
-    Barchart's Options Flow export re-lists the same trade across successive
-    ~5-minute snapshots as it gets reclassified (Side/label can change between
-    appearances). Collapse to one row per (Symbol, Type, Strike, Exp, Premium),
-    keeping the most decisive snapshot: prefer a real open/close label over
-    N/A, then prefer a real Side (ask/bid) over 'mid'.
-    """
-    def rank(r):
-        label_rank = 0 if (r.get('*') or 'N/A') != 'N/A' else 1
-        side = (r.get('Side') or '').lower()
-        side_rank = 0 if side in ('ask', 'bid') else 1
-        return (label_rank, side_rank)
-
-    best = {}
-    for r in flow_rows:
-        key = (r.get('Symbol'), r.get('Type'), r.get('Strike'),
-               r.get('Exp Date'), r.get('Premium'))
-        if key not in best or rank(r) < rank(best[key]):
-            best[key] = r
-    return list(best.values())
-
-
-def scan_signal2_and_3(flow_rows, watchlist, voloi_map, premium_min):
-    flow_rows = dedup_flow_rows(flow_rows)
+def update_snapshot(date_obj, all_rows_sets):
+    if not date_obj:
+        return
+    date_str = date_obj.strftime('%Y-%m-%d')
+    os.makedirs('snapshots', exist_ok=True)
+    snapshot_path = f'snapshots/prices-{date_str}.csv'
     
-    # Group by (Symbol, Exp Date)
-    groups = {}
-    for r in flow_rows:
-        sym = r.get('Symbol', '').strip()
-        if sym not in watchlist:
-            continue
-        exp = r.get('Exp Date')
-        groups.setdefault((sym, exp), []).append(r)
-        
-    out = []
-    for (sym, exp), trades in groups.items():
-        long_calls = []
-        short_puts = []
-        long_puts = []
-        short_calls = []
-        
-        for r in trades:
-            opt_type = r.get('Type')
-            side = (r.get('Side') or '').lower()
-            open_label = r.get('*') or ''
-            premium = to_num(r.get('Premium'))
+    prices = {}
+    for rows in all_rows_sets:
+        for r in rows:
+            sym = r.get('Symbol')
+            if not sym: continue
+            typ = r.get('Type')
+            strike = r.get('Strike')
+            exp = r.get('Exp Date')
+            bid = to_num(r.get('Bid'))
+            ask = to_num(r.get('Ask'))
             
-            if not (premium >= premium_min):
-                continue
-                
-            if opt_type == 'Call':
-                if side == 'ask' and open_label in ('BuyToOpen', 'ToOpen'):
-                    long_calls.append(r)
-                elif side == 'bid' and open_label in ('SellToOpen', 'ToOpen'):
-                    short_calls.append(r)
-            elif opt_type == 'Put':
-                if side == 'ask' and open_label in ('BuyToOpen', 'ToOpen'):
-                    long_puts.append(r)
-                elif side == 'bid' and open_label in ('SellToOpen', 'ToOpen'):
-                    short_puts.append(r)
+            if bid == bid and ask == ask: # not nan
+                mid = (bid + ask) / 2
+                key = (sym, typ, strike, exp)
+                if key not in prices:
+                    prices[key] = mid
+
+    with open(snapshot_path, 'w', newline='', encoding='utf-8') as f:
+        w = csv.writer(f)
+        w.writerow(['Symbol', 'Type', 'Strike', 'Exp Date', 'MidPrice'])
+        for (sym, typ, strike, exp), mid in prices.items():
+            w.writerow([sym, typ, strike, exp, f"{mid:.4f}"])
+
+def load_prior_snapshot(current_date):
+    if not current_date:
+        return None
+    os.makedirs('snapshots', exist_ok=True)
+    files = glob.glob('snapshots/prices-*.csv')
+    best_date = None
+    best_file = None
+    
+    for f in files:
+        base = os.path.basename(f)
+        m = re.search(r'prices-(\d{4}-\d{2}-\d{2})\.csv', base)
+        if m:
+            d = datetime.strptime(m.group(1), '%Y-%m-%d')
+            if d < current_date:
+                if not best_date or d > best_date:
+                    best_date = d
+                    best_file = f
                     
-        # Check Signal 3: Bullish Risk Reversal (Long Call + Short Put)
-        if long_calls and short_puts:
-            lc = max(long_calls, key=lambda x: to_num(x.get('Premium')))
-            sp = max(short_puts, key=lambda x: to_num(x.get('Premium')))
-            long_calls.remove(lc)
-            short_puts.remove(sp)
-            total_prem = to_num(lc.get('Premium')) + to_num(sp.get('Premium'))
-            key = (sym, lc.get('Strike'), 'Call', exp)
-            out.append({
-                'signal': 'Signal 3 — Bullish Risk Reversal',
-                'symbol': sym,
-                'type': 'C+P',
-                'strike': f"{lc.get('Strike')}/{sp.get('Strike')}",
-                'exp': exp,
-                'direction': 'bullish',
-                'premium': total_prem,
-                'underlying_price': watchlist[sym]['price'],
-                'vol_oi': voloi_map.get(key, ''),
-                'note': f"Risk Rev (Bot C {lc.get('Strike')}, Sold P {sp.get('Strike')}) Total Prem: ${total_prem:,.0f}",
-            })
-            
-        # Check Signal 3: Bearish Risk Reversal (Long Put + Short Call)
-        if long_puts and short_calls:
-            lp = max(long_puts, key=lambda x: to_num(x.get('Premium')))
-            sc = max(short_calls, key=lambda x: to_num(x.get('Premium')))
-            long_puts.remove(lp)
-            short_calls.remove(sc)
-            total_prem = to_num(lp.get('Premium')) + to_num(sc.get('Premium'))
-            key = (sym, lp.get('Strike'), 'Put', exp) 
-            out.append({
-                'signal': 'Signal 3 — Bearish Risk Reversal',
-                'symbol': sym,
-                'type': 'P+C',
-                'strike': f"{lp.get('Strike')}/{sc.get('Strike')}",
-                'exp': exp,
-                'direction': 'bearish',
-                'premium': total_prem,
-                'underlying_price': watchlist[sym]['price'],
-                'vol_oi': voloi_map.get(key, ''),
-                'note': f"Risk Rev (Bot P {lp.get('Strike')}, Sold C {sc.get('Strike')}) Total Prem: ${total_prem:,.0f}",
-            })
+    if not best_file:
+        return None
+        
+    prices = {}
+    with open(best_file, 'r', newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for r in reader:
+            key = (r['Symbol'], r['Type'], r['Strike'], r['Exp Date'])
+            prices[key] = float(r['MidPrice'])
+    return prices
 
-        # Signal 2: Naked Whale Sweeps (Remaining Long Calls and Long Puts)
-        for lc in long_calls:
-            prem = to_num(lc.get('Premium'))
-            key = (sym, lc.get('Strike'), 'Call', exp)
-            out.append({
-                'signal': 'Signal 2 — Naked Whale Sweep',
-                'symbol': sym,
-                'type': 'Call',
-                'strike': lc.get('Strike'),
-                'exp': exp,
-                'direction': 'bullish',
-                'premium': prem,
-                'underlying_price': watchlist[sym]['price'],
-                'vol_oi': voloi_map.get(key, ''),
-                'note': f"Aggressive Sweep, BuyToOpen at ask, Premium ${prem:,.0f}",
-            })
-            
-        for lp in long_puts:
-            prem = to_num(lp.get('Premium'))
-            key = (sym, lp.get('Strike'), 'Put', exp)
-            out.append({
-                'signal': 'Signal 2 — Naked Whale Sweep',
-                'symbol': sym,
-                'type': 'Put',
-                'strike': lp.get('Strike'),
-                'exp': exp,
-                'direction': 'bearish',
-                'premium': prem,
-                'underlying_price': watchlist[sym]['price'],
-                'vol_oi': voloi_map.get(key, ''),
-                'note': f"Aggressive Sweep, BuyToOpen at ask, Premium ${prem:,.0f}",
-            })
-            
-    return out
+def get_mid_price(r):
+    bid = to_num(r.get('Bid'))
+    ask = to_num(r.get('Ask'))
+    if bid == bid and ask == ask:
+        return (bid + ask) / 2
+    return float('nan')
 
-
-def scan_signal1(decoi_rows, watchlist, voloi_map, move_min):
-    # First pass: collect every strike that qualifies, grouped by (symbol, direction).
+def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_chg_min, signal_type):
     groups = {}
-    for r in decoi_rows:
+    
+    diag_1_total = len(rows)
+    diag_2_watchlist = 0
+    diag_3_oi_sign = 0
+    diag_4_moneyness = 0
+    diag_4b_oi_min = 0
+    diag_5_both = 0
+    
+    stats_excluded_moneyness = 0
+    stats_excluded_oi_min = 0
+    stats_no_prior = 0
+    
+    diag_evaluable = 0
+    diag_price_up = 0
+    diag_price_down = 0
+    diag_price_flat = 0
+    
+    for r in rows:
         sym = r.get('Symbol', '').strip()
         if sym not in watchlist:
             continue
-        oi_chg = to_num(r.get('OI Chg'))
-        if not (oi_chg < 0):
+        diag_2_watchlist += 1
+            
+        oi_chg_raw = r.get('OI %Chg') if 'OI %Chg' in r else r.get('OI Chg')
+        oi_chg = to_num(oi_chg_raw)
+        oi_valid = False
+        if signal_type == 'A' and (oi_chg < 0): oi_valid = True
+        if signal_type == 'B' and (oi_chg > 0): oi_valid = True
+        
+        moneyness = to_num(r.get('Moneyness'))
+        mon_valid = False
+        if moneyness == moneyness and abs(moneyness) <= moneyness_max:
+            mon_valid = True
+            
+        oi_min_valid = False
+        if abs(oi_chg) >= oi_chg_min:
+            oi_min_valid = True
+            
+        if oi_valid:
+            diag_3_oi_sign += 1
+        if mon_valid:
+            diag_4_moneyness += 1
+        if oi_min_valid:
+            diag_4b_oi_min += 1
+        if oi_valid and mon_valid and oi_min_valid:
+            diag_5_both += 1
+            
+        if not mon_valid:
+            stats_excluded_moneyness += 1
             continue
-        pct = watchlist[sym]['pct']
+            
+        if not oi_min_valid:
+            stats_excluded_oi_min += 1
+            continue
+            
+        if not oi_valid:
+            continue
+            
         opt_type = r.get('Type')
+        strike = r.get('Strike')
+        exp = r.get('Exp Date')
+        key = (sym, opt_type, strike, exp)
+        
+        mid_today = get_mid_price(r)
+        if mid_today != mid_today:
+            continue
+            
+        if prior_prices is None or key not in prior_prices:
+            stats_no_prior += 1
+            continue
+            
+        mid_prior = prior_prices[key]
+        price_diff = mid_today - mid_prior
+        price_up = price_diff > 0
+        price_down = price_diff < 0
+        
+        diag_evaluable += 1
+        if price_up: diag_price_up += 1
+        elif price_down: diag_price_down += 1
+        else: diag_price_flat += 1
+        
         direction = None
-        if opt_type == 'Call' and pct >= move_min:
-            direction = 'bullish'   # call sellers covering into a rally
-        elif opt_type == 'Put' and pct <= -move_min:
-            direction = 'bearish'  # put sellers covering into a selloff
+        if signal_type == 'A':
+            # Signal A: Short Covering
+            if price_up:
+                if opt_type == 'Call': direction = 'bullish'
+                elif opt_type == 'Put': direction = 'bearish'
+        elif signal_type == 'B':
+            # Signal B: Short Build-Up
+            if price_down:
+                if opt_type == 'Put': direction = 'bullish'
+                elif opt_type == 'Call': direction = 'bearish'
+                
         if not direction:
             continue
-        key = (sym, r.get('Strike'), opt_type, r.get('Exp Date'))
+            
         entry = {
             'symbol': sym,
             'type': opt_type,
-            'strike': r.get('Strike'),
-            'exp': r.get('Exp Date'),
+            'strike': strike,
+            'exp': exp,
             'direction': direction,
             'oi_chg': oi_chg,
-            'pct': pct,
+            'price_diff': price_diff,
             'vol_oi': voloi_map.get(key, ''),
         }
         groups.setdefault((sym, direction), []).append(entry)
+        
+    diag_stats = {
+        'diag_1_total': diag_1_total,
+        'diag_2_watchlist': diag_2_watchlist,
+        'diag_3_oi_sign': diag_3_oi_sign,
+        'diag_4_moneyness': diag_4_moneyness,
+        'diag_4b_oi_min': diag_4b_oi_min,
+        'diag_5_both': diag_5_both,
+        'excluded_moneyness': stats_excluded_moneyness,
+        'excluded_oi_min': stats_excluded_oi_min,
+        'no_prior': stats_no_prior,
+        'evaluable': diag_evaluable,
+        'price_up': diag_price_up,
+        'price_down': diag_price_down,
+        'price_flat': diag_price_flat,
+    }
+        
+    return groups, diag_stats
 
-    # Second pass: one headline row per (symbol, direction) — the largest single
-    # OI-drop strike — with a note on how many other strikes also qualified,
-    # so a broad market-wide move doesn't flood the list with near-duplicates.
+def consolidate_groups(groups, signal_name, watchlist):
     out = []
     for (sym, direction), entries in groups.items():
-        entries.sort(key=lambda e: e['oi_chg'])  # most negative first
+        entries.sort(key=lambda e: abs(e['oi_chg']), reverse=True)
         lead = entries[0]
         other_count = len(entries) - 1
         total_oi_chg = sum(e['oi_chg'] for e in entries)
-        note = f"OI Chg {lead['oi_chg']:,.0f} at {lead['strike']} strike, underlying moved {lead['pct']:+.2f}% same day"
+        
+        note = f"OI Chg {lead['oi_chg']:,.0f} at {lead['strike']} strike (Opt Price {lead['price_diff']:+.2f})"
         if other_count:
-            note += f" (+{other_count} more strikes covering, total OI Chg {total_oi_chg:,.0f})"
+            note += f" (+{other_count} more strikes, total OI Chg {total_oi_chg:,.0f})"
+            
         out.append({
-            'signal': 'Signal 1 — Panic Covering',
-            'symbol': sym,
-            'type': lead['type'],
-            'strike': lead['strike'],
-            'exp': lead['exp'],
-            'direction': direction,
-            'premium': None,
-            'underlying_price': watchlist[sym]['price'],
-            'vol_oi': lead['vol_oi'],
-            'note': note,
-        })
-    return out
-
-def scan_signal4(incoi_rows, watchlist, voloi_map, move_min):
-    groups = {}
-    for r in incoi_rows:
-        sym = r.get('Symbol', '').strip()
-        if sym not in watchlist:
-            continue
-        oi_chg = to_num(r.get('OI Chg'))
-        if not (oi_chg > 0):
-            continue
-        pct = watchlist[sym]['pct']
-        opt_type = r.get('Type')
-        direction = None
-        if opt_type == 'Call' and pct >= move_min:
-            direction = 'bullish'   # new calls opened into a rally
-        elif opt_type == 'Put' and pct <= -move_min:
-            direction = 'bearish'  # new puts opened into a selloff
-        if not direction:
-            continue
-        key = (sym, r.get('Strike'), opt_type, r.get('Exp Date'))
-        entry = {
-            'symbol': sym,
-            'type': opt_type,
-            'strike': r.get('Strike'),
-            'exp': r.get('Exp Date'),
-            'direction': direction,
-            'oi_chg': oi_chg,
-            'pct': pct,
-            'vol_oi': voloi_map.get(key, ''),
-        }
-        groups.setdefault((sym, direction), []).append(entry)
-
-    out = []
-    for (sym, direction), entries in groups.items():
-        entries.sort(key=lambda e: e['oi_chg'], reverse=True)  # most positive first
-        lead = entries[0]
-        other_count = len(entries) - 1
-        total_oi_chg = sum(e['oi_chg'] for e in entries)
-        note = f"OI Build +{lead['oi_chg']:,.0f} at {lead['strike']} strike, underlying moved {lead['pct']:+.2f}%"
-        if other_count:
-            note += f" (+{other_count} additional strikes building, total OI Build +{total_oi_chg:,.0f})"
-        out.append({
-            'signal': 'Signal 4 — Trend Conviction',
+            'signal': signal_name,
             'symbol': sym,
             'type': lead['type'],
             'strike': lead['strike'],
             'exp': lead['exp'],
             'direction': lead['direction'],
-            'premium': float('nan'),
-            'underlying_price': watchlist[sym]['price'],
+            'premium': None,
+            'underlying_price': watchlist[sym]['price'] if sym in watchlist else float('nan'),
             'vol_oi': lead['vol_oi'],
             'note': note,
         })
     return out
-
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--active', required=True)
     ap.add_argument('--flow', required=True)
     ap.add_argument('--decoi', required=True)
-    ap.add_argument('--incoi', required=False, help='Increase in Open Interest CSV')
+    ap.add_argument('--incoi', required=False)
     ap.add_argument('--unusual', required=False)
     ap.add_argument('--liquidity-min', type=float, default=10000)
+    ap.add_argument('--moneyness-max', type=float, default=5.0)
+    ap.add_argument('--oi-chg-min', type=float, default=500.0)
     ap.add_argument('--premium-min', type=float, default=50000)
     ap.add_argument('--move-min', type=float, default=3)
-    ap.add_argument('--out', default=None, help='Optional path to write flagged candidates as CSV')
+    ap.add_argument('--out', default=None)
     args = ap.parse_args()
 
+    date_obj = extract_file_date(args.active)
+
     active_rows = read_csv(args.active)
-    flow_rows = read_csv(args.flow)
     decoi_rows = read_csv(args.decoi)
     incoi_rows = read_csv(args.incoi) if args.incoi else []
     unusual_rows = read_csv(args.unusual) if args.unusual else []
@@ -334,21 +307,75 @@ def main():
     watchlist = build_watchlist(active_rows, args.liquidity_min)
     voloi_map = build_voloi_map(unusual_rows)
 
-    sig2_and_3 = scan_signal2_and_3(flow_rows, watchlist, voloi_map, args.premium_min)
-    sig1 = scan_signal1(decoi_rows, watchlist, voloi_map, args.move_min)
-    sig4 = scan_signal4(incoi_rows, watchlist, voloi_map, args.move_min)
+    update_snapshot(date_obj, [decoi_rows, incoi_rows, unusual_rows])
+    prior_prices = load_prior_snapshot(date_obj)
 
-    results = sig2_and_3 + sig1 + sig4
-    results.sort(key=lambda x: (x['signal'], -(x['premium'] or 0)))
-    
-    sig3_count = sum(1 for r in sig2_and_3 if 'Signal 3' in r['signal'])
-    sig2_count = len(sig2_and_3) - sig3_count
+    stats = {
+        'a_out': [], 'b_out': [], 'c_out': [],
+        'missing_snapshot': prior_prices is None,
+        'a_excluded_moneyness': 0, 'a_no_prior': 0,
+        'b_excluded_moneyness': 0, 'b_no_prior': 0,
+    }
+
+    if prior_prices is not None:
+        groups_a, stats_a = process_signal(decoi_rows, watchlist, prior_prices, voloi_map, args.moneyness_max, args.oi_chg_min, 'A')
+        groups_b, stats_b = process_signal(incoi_rows, watchlist, prior_prices, voloi_map, args.moneyness_max, args.oi_chg_min, 'B')
+        
+        stats['a_stats'] = stats_a
+        stats['b_stats'] = stats_b
+        
+        stats['a_out'] = consolidate_groups(groups_a, 'Signal A — Short Covering', watchlist)
+        stats['b_out'] = consolidate_groups(groups_b, 'Signal B — Short Build-Up', watchlist)
+        
+        for (sym, direction) in groups_a.keys():
+            if (sym, direction) in groups_b:
+                stats['c_out'].append({
+                    'signal': 'Signal C — Confirmed Squeeze Setup',
+                    'symbol': sym,
+                    'type': 'Combo',
+                    'strike': 'Multi',
+                    'exp': 'Multi',
+                    'direction': direction,
+                    'premium': None,
+                    'underlying_price': watchlist[sym]['price'] if sym in watchlist else float('nan'),
+                    'vol_oi': '',
+                    'note': 'Both Short Covering and Short Build-Up criteria met.',
+                })
+
+    results = stats['c_out'] + stats['a_out'] + stats['b_out']
+    rank = {'Signal C — Confirmed Squeeze Setup': 1, 'Signal A — Short Covering': 2, 'Signal B — Short Build-Up': 3}
+    results.sort(key=lambda x: (rank.get(x['signal'], 99), x['symbol']))
 
     print(f"Watchlist size (liquidity >= {args.liquidity_min:,.0f}): {len(watchlist)} names")
-    print(f"Signal 4 candidates (Trend Build): {len(sig4)}")
-    print(f"Signal 3 candidates (Risk Revs): {sig3_count}")
-    print(f"Signal 2 candidates (Sweeps): {sig2_count}")
-    print(f"Signal 1 candidates (Panic): {len(sig1)}")
+    if stats['missing_snapshot']:
+        print("NOTE: No prior price snapshot available. Required to determine option price direction.")
+        print("Generated snapshot for today. Run tomorrow to see signals.")
+    else:
+        a_s = stats['a_stats']
+        b_s = stats['b_stats']
+        
+        print(f"--- DIAGNOSTICS: Signal A ({a_s['diag_1_total']} rows) ---")
+        print(f"  1. Total rows       : {a_s['diag_1_total']}")
+        print(f"  2. Watchlist match  : {a_s['diag_2_watchlist']}")
+        print(f"  3. OI Sign (< 0)    : {a_s['diag_3_oi_sign']}")
+        print(f"  4. Moneyness filter : {a_s['diag_4_moneyness']}")
+        print(f"  5. Mathced BOTH     : {a_s['diag_5_both']}")
+        print(f"--- DIAGNOSTICS: Signal B ({b_s['diag_1_total']} rows) ---")
+        print(f"  1. Total rows       : {b_s['diag_1_total']}")
+        print(f"  2. Watchlist match  : {b_s['diag_2_watchlist']}")
+        print(f"  3. OI Sign (> 0)    : {b_s['diag_3_oi_sign']}")
+        print(f"  4. Moneyness filter : {b_s['diag_4_moneyness']}")
+        print(f"  5. Matched BOTH     : {b_s['diag_5_both']}")
+        print("---------------------------------")
+        
+        print(f"Total Strikes excluded by Moneyness filter (>{args.moneyness_max}%): {a_s['excluded_moneyness'] + b_s['excluded_moneyness']}")
+        print(f"Total Strikes excluded by Minimum OI Magnitude filter (<{args.oi_chg_min}): {a_s['excluded_oi_min'] + b_s['excluded_oi_min']}")
+        print(f"Total Strikes skipped lacking prior-snapshot price data: {a_s['no_prior'] + b_s['no_prior']}")
+        print(f"Signal A evaluable strikes: {a_s['evaluable']} (price up: {a_s['price_up']}, price down: {a_s['price_down']}, flat: {a_s['price_flat']})")
+        print(f"Signal B evaluable strikes: {b_s['evaluable']} (price down: {b_s['price_down']}, price up: {b_s['price_up']}, flat: {b_s['price_flat']})")
+        print(f"Signal C (Confirmed Squeeze Setup): {len(stats['c_out'])}")
+        print(f"Signal A (Short Covering): {len(stats['a_out'])}")
+        print(f"Signal B (Short Build-Up): {len(stats['b_out'])}")
     print()
 
     if args.out:
@@ -361,20 +388,44 @@ def main():
 
     if f_txt:
         f_txt.write(f"Watchlist size (liquidity >= {args.liquidity_min:,.0f}): {len(watchlist)} names\n")
-        f_txt.write(f"Signal 4 candidates (Trend Build): {len(sig4)}\n")
-        f_txt.write(f"Signal 3 candidates (Risk Revs): {sig3_count}\n")
-        f_txt.write(f"Signal 2 candidates (Sweeps): {sig2_count}\n")
-        f_txt.write(f"Signal 1 candidates (Panic): {len(sig1)}\n\n")
+        if stats['missing_snapshot']:
+            f_txt.write("NOTE: No prior price snapshot available. Required to determine option price direction.\n")
+            f_txt.write("Generated snapshot for today. Run tomorrow to see signals.\n\n")
+        else:
+            a_s = stats['a_stats']
+            b_s = stats['b_stats']
+            f_txt.write(f"--- DIAGNOSTICS: Signal A ({a_s['diag_1_total']} rows) ---\n")
+            f_txt.write(f"  1. Total rows       : {a_s['diag_1_total']}\n")
+            f_txt.write(f"  2. Watchlist match  : {a_s['diag_2_watchlist']}\n")
+            f_txt.write(f"  3. OI Sign (< 0)    : {a_s['diag_3_oi_sign']}\n")
+            f_txt.write(f"  4. Moneyness filter : {a_s['diag_4_moneyness']}\n")
+            f_txt.write(f"  5. Mathced BOTH     : {a_s['diag_5_both']}\n")
+            f_txt.write(f"--- DIAGNOSTICS: Signal B ({b_s['diag_1_total']} rows) ---\n")
+            f_txt.write(f"  1. Total rows       : {b_s['diag_1_total']}\n")
+            f_txt.write(f"  2. Watchlist match  : {b_s['diag_2_watchlist']}\n")
+            f_txt.write(f"  3. OI Sign (> 0)    : {b_s['diag_3_oi_sign']}\n")
+            f_txt.write(f"  4. Moneyness filter : {b_s['diag_4_moneyness']}\n")
+            f_txt.write(f"  5. Matched BOTH     : {b_s['diag_5_both']}\n")
+            f_txt.write("---------------------------------\n")
+            
+            f_txt.write(f"Total Strikes excluded by Moneyness filter (>{args.moneyness_max}%): {a_s['excluded_moneyness'] + b_s['excluded_moneyness']}\n")
+            f_txt.write(f"Total Strikes excluded by Minimum OI Magnitude filter (<{args.oi_chg_min}): {a_s['excluded_oi_min'] + b_s['excluded_oi_min']}\n")
+            f_txt.write(f"Total Strikes skipped lacking prior-snapshot price data: {a_s['no_prior'] + b_s['no_prior']}\n")
+            f_txt.write(f"Signal A evaluable strikes: {a_s['evaluable']} (price up: {a_s['price_up']}, price down: {a_s['price_down']}, flat: {a_s['price_flat']})\n")
+            f_txt.write(f"Signal B evaluable strikes: {b_s['evaluable']} (price down: {b_s['price_down']}, price up: {b_s['price_up']}, flat: {b_s['price_flat']})\n")
+            f_txt.write(f"Signal C (Confirmed Squeeze Setup): {len(stats['c_out'])}\n")
+            f_txt.write(f"Signal A (Short Covering): {len(stats['a_out'])}\n")
+            f_txt.write(f"Signal B (Short Build-Up): {len(stats['b_out'])}\n\n")
 
-    header_line = f"[{'DIR':8}] {'SYMBOL':6} {'TYPE':4} {'STRIKE':>10} exp {'EXP_DATE':10} | SIGNAL | NOTE"
+    header_line = f"[{'DIR':8}] {'SYMBOL':6} {'TYPE':5} {'STRIKE':>10} exp {'EXP_DATE':10} | SIGNAL | NOTE"
     print(header_line)
-    print("-" * 120)
+    print("-" * 140)
     if f_txt:
         f_txt.write(header_line + "\n")
-        f_txt.write("-" * 120 + "\n")
+        f_txt.write("-" * 140 + "\n")
 
     for r in results:
-        line = f"[{r['direction'].upper():8}] {r['symbol']:6} {r['type']:4} {r['strike']:>10} exp {r['exp']} | {r['signal']} | {r['note']}" + (f" | Vol/OI {r['vol_oi']}" if r['vol_oi'] else "")
+        line = f"[{r['direction'].upper():8}] {r['symbol']:6} {r['type']:5} {r['strike']:>10} exp {r['exp']} | {r['signal']} | {r['note']}" + (f" | Vol/OI {r['vol_oi']}" if r['vol_oi'] else "")
         print(line)
         if f_txt:
             f_txt.write(line + "\n")
@@ -385,15 +436,14 @@ def main():
     if args.out:
         fieldnames = ['signal', 'symbol', 'type', 'strike', 'exp', 'direction',
                       'premium', 'underlying_price', 'vol_oi', 'note']
-        with open(args.out, 'w', newline='', encoding='utf-8') as f:
-            w = csv.DictWriter(f, fieldnames=fieldnames)
+        with open(args.out, 'w', newline='', encoding='utf-8') as dest:
+            w = csv.DictWriter(dest, fieldnames=fieldnames)
             w.writeheader()
             for r in results:
                 w.writerow(r)
         print(f"\nWrote {len(results)} candidates to {args.out}")
 
     return results
-
 
 if __name__ == '__main__':
     main()

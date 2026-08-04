@@ -22,6 +22,7 @@ if "%DATE%"=="" (
     exit /b 1
 )
 
+set MISSING=
 set ACTIVE=inputs\most-active-stock-options-%DATE%.csv
 set FLOW=inputs\options-flow-%DATE%.csv
 set DECOI=inputs\stocks-decrease-change-in-open-interest-%DATE%.csv
