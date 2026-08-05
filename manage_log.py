@@ -100,13 +100,25 @@ def grade_outcome(direction, price_at_flag, price_now):
 
 def append_new_candidates(log_rows, flagged_path, date_flagged):
     flagged = list(csv.DictReader(open(flagged_path, newline='', encoding='utf-8')))
-    existing_keys = {(r['date_flagged'], r['symbol'], r['strike'], r['exp'], r['signal'])
-                     for r in log_rows}
+    existing_keys_map = {(r['date_flagged'], r['symbol'], str(r['strike']).strip(), str(r['exp']).strip(), r['signal']): r for r in log_rows}
+    
+    # Also print out a few existing keys to see what they look like
+    print("\n--- DIAGNOSTIC: manage_log.py dedup keys ---")
+    print(f"Total existing keys in log: {len(existing_keys_map)}")
+    if existing_keys_map:
+        print("Sample existing key:", list(existing_keys_map.keys())[0])
+
     added = 0
     for r in flagged:
-        key = (date_flagged, r['symbol'], r['strike'], r['exp'], r['signal'])
-        if key in existing_keys:
+        # Strip strike and exp just in case they have spaces
+        key = (date_flagged, r['symbol'], str(r['strike']).strip(), str(r['exp']).strip(), r['signal'])
+        if key in existing_keys_map:
+            print(f"DUPLICATE KILLED: {key}")
+            print(f"   -> Exact existing row: {existing_keys_map[key]}")
             continue
+        else:
+            print(f"NEW KEY ADDED: {key}")
+            
         log_rows.append({
             'date_flagged': date_flagged,
             'symbol': r['symbol'],
@@ -123,6 +135,8 @@ def append_new_candidates(log_rows, flagged_path, date_flagged):
             'outcome': 'pending',
         })
         added += 1
+        
+    print("--------------------------------------------\n")
     return added
 
 

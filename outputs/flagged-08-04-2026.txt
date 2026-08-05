@@ -3,17 +3,18 @@ Watchlist size (liquidity >= 10,000): 346 names
   1. Total rows       : 173
   2. Watchlist match  : 148
   3. OI Sign (< 0)    : 148
-  4. Moneyness filter : 32
-  5. Mathced BOTH     : 0
+  4. OI Magnitude     : 0
+  5. Matched          : 0
 --- DIAGNOSTICS: Signal B (1001 rows) ---
   1. Total rows       : 1001
   2. Watchlist match  : 848
   3. OI Sign (> 0)    : 848
   4. Moneyness filter : 343
-  5. Matched BOTH     : 131
+  5. OI Magnitude     : 356
+  6. Matched BOTH     : 131
 ---------------------------------
-Total Strikes excluded by Moneyness filter (>5.0%): 621
-Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 244
+Total Strikes excluded by Moneyness filter (>5.0%): 505
+Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 360
 Total Strikes skipped lacking prior-snapshot price data: 44
 Signal A evaluable strikes: 0 (price up: 0, price down: 0, flat: 0)
 Signal B evaluable strikes: 87 (price down: 31, price up: 56, flat: 0)

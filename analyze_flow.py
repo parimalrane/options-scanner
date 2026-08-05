@@ -161,7 +161,9 @@ def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_c
         
         moneyness = to_num(r.get('Moneyness'))
         mon_valid = False
-        if moneyness == moneyness and abs(moneyness) <= moneyness_max:
+        if signal_type == 'A':
+            mon_valid = True
+        elif moneyness == moneyness and abs(moneyness) <= moneyness_max:
             mon_valid = True
             
         oi_min_valid = False
@@ -358,14 +360,15 @@ def main():
         print(f"  1. Total rows       : {a_s['diag_1_total']}")
         print(f"  2. Watchlist match  : {a_s['diag_2_watchlist']}")
         print(f"  3. OI Sign (< 0)    : {a_s['diag_3_oi_sign']}")
-        print(f"  4. Moneyness filter : {a_s['diag_4_moneyness']}")
-        print(f"  5. Mathced BOTH     : {a_s['diag_5_both']}")
+        print(f"  4. OI Magnitude     : {a_s['diag_4b_oi_min']}")
+        print(f"  5. Matched          : {a_s['diag_5_both']}")
         print(f"--- DIAGNOSTICS: Signal B ({b_s['diag_1_total']} rows) ---")
         print(f"  1. Total rows       : {b_s['diag_1_total']}")
         print(f"  2. Watchlist match  : {b_s['diag_2_watchlist']}")
         print(f"  3. OI Sign (> 0)    : {b_s['diag_3_oi_sign']}")
         print(f"  4. Moneyness filter : {b_s['diag_4_moneyness']}")
-        print(f"  5. Matched BOTH     : {b_s['diag_5_both']}")
+        print(f"  5. OI Magnitude     : {b_s['diag_4b_oi_min']}")
+        print(f"  6. Matched BOTH     : {b_s['diag_5_both']}")
         print("---------------------------------")
         
         print(f"Total Strikes excluded by Moneyness filter (>{args.moneyness_max}%): {a_s['excluded_moneyness'] + b_s['excluded_moneyness']}")
@@ -398,14 +401,15 @@ def main():
             f_txt.write(f"  1. Total rows       : {a_s['diag_1_total']}\n")
             f_txt.write(f"  2. Watchlist match  : {a_s['diag_2_watchlist']}\n")
             f_txt.write(f"  3. OI Sign (< 0)    : {a_s['diag_3_oi_sign']}\n")
-            f_txt.write(f"  4. Moneyness filter : {a_s['diag_4_moneyness']}\n")
-            f_txt.write(f"  5. Mathced BOTH     : {a_s['diag_5_both']}\n")
+            f_txt.write(f"  4. OI Magnitude     : {a_s['diag_4b_oi_min']}\n")
+            f_txt.write(f"  5. Matched          : {a_s['diag_5_both']}\n")
             f_txt.write(f"--- DIAGNOSTICS: Signal B ({b_s['diag_1_total']} rows) ---\n")
             f_txt.write(f"  1. Total rows       : {b_s['diag_1_total']}\n")
             f_txt.write(f"  2. Watchlist match  : {b_s['diag_2_watchlist']}\n")
             f_txt.write(f"  3. OI Sign (> 0)    : {b_s['diag_3_oi_sign']}\n")
             f_txt.write(f"  4. Moneyness filter : {b_s['diag_4_moneyness']}\n")
-            f_txt.write(f"  5. Matched BOTH     : {b_s['diag_5_both']}\n")
+            f_txt.write(f"  5. OI Magnitude     : {b_s['diag_4b_oi_min']}\n")
+            f_txt.write(f"  6. Matched BOTH     : {b_s['diag_5_both']}\n")
             f_txt.write("---------------------------------\n")
             
             f_txt.write(f"Total Strikes excluded by Moneyness filter (>{args.moneyness_max}%): {a_s['excluded_moneyness'] + b_s['excluded_moneyness']}\n")
