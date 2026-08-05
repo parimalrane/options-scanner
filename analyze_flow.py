@@ -285,7 +285,7 @@ def consolidate_groups(groups, signal_name, watchlist):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--active', required=True)
-    ap.add_argument('--flow', required=True)
+    ap.add_argument('--flow', required=False)
     ap.add_argument('--decoi', required=True)
     ap.add_argument('--incoi', required=False)
     ap.add_argument('--unusual', required=False)

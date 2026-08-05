@@ -37,10 +37,6 @@ if not exist "%ACTIVE%" (
     echo MISSING: %ACTIVE%
     set MISSING=1
 )
-if not exist "%FLOW%" (
-    echo MISSING: %FLOW%
-    set MISSING=1
-)
 if not exist "%DECOI%" (
     echo MISSING: %DECOI%
     set MISSING=1
@@ -52,8 +48,14 @@ if defined MISSING (
     exit /b 1
 )
 
+if not exist "%FLOW%" (
+    set FLOW_ARG=
+) else (
+    set FLOW_ARG=--flow "%FLOW%"
+)
+
 if not exist "%INCOI%" (
-    echo NOTE: %INCOI% not found - skipping Signal 4 ^(Trend Conviction^).
+    echo NOTE: %INCOI% not found - skipping Signal B ^(Short Build-Up^).
     set INCOI_ARG=
 ) else (
     set INCOI_ARG=--incoi "%INCOI%"
@@ -68,7 +70,7 @@ if not exist "%UNUSUAL%" (
 
 echo.
 echo === Running scan for %DATE% ===
-python analyze_flow.py --active "%ACTIVE%" --flow "%FLOW%" --decoi "%DECOI%" %INCOI_ARG% %UNUSUAL_ARG% --out "%OUT%"
+python analyze_flow.py --active "%ACTIVE%" %FLOW_ARG% --decoi "%DECOI%" %INCOI_ARG% %UNUSUAL_ARG% --out "%OUT%"
 
 if errorlevel 1 (
     echo.

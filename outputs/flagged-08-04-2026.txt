@@ -1,0 +1,47 @@
+Watchlist size (liquidity >= 10,000): 346 names
+--- DIAGNOSTICS: Signal A (173 rows) ---
+  1. Total rows       : 173
+  2. Watchlist match  : 148
+  3. OI Sign (< 0)    : 148
+  4. Moneyness filter : 32
+  5. Mathced BOTH     : 0
+--- DIAGNOSTICS: Signal B (1001 rows) ---
+  1. Total rows       : 1001
+  2. Watchlist match  : 848
+  3. OI Sign (> 0)    : 848
+  4. Moneyness filter : 343
+  5. Matched BOTH     : 131
+---------------------------------
+Total Strikes excluded by Moneyness filter (>5.0%): 621
+Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 244
+Total Strikes skipped lacking prior-snapshot price data: 44
+Signal A evaluable strikes: 0 (price up: 0, price down: 0, flat: 0)
+Signal B evaluable strikes: 87 (price down: 31, price up: 56, flat: 0)
+Signal C (Confirmed Squeeze Setup): 0
+Signal A (Short Covering): 0
+Signal B (Short Build-Up): 22
+
+[DIR     ] SYMBOL TYPE      STRIKE exp EXP_DATE   | SIGNAL | NOTE
+--------------------------------------------------------------------------------------------------------------------------------------------
+[BULLISH ] AAPL   Put       305.00 exp 2026-08-05 | Signal B — Short Build-Up | OI Chg 582 at 305.00 strike (Opt Price -3.25)
+[BEARISH ] AMZN   Call      287.50 exp 2026-08-05 | Signal B — Short Build-Up | OI Chg 761 at 287.50 strike (Opt Price -1.79) (+1 more strikes, total OI Chg 1,345)
+[BEARISH ] BP     Call       44.50 exp 2026-08-21 | Signal B — Short Build-Up | OI Chg 3,421 at 44.50 strike (Opt Price -0.78)
+[BULLISH ] ET     Put        20.00 exp 2026-08-21 | Signal B — Short Build-Up | OI Chg 558 at 20.00 strike (Opt Price -0.10)
+[BEARISH ] GLXY   Call       22.00 exp 2026-08-21 | Signal B — Short Build-Up | OI Chg 642 at 22.00 strike (Opt Price -0.14)
+[BULLISH ] GME    Put        18.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,241 at 18.50 strike (Opt Price -0.20)
+[BULLISH ] GOOG   Put       365.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,497 at 365.00 strike (Opt Price -1.41) (+2 more strikes, total OI Chg 3,281)
+[BEARISH ] GOOG   Call      390.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 516 at 390.00 strike (Opt Price -0.07)
+[BEARISH ] GOOGL  Call      390.00 exp 2026-08-05 | Signal B — Short Build-Up | OI Chg 1,156 at 390.00 strike (Opt Price -0.18)
+[BULLISH ] IREN   Put        41.00 exp 2026-10-16 | Signal B — Short Build-Up | OI Chg 2,549 at 41.00 strike (Opt Price -0.30)
+[BEARISH ] KHC    Call       27.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 4,962 at 27.50 strike (Opt Price -0.02)
+[BEARISH ] MCD    Call      280.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 515 at 280.00 strike (Opt Price -0.85)
+[BULLISH ] META   Put       560.00 exp 2026-08-05 | Signal B — Short Build-Up | OI Chg 4,485 at 560.00 strike (Opt Price -0.45) (+1 more strikes, total OI Chg 5,416)
+[BULLISH ] MO     Put        66.00 exp 2026-08-28 | Signal B — Short Build-Up | OI Chg 1,443 at 66.00 strike (Opt Price -0.03)
+[BEARISH ] MSFT   Call      500.00 exp 2026-08-05 | Signal B — Short Build-Up | OI Chg 1,391 at 500.00 strike (Opt Price -0.03)
+[BULLISH ] MSFT   Put       480.00 exp 2026-10-16 | Signal B — Short Build-Up | OI Chg 1,016 at 480.00 strike (Opt Price -2.10) (+1 more strikes, total OI Chg 1,674)
+[BULLISH ] NBIS   Put       220.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,125 at 220.00 strike (Opt Price -8.20)
+[BULLISH ] NVDA   Put       205.00 exp 2026-08-05 | Signal B — Short Build-Up | OI Chg 735 at 205.00 strike (Opt Price -1.61) (+3 more strikes, total OI Chg 2,586)
+[BULLISH ] PURR   Put         7.00 exp 2026-09-18 | Signal B — Short Build-Up | OI Chg 915 at 7.00 strike (Opt Price -0.10)
+[BEARISH ] RIOT   Call       22.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 691 at 22.50 strike (Opt Price -0.05)
+[BULLISH ] TSLA   Put       320.00 exp 2026-08-05 | Signal B — Short Build-Up | OI Chg 998 at 320.00 strike (Opt Price -2.77) (+1 more strikes, total OI Chg 1,597)
+[BULLISH ] WMT    Put       112.00 exp 2026-08-14 | Signal B — Short Build-Up | OI Chg 1,681 at 112.00 strike (Opt Price -0.46)
