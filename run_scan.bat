@@ -33,6 +33,22 @@ set OUT=outputs\flagged-%DATE%.csv
 echo.
 echo === Checking input files for %DATE% ===
 
+set DECOI_FILE=inputs\stocks-decrease-change-in-open-interest-%DATE%_OI.csv
+if not exist "%DECOI_FILE%" (
+    set DECOI_FILE=inputs\stocks-decrease-change-in-open-interest-%DATE%.csv
+)
+set DECOI=%DECOI_FILE%
+
+set INCOI_FILE=inputs\stocks-increase-change-in-open-interest-%DATE%_OI.csv
+if not exist "%INCOI_FILE%" (
+    set INCOI_FILE=inputs\stocks-increase-change-in-open-interest-%DATE%.csv
+)
+set INCOI=%INCOI_FILE%
+
+echo USING DECOI: %DECOI%
+echo USING INCOI: %INCOI%
+echo.
+
 if not exist "%ACTIVE%" (
     echo MISSING: %ACTIVE%
     set MISSING=1

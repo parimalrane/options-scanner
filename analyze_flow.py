@@ -147,14 +147,27 @@ def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_c
     diag_price_down = 0
     diag_price_flat = 0
     
+    max_oi_val = 0
+    max_oi_sym = ''
+    max_oi_type = ''
+    max_oi_strike = ''
+    max_oi_raw_row = {}
+    
     for r in rows:
+        oi_chg_raw = r.get('OI %Chg') if 'OI %Chg' in r else r.get('OI Chg')
+        oi_chg = to_num(oi_chg_raw)
+        
+        if oi_chg == oi_chg and abs(oi_chg) > max_oi_val:
+            max_oi_val = abs(oi_chg)
+            max_oi_sym = r.get('Symbol', '')
+            max_oi_type = r.get('Type', '')
+            max_oi_strike = r.get('Strike', '')
+            max_oi_raw_row = r
+            
         sym = r.get('Symbol', '').strip()
         if sym not in watchlist:
             continue
         diag_2_watchlist += 1
-            
-        oi_chg_raw = r.get('OI %Chg') if 'OI %Chg' in r else r.get('OI Chg')
-        oi_chg = to_num(oi_chg_raw)
         oi_valid = False
         if signal_type == 'A' and (oi_chg < 0): oi_valid = True
         if signal_type == 'B' and (oi_chg > 0): oi_valid = True
@@ -254,6 +267,11 @@ def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_c
         'price_up': diag_price_up,
         'price_down': diag_price_down,
         'price_flat': diag_price_flat,
+        'max_oi_val': max_oi_val,
+        'max_oi_sym': max_oi_sym,
+        'max_oi_type': max_oi_type,
+        'max_oi_strike': max_oi_strike,
+        'max_oi_raw_row': max_oi_raw_row,
     }
         
     return groups, diag_stats
@@ -373,6 +391,8 @@ def main():
         
         print(f"Total Strikes excluded by Moneyness filter (>{args.moneyness_max}%): {a_s['excluded_moneyness'] + b_s['excluded_moneyness']}")
         print(f"Total Strikes excluded by Minimum OI Magnitude filter (<{args.oi_chg_min}): {a_s['excluded_oi_min'] + b_s['excluded_oi_min']}")
+        print(f"Largest |OI Chg| seen in today's decoi file: {int(a_s['max_oi_val'])} ({a_s['max_oi_sym']} {a_s['max_oi_type']} {a_s['max_oi_strike']}), vs current oi-chg-min threshold of {args.oi_chg_min}")
+        print(f"   -> RAW ROW: {a_s['max_oi_raw_row']}")
         print(f"Total Strikes skipped lacking prior-snapshot price data: {a_s['no_prior'] + b_s['no_prior']}")
         print(f"Signal A evaluable strikes: {a_s['evaluable']} (price up: {a_s['price_up']}, price down: {a_s['price_down']}, flat: {a_s['price_flat']})")
         print(f"Signal B evaluable strikes: {b_s['evaluable']} (price down: {b_s['price_down']}, price up: {b_s['price_up']}, flat: {b_s['price_flat']})")
@@ -414,6 +434,8 @@ def main():
             
             f_txt.write(f"Total Strikes excluded by Moneyness filter (>{args.moneyness_max}%): {a_s['excluded_moneyness'] + b_s['excluded_moneyness']}\n")
             f_txt.write(f"Total Strikes excluded by Minimum OI Magnitude filter (<{args.oi_chg_min}): {a_s['excluded_oi_min'] + b_s['excluded_oi_min']}\n")
+            f_txt.write(f"Largest |OI Chg| seen in today's decoi file: {int(a_s['max_oi_val'])} ({a_s['max_oi_sym']} {a_s['max_oi_type']} {a_s['max_oi_strike']}), vs current oi-chg-min threshold of {args.oi_chg_min}\n")
+            f_txt.write(f"   -> RAW ROW: {a_s['max_oi_raw_row']}\n")
             f_txt.write(f"Total Strikes skipped lacking prior-snapshot price data: {a_s['no_prior'] + b_s['no_prior']}\n")
             f_txt.write(f"Signal A evaluable strikes: {a_s['evaluable']} (price up: {a_s['price_up']}, price down: {a_s['price_down']}, flat: {a_s['price_flat']})\n")
             f_txt.write(f"Signal B evaluable strikes: {b_s['evaluable']} (price down: {b_s['price_down']}, price up: {b_s['price_up']}, flat: {b_s['price_flat']})\n")

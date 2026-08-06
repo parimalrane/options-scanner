@@ -1,61 +1,89 @@
 Watchlist size (liquidity >= 10,000): 347 names
---- DIAGNOSTICS: Signal A (263 rows) ---
-  1. Total rows       : 263
-  2. Watchlist match  : 213
-  3. OI Sign (< 0)    : 213
-  4. OI Magnitude     : 0
-  5. Matched          : 0
---- DIAGNOSTICS: Signal B (1573 rows) ---
-  1. Total rows       : 1573
-  2. Watchlist match  : 1323
-  3. OI Sign (> 0)    : 1323
-  4. Moneyness filter : 463
-  5. OI Magnitude     : 290
-  6. Matched BOTH     : 105
+--- DIAGNOSTICS: Signal A (138 rows) ---
+  1. Total rows       : 138
+  2. Watchlist match  : 133
+  3. OI Sign (< 0)    : 133
+  4. OI Magnitude     : 133
+  5. Matched          : 133
+--- DIAGNOSTICS: Signal B (732 rows) ---
+  1. Total rows       : 732
+  2. Watchlist match  : 688
+  3. OI Sign (> 0)    : 688
+  4. Moneyness filter : 280
+  5. OI Magnitude     : 688
+  6. Matched BOTH     : 280
 ---------------------------------
-Total Strikes excluded by Moneyness filter (>5.0%): 860
-Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 571
-Total Strikes skipped lacking prior-snapshot price data: 42
-Signal A evaluable strikes: 0 (price up: 0, price down: 0, flat: 0)
-Signal B evaluable strikes: 63 (price down: 45, price up: 18, flat: 0)
-Signal C (Confirmed Squeeze Setup): 0
-Signal A (Short Covering): 0
-Signal B (Short Build-Up): 35
+Total Strikes excluded by Moneyness filter (>5.0%): 408
+Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 0
+Largest |OI Chg| seen in today's decoi file: 212401 (PCG Call 23.00), vs current oi-chg-min threshold of 500.0
+   -> RAW ROW: {'Symbol': 'PCG', 'Price~': '17.2', 'Exp Date': '2026-09-18', 'DTE': '44', 'Type': 'Call', 'Strike': '23.00', 'Moneyness': '-33.72%', 'Bid': '0.15', 'Ask': '0.2', 'Volume': '2710', 'Open Int': '90759', 'OI Chg': '-212,401', 'Vol/OI': '0.03', 'IV': '61.60%', 'Delta': '0.107829', 'Time': '2026-08-05'}
+Total Strikes skipped lacking prior-snapshot price data: 210
+Signal A evaluable strikes: 29 (price up: 6, price down: 23, flat: 0)
+Signal B evaluable strikes: 174 (price down: 104, price up: 69, flat: 1)
+Signal C (Confirmed Squeeze Setup): 1
+Signal A (Short Covering): 5
+Signal B (Short Build-Up): 55
 
 [DIR     ] SYMBOL TYPE      STRIKE exp EXP_DATE   | SIGNAL | NOTE
 --------------------------------------------------------------------------------------------------------------------------------------------
-[BULLISH ] ASTS   Put        65.00 exp 2026-10-16 | Signal B — Short Build-Up | OI Chg 720 at 65.00 strike (Opt Price -0.05)
-[BULLISH ] AVGO   Put       410.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,075 at 410.00 strike (Opt Price -2.52)
-[BULLISH ] BAC    Put        62.50 exp 2027-06-17 | Signal B — Short Build-Up | OI Chg 506 at 62.50 strike (Opt Price -0.12)
-[BEARISH ] BBAI   Call        3.00 exp 2026-09-04 | Signal B — Short Build-Up | OI Chg 843 at 3.00 strike (Opt Price -0.20)
-[BULLISH ] CCL    Put        29.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,473 at 29.00 strike (Opt Price -0.17)
-[BEARISH ] CMCSA  Call       25.00 exp 2026-08-28 | Signal B — Short Build-Up | OI Chg 562 at 25.00 strike (Opt Price -0.15)
-[BULLISH ] CMG    Put        36.00 exp 2026-08-21 | Signal B — Short Build-Up | OI Chg 958 at 36.00 strike (Opt Price -0.52) (+1 more strikes, total OI Chg 1,491)
-[BEARISH ] CMG    Call       35.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 569 at 35.00 strike (Opt Price -0.02)
-[BULLISH ] CPNG   Put        16.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 738 at 16.50 strike (Opt Price -0.17)
-[BULLISH ] CSCO   Put       117.00 exp 2026-08-21 | Signal B — Short Build-Up | OI Chg 1,395 at 117.00 strike (Opt Price -0.32)
-[BULLISH ] DELL   Put       460.00 exp 2026-09-18 | Signal B — Short Build-Up | OI Chg 1,333 at 460.00 strike (Opt Price -1.75)
-[BEARISH ] GOOGL  Call      375.00 exp 2026-09-04 | Signal B — Short Build-Up | OI Chg 1,521 at 375.00 strike (Opt Price -8.27)
-[BULLISH ] INTC   Put        97.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 3,435 at 97.00 strike (Opt Price -1.06) (+1 more strikes, total OI Chg 3,958)
-[BEARISH ] KO     Call       86.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 630 at 86.00 strike (Opt Price -0.02)
-[BULLISH ] LITE   Put       800.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,557 at 800.00 strike (Opt Price -3.50)
-[BULLISH ] LUNR   Put        13.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,112 at 13.50 strike (Opt Price -0.15)
-[BULLISH ] MRK    Put       127.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 606 at 127.00 strike (Opt Price -0.41)
-[BULLISH ] MSFT   Put       467.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,026 at 467.50 strike (Opt Price -0.13)
-[BEARISH ] MSFT   Call      495.00 exp 2026-08-17 | Signal B — Short Build-Up | OI Chg 690 at 495.00 strike (Opt Price -2.90)
-[BEARISH ] NEE    Call       86.00 exp 2026-08-14 | Signal B — Short Build-Up | OI Chg 864 at 86.00 strike (Opt Price -0.53)
-[BULLISH ] NVDA   Put       212.50 exp 2026-08-14 | Signal B — Short Build-Up | OI Chg 8,428 at 212.50 strike (Opt Price -3.12) (+2 more strikes, total OI Chg 10,452)
-[BEARISH ] NVO    Call       45.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,821 at 45.00 strike (Opt Price -0.23)
-[BEARISH ] ORCL   Call      145.00 exp 2026-09-04 | Signal B — Short Build-Up | OI Chg 2,584 at 145.00 strike (Opt Price -1.15)
-[BULLISH ] PINS   Put        23.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 875 at 23.50 strike (Opt Price -0.21) (+1 more strikes, total OI Chg 1,619)
-[BULLISH ] PLTR   Put       155.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,918 at 155.00 strike (Opt Price -0.04)
-[BEARISH ] PLTR   Call      152.50 exp 2026-08-14 | Signal B — Short Build-Up | OI Chg 2,187 at 152.50 strike (Opt Price -4.10) (+4 more strikes, total OI Chg 5,431)
-[BEARISH ] RIOT   Call       22.50 exp 2026-08-21 | Signal B — Short Build-Up | OI Chg 872 at 22.50 strike (Opt Price -0.08)
-[BEARISH ] S      Call       21.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,340 at 21.50 strike (Opt Price -0.12)
-[BULLISH ] SMR    Put         9.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 612 at 9.00 strike (Opt Price -0.07)
-[BEARISH ] TSM    Call      422.50 exp 2026-08-14 | Signal B — Short Build-Up | OI Chg 796 at 422.50 strike (Opt Price -3.70)
-[BULLISH ] UEC    Put        10.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,168 at 10.50 strike (Opt Price -0.18)
-[BEARISH ] V      Call      382.50 exp 2026-08-21 | Signal B — Short Build-Up | OI Chg 794 at 382.50 strike (Opt Price -0.79)
-[BULLISH ] WFC    Put        89.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,232 at 89.00 strike (Opt Price -0.65) (+1 more strikes, total OI Chg 1,976)
-[BULLISH ] WULF   Put        17.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 633 at 17.50 strike (Opt Price -0.09)
-[BEARISH ] ZETA   Call       27.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 3,494 at 27.00 strike (Opt Price -0.25)
+[BULLISH ] AAPL   Combo      Multi exp Multi | Signal C — Confirmed Squeeze Setup | Both Short Covering and Short Build-Up criteria met.
+[BULLISH ] AAPL   Call      310.00 exp 2026-08-07 | Signal A — Short Covering | OI Chg -1,060 at 310.00 strike (Opt Price +0.05)
+[BEARISH ] BSX    Put        45.00 exp 2026-08-14 | Signal A — Short Covering | OI Chg -1,859 at 45.00 strike (Opt Price +0.15)
+[BEARISH ] CVX    Put       185.00 exp 2026-08-07 | Signal A — Short Covering | OI Chg -1,366 at 185.00 strike (Opt Price +0.58) (+1 more strikes, total OI Chg -2,484)
+[BEARISH ] SNAP   Put         5.50 exp 2026-08-21 | Signal A — Short Covering | OI Chg -5,510 at 5.50 strike (Opt Price +0.17)
+[BULLISH ] U      Call       34.00 exp 2026-08-07 | Signal A — Short Covering | OI Chg -1,169 at 34.00 strike (Opt Price +0.29)
+[BULLISH ] AAPL   Put       305.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 4,326 at 305.00 strike (Opt Price -0.91) (+4 more strikes, total OI Chg 12,372)
+[BEARISH ] AAPL   Call      315.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 3,720 at 315.00 strike (Opt Price -0.17) (+5 more strikes, total OI Chg 14,858)
+[BEARISH ] AMD    Call      505.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,356 at 505.00 strike (Opt Price -29.70)
+[BEARISH ] AMZN   Call      285.00 exp 2026-08-28 | Signal B — Short Build-Up | OI Chg 3,156 at 285.00 strike (Opt Price -2.38) (+4 more strikes, total OI Chg 10,090)
+[BEARISH ] ANET   Call      200.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,994 at 200.00 strike (Opt Price -2.42)
+[BEARISH ] APLD   Call       31.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,849 at 31.00 strike (Opt Price -0.94)
+[BULLISH ] ASTS   Put        65.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,107 at 65.00 strike (Opt Price -0.20)
+[BULLISH ] AVGO   Put       410.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,193 at 410.00 strike (Opt Price -2.52)
+[BEARISH ] AVGO   Call      420.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,146 at 420.00 strike (Opt Price -2.72)
+[BULLISH ] BAC    Put        61.00 exp 2026-08-28 | Signal B — Short Build-Up | OI Chg 1,450 at 61.00 strike (Opt Price -0.11) (+1 more strikes, total OI Chg 2,508)
+[BEARISH ] BULL   Call        7.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 3,593 at 7.50 strike (Opt Price -0.11)
+[BEARISH ] CCL    Call       30.00 exp 2026-08-14 | Signal B — Short Build-Up | OI Chg 1,790 at 30.00 strike (Opt Price -0.09)
+[BEARISH ] CMG    Call       35.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,882 at 35.00 strike (Opt Price -0.02)
+[BULLISH ] CPNG   Put        16.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,311 at 16.50 strike (Opt Price -0.17) (+1 more strikes, total OI Chg 4,213)
+[BULLISH ] CRWV   Put        90.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,371 at 90.00 strike (Opt Price -0.48)
+[BEARISH ] CSCO   Call      122.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,738 at 122.00 strike (Opt Price -0.61)
+[BEARISH ] DIS    Call      100.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 4,848 at 100.00 strike (Opt Price -0.12) (+2 more strikes, total OI Chg 7,578)
+[BEARISH ] F      Call       14.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,649 at 14.00 strike (Opt Price -0.09) (+1 more strikes, total OI Chg 3,198)
+[BULLISH ] FCX    Put        70.00 exp 2026-09-18 | Signal B — Short Build-Up | OI Chg 3,379 at 70.00 strike (Opt Price -1.28)
+[BULLISH ] GME    Put        19.00 exp 2026-09-18 | Signal B — Short Build-Up | OI Chg 2,758 at 19.00 strike (Opt Price -0.08)
+[BEARISH ] GME    Call       19.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,541 at 19.00 strike (Opt Price -0.20) (+1 more strikes, total OI Chg 2,834)
+[BEARISH ] GOOGL  Call      380.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 3,781 at 380.00 strike (Opt Price -3.84) (+1 more strikes, total OI Chg 6,656)
+[BULLISH ] HOOD   Put        90.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 3,434 at 90.00 strike (Opt Price -0.35)
+[BULLISH ] INTC   Put        97.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 9,687 at 97.00 strike (Opt Price -1.06)
+[BEARISH ] INTC   Call      106.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 5,479 at 106.00 strike (Opt Price -0.91) (+3 more strikes, total OI Chg 13,501)
+[BEARISH ] IONQ   Call       41.00 exp 2026-08-21 | Signal B — Short Build-Up | OI Chg 1,016 at 41.00 strike (Opt Price -1.00)
+[BEARISH ] META   Call      610.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,355 at 610.00 strike (Opt Price -0.73)
+[BEARISH ] MSFT   Call      510.00 exp 2026-09-18 | Signal B — Short Build-Up | OI Chg 9,123 at 510.00 strike (Opt Price -3.03) (+3 more strikes, total OI Chg 13,161)
+[BULLISH ] MSFT   Put       467.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,908 at 467.50 strike (Opt Price -0.13) (+1 more strikes, total OI Chg 3,141)
+[BULLISH ] NBIS   Put       215.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,518 at 215.00 strike (Opt Price -1.07) (+1 more strikes, total OI Chg 4,573)
+[BEARISH ] NEE    Call       86.00 exp 2026-08-14 | Signal B — Short Build-Up | OI Chg 1,227 at 86.00 strike (Opt Price -0.53)
+[BEARISH ] NFLX   Call       75.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 12,241 at 75.00 strike (Opt Price -0.10) (+2 more strikes, total OI Chg 17,896)
+[BULLISH ] NFLX   Put        72.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 1,162 at 72.00 strike (Opt Price -0.35)
+[BULLISH ] NVDA   Put       212.50 exp 2026-08-14 | Signal B — Short Build-Up | OI Chg 13,147 at 212.50 strike (Opt Price -3.12) (+4 more strikes, total OI Chg 21,177)
+[BEARISH ] NVO    Call       45.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 4,486 at 45.00 strike (Opt Price -0.23)
+[BULLISH ] NVO    Put        45.00 exp 2026-11-20 | Signal B — Short Build-Up | OI Chg 2,005 at 45.00 strike (Opt Price -0.22) (+1 more strikes, total OI Chg 3,107)
+[BULLISH ] ONDS   Put         8.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,100 at 8.50 strike (Opt Price -0.09)
+[BULLISH ] PFE    Put        25.00 exp 2026-08-14 | Signal B — Short Build-Up | OI Chg 2,807 at 25.00 strike (Opt Price -0.12)
+[BULLISH ] PINS   Put        24.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 5,420 at 24.00 strike (Opt Price -0.04) (+1 more strikes, total OI Chg 7,423)
+[BEARISH ] PLTR   Call      165.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 15,208 at 165.00 strike (Opt Price -2.49) (+5 more strikes, total OI Chg 35,837)
+[BULLISH ] PLTR   Put       155.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 13,220 at 155.00 strike (Opt Price -0.04)
+[BEARISH ] QBTS   Call       22.00 exp 2026-08-14 | Signal B — Short Build-Up | OI Chg 1,071 at 22.00 strike (Opt Price -0.35)
+[BEARISH ] RIVN   Call       16.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 3,511 at 16.00 strike (Opt Price -0.16)
+[BULLISH ] SKHY   Put       150.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,509 at 150.00 strike (Opt Price -0.85)
+[BULLISH ] SMR    Put         9.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 4,857 at 9.00 strike (Opt Price -0.07)
+[BEARISH ] SOFI   Call       19.00 exp 2026-08-14 | Signal B — Short Build-Up | OI Chg 1,337 at 19.00 strike (Opt Price -0.22)
+[BEARISH ] TOST   Call       35.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 6,018 at 35.00 strike (Opt Price -0.84)
+[BEARISH ] TSLA   Call      325.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 4,070 at 325.00 strike (Opt Price -4.65) (+1 more strikes, total OI Chg 5,289)
+[BULLISH ] UBER   Put        66.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 5,090 at 66.00 strike (Opt Price -0.21) (+3 more strikes, total OI Chg 12,440)
+[BEARISH ] UPST   Call       31.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,777 at 31.00 strike (Opt Price -1.27) (+1 more strikes, total OI Chg 3,884)
+[BEARISH ] VZ     Call       46.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 5,508 at 46.50 strike (Opt Price -0.42) (+1 more strikes, total OI Chg 10,661)
+[BULLISH ] VZ     Put        46.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 5,397 at 46.00 strike (Opt Price -0.09) (+1 more strikes, total OI Chg 8,341)
+[BEARISH ] WMT    Call      116.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,362 at 116.00 strike (Opt Price -0.04)
+[BULLISH ] WULF   Put        17.50 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 2,081 at 17.50 strike (Opt Price -0.09)
+[BEARISH ] ZETA   Call       27.00 exp 2026-08-07 | Signal B — Short Build-Up | OI Chg 12,789 at 27.00 strike (Opt Price -0.25) (+1 more strikes, total OI Chg 14,018)
