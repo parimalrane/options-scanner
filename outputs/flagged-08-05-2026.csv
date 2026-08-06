@@ -1,0 +1,36 @@
+signal,symbol,type,strike,exp,direction,premium,underlying_price,vol_oi,note
+Signal B — Short Build-Up,ASTS,Put,65.00,2026-10-16,bullish,,68.38,,OI Chg 720 at 65.00 strike (Opt Price -0.05)
+Signal B — Short Build-Up,AVGO,Put,410.00,2026-08-07,bullish,,418.28,,"OI Chg 1,075 at 410.00 strike (Opt Price -2.52)"
+Signal B — Short Build-Up,BAC,Put,62.50,2027-06-17,bullish,,63.25,,OI Chg 506 at 62.50 strike (Opt Price -0.12)
+Signal B — Short Build-Up,BBAI,Call,3.00,2026-09-04,bearish,,3.03,,OI Chg 843 at 3.00 strike (Opt Price -0.20)
+Signal B — Short Build-Up,CCL,Put,29.00,2026-08-07,bullish,,29.67,,"OI Chg 2,473 at 29.00 strike (Opt Price -0.17)"
+Signal B — Short Build-Up,CMCSA,Call,25.00,2026-08-28,bearish,,24.75,,OI Chg 562 at 25.00 strike (Opt Price -0.15)
+Signal B — Short Build-Up,CMG,Put,36.00,2026-08-21,bullish,,34.5,,"OI Chg 958 at 36.00 strike (Opt Price -0.52) (+1 more strikes, total OI Chg 1,491)"
+Signal B — Short Build-Up,CMG,Call,35.00,2026-08-07,bearish,,34.5,,OI Chg 569 at 35.00 strike (Opt Price -0.02)
+Signal B — Short Build-Up,CPNG,Put,16.50,2026-08-07,bullish,,16.0,,OI Chg 738 at 16.50 strike (Opt Price -0.17)
+Signal B — Short Build-Up,CSCO,Put,117.00,2026-08-21,bullish,,121.5,,"OI Chg 1,395 at 117.00 strike (Opt Price -0.32)"
+Signal B — Short Build-Up,DELL,Put,460.00,2026-09-18,bullish,,462.7,,"OI Chg 1,333 at 460.00 strike (Opt Price -1.75)"
+Signal B — Short Build-Up,GOOGL,Call,375.00,2026-09-04,bearish,,362.43,,"OI Chg 1,521 at 375.00 strike (Opt Price -8.27)"
+Signal B — Short Build-Up,INTC,Put,97.00,2026-08-07,bullish,,101.06,,"OI Chg 3,435 at 97.00 strike (Opt Price -1.06) (+1 more strikes, total OI Chg 3,958)"
+Signal B — Short Build-Up,KO,Call,86.00,2026-08-07,bearish,,86.83,,OI Chg 630 at 86.00 strike (Opt Price -0.02)
+Signal B — Short Build-Up,LITE,Put,800.00,2026-08-07,bullish,,826.26,,"OI Chg 1,557 at 800.00 strike (Opt Price -3.50)"
+Signal B — Short Build-Up,LUNR,Put,13.50,2026-08-07,bullish,,13.99,,"OI Chg 1,112 at 13.50 strike (Opt Price -0.15)"
+Signal B — Short Build-Up,MRK,Put,127.00,2026-08-07,bullish,,128.33,,OI Chg 606 at 127.00 strike (Opt Price -0.41)
+Signal B — Short Build-Up,MSFT,Put,467.50,2026-08-07,bullish,,487.46,,"OI Chg 1,026 at 467.50 strike (Opt Price -0.13)"
+Signal B — Short Build-Up,MSFT,Call,495.00,2026-08-17,bearish,,487.46,,OI Chg 690 at 495.00 strike (Opt Price -2.90)
+Signal B — Short Build-Up,NEE,Call,86.00,2026-08-14,bearish,,85.91,,OI Chg 864 at 86.00 strike (Opt Price -0.53)
+Signal B — Short Build-Up,NVDA,Put,212.50,2026-08-14,bullish,,219.22,,"OI Chg 8,428 at 212.50 strike (Opt Price -3.12) (+2 more strikes, total OI Chg 10,452)"
+Signal B — Short Build-Up,NVO,Call,45.00,2026-08-07,bearish,,44.53,,"OI Chg 2,821 at 45.00 strike (Opt Price -0.23)"
+Signal B — Short Build-Up,ORCL,Call,145.00,2026-09-04,bearish,,144.39,,"OI Chg 2,584 at 145.00 strike (Opt Price -1.15)"
+Signal B — Short Build-Up,PINS,Put,23.50,2026-08-07,bullish,,23.36,,"OI Chg 875 at 23.50 strike (Opt Price -0.21) (+1 more strikes, total OI Chg 1,619)"
+Signal B — Short Build-Up,PLTR,Put,155.00,2026-08-07,bullish,,158.43,,"OI Chg 2,918 at 155.00 strike (Opt Price -0.04)"
+Signal B — Short Build-Up,PLTR,Call,152.50,2026-08-14,bearish,,158.43,,"OI Chg 2,187 at 152.50 strike (Opt Price -4.10) (+4 more strikes, total OI Chg 5,431)"
+Signal B — Short Build-Up,RIOT,Call,22.50,2026-08-21,bearish,,21.5,,OI Chg 872 at 22.50 strike (Opt Price -0.08)
+Signal B — Short Build-Up,S,Call,21.50,2026-08-07,bearish,,21.0,,"OI Chg 2,340 at 21.50 strike (Opt Price -0.12)"
+Signal B — Short Build-Up,SMR,Put,9.00,2026-08-07,bullish,,9.38,,OI Chg 612 at 9.00 strike (Opt Price -0.07)
+Signal B — Short Build-Up,TSM,Call,422.50,2026-08-14,bearish,,414.0,,OI Chg 796 at 422.50 strike (Opt Price -3.70)
+Signal B — Short Build-Up,UEC,Put,10.50,2026-08-07,bullish,,10.72,,"OI Chg 2,168 at 10.50 strike (Opt Price -0.18)"
+Signal B — Short Build-Up,V,Call,382.50,2026-08-21,bearish,,368.54,,OI Chg 794 at 382.50 strike (Opt Price -0.79)
+Signal B — Short Build-Up,WFC,Put,89.00,2026-08-07,bullish,,89.17,,"OI Chg 1,232 at 89.00 strike (Opt Price -0.65) (+1 more strikes, total OI Chg 1,976)"
+Signal B — Short Build-Up,WULF,Put,17.50,2026-08-07,bullish,,18.07,,OI Chg 633 at 17.50 strike (Opt Price -0.09)
+Signal B — Short Build-Up,ZETA,Call,27.00,2026-08-07,bearish,,27.07,,"OI Chg 3,494 at 27.00 strike (Opt Price -0.25)"
