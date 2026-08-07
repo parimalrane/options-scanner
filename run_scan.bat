@@ -17,9 +17,14 @@ set DATE=%1
 
 if "%DATE%"=="" (
     echo ERROR: You must pass the market closing date ^(matching your renamed files^).
-    echo Usage: run_scan.bat MM-DD-YYYY
+    echo Usage: run_scan.bat MM-DD-YYYY [debug]
     echo Example: run_scan.bat 07-31-2026
     exit /b 1
+)
+
+set DEBUG_ARG=
+if /I "%2"=="debug" (
+    set DEBUG_ARG=--debug
 )
 
 set MISSING=
@@ -72,7 +77,7 @@ if not exist "%UNUSUAL%" (
 
 echo.
 echo === Running scan for %DATE% ===
-python analyze_flow.py --active "%ACTIVE%" %FLOW_ARG% --decoi "%DECOI%" %INCOI_ARG% %UNUSUAL_ARG% --out "%OUT%"
+python analyze_flow.py --active "%ACTIVE%" %FLOW_ARG% --decoi "%DECOI%" %INCOI_ARG% %UNUSUAL_ARG% --out "%OUT%" %DEBUG_ARG%
 
 if errorlevel 1 (
     echo.
@@ -87,7 +92,7 @@ set ISODATE=%YYYY%-%MM%-%DD%
 
 echo.
 echo === Updating log for %DATE% ===
-python manage_log.py --flagged "%OUT%" --date %ISODATE% --log options-log.csv
+python manage_log.py --flagged "%OUT%" --date %ISODATE% --log options-log.csv %DEBUG_ARG%
 
 echo.
 echo === Done. Flagged candidates: %OUT%   Log: options-log.csv ===

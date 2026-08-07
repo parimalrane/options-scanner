@@ -1,23 +1,9 @@
-"""
-Options Log Manager
---------------------
-Maintains a persistent log.csv locally. Each run:
-  1. Appends today's flagged candidates (input: analyze_flow.py's output CSV)
-  2. Finds older log entries that are now 3 or 10 *trading days* old
-  3. Looks up current prices for those symbols (via yfinance) and fills in
-     price_after_3d / price_after_10d
-  4. Grades the outcome automatically based on direction vs. price move
-
-No LLM involved in this step — it's pure data lookup and arithmetic.
-Requires: pip install yfinance --break-system-packages  (one-time)
-
-Usage:
-    python3 manage_log.py --flagged outputs/flagged-XX-XX-XXXX.csv --log options-log.csv
-"""
-
 import argparse
 import csv
 import os
+import sys
+import contextlib
+import io
 from datetime import datetime, timedelta
 
 try:
@@ -29,15 +15,13 @@ FIELDNAMES = ['date_flagged', 'symbol', 'signal', 'direction', 'strike', 'exp',
               'premium_or_oi', 'underlying_price_at_flag', 'catalyst_note',
               'action_taken', 'price_after_3d', 'price_after_10d', 'outcome']
 
-OUTCOME_THRESHOLD_PCT = 1.0  # min % move in the predicted direction to call it "working"
-
+OUTCOME_THRESHOLD_PCT = 1.0
 
 def load_log(path):
     if not os.path.exists(path):
         return []
     with open(path, newline='', encoding='utf-8') as f:
         return list(csv.DictReader(f))
-
 
 def save_log(path, rows):
     with open(path, 'w', newline='', encoding='utf-8') as f:
@@ -46,9 +30,7 @@ def save_log(path, rows):
         for r in rows:
             w.writerow({k: r.get(k, '') for k in FIELDNAMES})
 
-
 def trading_days_between(start_date, end_date):
-    """Count weekdays between two dates (ignores holidays, close enough for this)."""
     days = 0
     d = start_date
     while d < end_date:
@@ -57,19 +39,25 @@ def trading_days_between(start_date, end_date):
             days += 1
     return days
 
-
-def get_price(symbol):
+def get_price(symbol, err_msgs):
     if yf is None:
         return None
     try:
-        t = yf.Ticker(symbol)
-        hist = t.history(period='5d')
-        if hist.empty:
+        f = io.StringIO()
+        with contextlib.redirect_stdout(f), contextlib.redirect_stderr(f):
+            t = yf.Ticker(symbol)
+            hist = t.history(period='5d')
+        out = f.getvalue()
+        if 'Failed' in out or 'Exception' in out or hist.empty:
+            if out.strip():
+                err_msgs.append(f"Yahoo lookup error for {symbol}: {out.strip()}")
+            else:
+                err_msgs.append(f"Yahoo lookup for {symbol} failed (empty history).")
             return None
         return float(hist['Close'].iloc[-1])
-    except Exception:
+    except Exception as e:
+        err_msgs.append(f"Yahoo lookup exception for {symbol}: {str(e)}")
         return None
-
 
 def grade_outcome(direction, price_at_flag, price_now):
     if price_at_flag in (None, '', 0) or price_now is None:
@@ -82,31 +70,24 @@ def grade_outcome(direction, price_at_flag, price_now):
         return 'pending'
     pct_move = (price_now - price_at_flag) / price_at_flag * 100
     if direction == 'bullish':
-        if pct_move >= OUTCOME_THRESHOLD_PCT:
-            return 'working'
-        elif pct_move <= -OUTCOME_THRESHOLD_PCT:
-            return 'failed'
-        else:
-            return 'unclear'
+        if pct_move >= OUTCOME_THRESHOLD_PCT: return 'working'
+        elif pct_move <= -OUTCOME_THRESHOLD_PCT: return 'failed'
+        else: return 'unclear'
     elif direction == 'bearish':
-        if pct_move <= -OUTCOME_THRESHOLD_PCT:
-            return 'working'
-        elif pct_move >= OUTCOME_THRESHOLD_PCT:
-            return 'failed'
-        else:
-            return 'unclear'
+        if pct_move <= -OUTCOME_THRESHOLD_PCT: return 'working'
+        elif pct_move >= OUTCOME_THRESHOLD_PCT: return 'failed'
+        else: return 'unclear'
     return 'pending'
 
-
-def append_new_candidates(log_rows, flagged_path, date_flagged):
+def append_new_candidates(log_rows, flagged_path, date_flagged, diag_msgs):
     flagged = list(csv.DictReader(open(flagged_path, newline='', encoding='utf-8')))
     existing_keys_map = {(r['date_flagged'], r['symbol'], str(r['strike']).strip(), str(r['exp']).strip(), r['signal']): r for r in log_rows}
     
     added = 0
     for r in flagged:
-        # Strip strike and exp just in case they have spaces
         key = (date_flagged, r['symbol'], str(r['strike']).strip(), str(r['exp']).strip(), r['signal'])
         if key in existing_keys_map:
+            diag_msgs.append(f"Dedup removed existing key: {key}")
             continue
             
         log_rows.append({
@@ -128,66 +109,80 @@ def append_new_candidates(log_rows, flagged_path, date_flagged):
         
     return added
 
-
-def update_followups(log_rows, today):
+def update_followups(log_rows, today, diag_msgs):
     updated = 0
+    failed_lookups = 0
     for r in log_rows:
         try:
             flagged_date = datetime.strptime(r['date_flagged'], '%Y-%m-%d')
         except (ValueError, KeyError):
             continue
         tdays = trading_days_between(flagged_date, today)
-
+        
+        needs_update = False
         if tdays >= 3 and not r.get('price_after_3d'):
-            price = get_price(r['symbol'])
-            if price is not None:
-                r['price_after_3d'] = round(price, 2)
-                updated += 1
-
+            needs_update = True
         if tdays >= 10 and not r.get('price_after_10d'):
-            price = get_price(r['symbol'])
+            needs_update = True
+            
+        if needs_update:
+            price = get_price(r['symbol'], diag_msgs)
             if price is not None:
-                r['price_after_10d'] = round(price, 2)
-                updated += 1
+                if tdays >= 3 and not r.get('price_after_3d'):
+                    r['price_after_3d'] = round(price, 2)
+                    updated += 1
+                if tdays >= 10 and not r.get('price_after_10d'):
+                    r['price_after_10d'] = round(price, 2)
+                    updated += 1
+            else:
+                failed_lookups += 1
 
-        # Grade outcome off whichever checkpoint is most recently available
         latest_price = r.get('price_after_10d') or r.get('price_after_3d')
         if latest_price:
             r['outcome'] = grade_outcome(r.get('direction'), r.get('underlying_price_at_flag'), float(latest_price))
-    return updated
-
+    return updated, failed_lookups
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--flagged', required=False, help='Path to today\'s flagged CSV from analyze_flow.py')
-    ap.add_argument('--date', required=False, help='Date this batch was flagged, YYYY-MM-DD (defaults to today)')
+    ap.add_argument('--flagged', required=False)
+    ap.add_argument('--date', required=False)
     ap.add_argument('--log', default='options-log.csv')
+    ap.add_argument('--debug', action='store_true')
     args = ap.parse_args()
-
-    if yf is None:
-        print("NOTE: yfinance not installed. Run: pip install yfinance --break-system-packages")
-        print("Follow-up price lookups will be skipped until it's installed.\n")
 
     today = datetime.now()
     log_rows = load_log(args.log)
-
+    diag_msgs = []
+    
     if args.flagged:
         date_flagged = args.date or today.strftime('%Y-%m-%d')
-        added = append_new_candidates(log_rows, args.flagged, date_flagged)
-        print(f"Appended {added} new candidates dated {date_flagged}.")
+        added = append_new_candidates(log_rows, args.flagged, date_flagged, diag_msgs)
+    else:
+        added = 0
+        date_flagged = args.date or today.strftime('%Y-%m-%d')
 
-    updated = update_followups(log_rows, today)
-    print(f"Updated {updated} follow-up price fields across {len(log_rows)} total log rows.")
+    updated, failed_lookups = update_followups(log_rows, today, diag_msgs)
 
     save_log(args.log, log_rows)
-    print(f"Log saved to {args.log}")
 
     pending = sum(1 for r in log_rows if r.get('outcome') == 'pending')
     working = sum(1 for r in log_rows if r.get('outcome') == 'working')
     failed = sum(1 for r in log_rows if r.get('outcome') == 'failed')
     unclear = sum(1 for r in log_rows if r.get('outcome') == 'unclear')
-    print(f"\nOutcome summary — working: {working}  failed: {failed}  unclear: {unclear}  pending: {pending}")
-
+    
+    # Log: +<N new> | <total rows> total | Working <N> Failed <N> Unclear <N> Pending <N> | <N> lookups failed
+    summary_line = f"Log: +{added} | {len(log_rows)} total | Working {working} Failed {failed} Unclear {unclear} Pending {pending} | {failed_lookups} lookups failed"
+    print(summary_line)
+    
+    if diag_msgs:
+        diag_path = f"outputs/diagnostics-{date_flagged}.txt"
+        os.makedirs("outputs", exist_ok=True)
+        with open(diag_path, "a", encoding='utf-8') as f:
+            f.write("\n=== MANAGE LOG DIAGNOSTICS ===\n")
+            for msg in diag_msgs:
+                if args.debug:
+                    print(msg)
+                f.write(msg + "\n")
 
 if __name__ == '__main__':
     main()

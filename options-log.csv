@@ -181,3 +181,65 @@ date_flagged,symbol,signal,direction,strike,exp,premium_or_oi,underlying_price_a
 2026-08-05,VZ,Signal B — Short Build-Up,bearish,46.50,2026-08-07,"OI Chg 5,508 at 46.50 strike (Opt Price -0.42) (+1 more strikes, total OI Chg 10,661)",46.47,,,,,pending
 2026-08-05,VZ,Signal B — Short Build-Up,bullish,46.00,2026-08-07,"OI Chg 5,397 at 46.00 strike (Opt Price -0.09) (+1 more strikes, total OI Chg 8,341)",46.47,,,,,pending
 2026-08-05,WMT,Signal B — Short Build-Up,bearish,116.00,2026-08-07,"OI Chg 2,362 at 116.00 strike (Opt Price -0.04)",112.34,,,,,pending
+2026-08-06,PLTR,Signal C — Confirmed Squeeze Setup,bearish,Multi,Multi,Both Short Covering and Short Build-Up criteria met.,155.92,,,,,pending
+2026-08-06,SPCX,Signal C — Confirmed Squeeze Setup,bullish,Multi,Multi,Both Short Covering and Short Build-Up criteria met.,114.92,,,,,pending
+2026-08-06,DIS,Signal A — Short Covering,bullish,100.00,2026-08-07,"OI Chg -2,601 at 100.00 strike (Opt Price +2.50)",104.68,,,,,pending
+2026-08-06,GME,Signal A — Short Covering,bullish,19.00,2026-08-07,"OI Chg -1,475 at 19.00 strike (Opt Price +0.05)",19.23,,,,,pending
+2026-08-06,LCID,Signal A — Short Covering,bullish,8.00,2026-09-18,"OI Chg -1,312 at 8.00 strike (Opt Price +0.03)",6.98,,,,,pending
+2026-08-06,NVO,Signal A — Short Covering,bullish,45.00,2026-08-07,"OI Chg -1,500 at 45.00 strike (Opt Price +0.74)",45.97,,,,,pending
+2026-08-06,PLTR,Signal A — Short Covering,bearish,110.00,2026-09-18,"OI Chg -1,483 at 110.00 strike (Opt Price +0.01)",155.92,,,,,pending
+2026-08-06,RKLB,Signal A — Short Covering,bullish,70.00,2026-08-07,"OI Chg -1,465 at 70.00 strike (Opt Price +0.82)",75.67,,,,,pending
+2026-08-06,SPCX,Signal A — Short Covering,bullish,140.00,2026-08-21,"OI Chg -1,567 at 140.00 strike (Opt Price +0.36)",114.92,,,,,pending
+2026-08-06,TSM,Signal A — Short Covering,bullish,400.00,2026-09-18,"OI Chg -3,936 at 400.00 strike (Opt Price +1.42)",418.2,,,,,pending
+2026-08-06,U,Signal A — Short Covering,bullish,36.00,2026-08-07,"OI Chg -1,575 at 36.00 strike (Opt Price +2.44)",40.81,,,,,pending
+2026-08-06,AAPL,Signal B — Short Build-Up,bullish,310.00,2026-08-07,"OI Chg 6,773 at 310.00 strike (Opt Price -1.54) (+5 more strikes, total OI Chg 18,258)",312.41,,,,,pending
+2026-08-06,AAPL,Signal B — Short Build-Up,bearish,315.00,2026-08-07,"OI Chg 4,525 at 315.00 strike (Opt Price -0.54) (+7 more strikes, total OI Chg 24,161)",312.41,,,,,pending
+2026-08-06,AMD,Signal B — Short Build-Up,bearish,500.00,2026-08-07,"OI Chg 2,490 at 500.00 strike (Opt Price -1.82)",489.28,,,,,pending
+2026-08-06,AMZN,Signal B — Short Build-Up,bearish,280.00,2026-08-07,"OI Chg 4,066 at 280.00 strike (Opt Price -0.62) (+5 more strikes, total OI Chg 15,296)",272.26,,,,,pending
+2026-08-06,AMZN,Signal B — Short Build-Up,bullish,272.50,2026-08-07,"OI Chg 3,106 at 272.50 strike (Opt Price -0.91) (+2 more strikes, total OI Chg 5,313)",272.26,,,,,pending
+2026-08-06,ASTS,Signal B — Short Build-Up,bearish,69.00,2026-08-07,"OI Chg 2,915 at 69.00 strike (Opt Price -1.22)",67.36,,,,,pending
+2026-08-06,AVGO,Signal B — Short Build-Up,bearish,425.00,2026-08-07,"OI Chg 1,882 at 425.00 strike (Opt Price -1.19)",420.57,,,,,pending
+2026-08-06,BMNR,Signal B — Short Build-Up,bearish,18.00,2026-08-14,"OI Chg 2,266 at 18.00 strike (Opt Price -0.17) (+1 more strikes, total OI Chg 4,066)",18.3,,,,,pending
+2026-08-06,BTG,Signal B — Short Build-Up,bearish,4.00,2026-08-07,"OI Chg 2,172 at 4.00 strike (Opt Price -0.03)",4.09,,,,,pending
+2026-08-06,CMG,Signal B — Short Build-Up,bearish,35.00,2026-08-21,"OI Chg 8,964 at 35.00 strike (Opt Price -0.42) (+1 more strikes, total OI Chg 11,650)",33.71,,,,,pending
+2026-08-06,DDOG,Signal B — Short Build-Up,bullish,220.00,2026-08-07,"OI Chg 1,042 at 220.00 strike (Opt Price -0.38)",229.29,,,,,pending
+2026-08-06,DKNG,Signal B — Short Build-Up,bullish,22.00,2026-08-07,"OI Chg 1,940 at 22.00 strike (Opt Price -0.05)",22.17,,,,,pending
+2026-08-06,EBAY,Signal B — Short Build-Up,bearish,110.00,2026-08-07,"OI Chg 1,596 at 110.00 strike (Opt Price -4.29)",110.14,,,,,pending
+2026-08-06,EOSE,Signal B — Short Build-Up,bullish,4.00,2026-08-07,"OI Chg 1,081 at 4.00 strike (Opt Price -0.09)",3.94,,,,,pending
+2026-08-06,GME,Signal B — Short Build-Up,bearish,19.50,2026-08-14,"OI Chg 1,686 at 19.50 strike (Opt Price -0.04)",19.23,,,,,pending
+2026-08-06,GOOG,Signal B — Short Build-Up,bearish,365.00,2026-08-07,"OI Chg 6,498 at 365.00 strike (Opt Price -2.10) (+1 more strikes, total OI Chg 9,247)",356.62,,,,,pending
+2026-08-06,GOOG,Signal B — Short Build-Up,bullish,355.00,2026-08-07,"OI Chg 1,804 at 355.00 strike (Opt Price -0.71) (+1 more strikes, total OI Chg 2,902)",356.62,,,,,pending
+2026-08-06,GOOGL,Signal B — Short Build-Up,bearish,370.00,2026-08-07,"OI Chg 3,764 at 370.00 strike (Opt Price -1.68)",357.75,,,,,pending
+2026-08-06,GOOGL,Signal B — Short Build-Up,bullish,350.00,2026-08-07,"OI Chg 2,859 at 350.00 strike (Opt Price -0.66) (+1 more strikes, total OI Chg 3,981)",357.75,,,,,pending
+2026-08-06,GTM,Signal B — Short Build-Up,bearish,4.00,2026-08-07,"OI Chg 1,323 at 4.00 strike (Opt Price -0.10)",4.14,,,,,pending
+2026-08-06,INTC,Signal B — Short Build-Up,bullish,95.00,2026-08-07,"OI Chg 6,542 at 95.00 strike (Opt Price -0.39) (+2 more strikes, total OI Chg 13,956)",99.81,,,,,pending
+2026-08-06,INTC,Signal B — Short Build-Up,bearish,102.00,2026-08-07,"OI Chg 2,835 at 102.00 strike (Opt Price -1.46) (+2 more strikes, total OI Chg 5,253)",99.81,,,,,pending
+2026-08-06,IREN,Signal B — Short Build-Up,bullish,37.50,2026-08-07,"OI Chg 1,239 at 37.50 strike (Opt Price -0.13)",37.93,,,,,pending
+2026-08-06,KHC,Signal B — Short Build-Up,bearish,26.00,2026-08-14,"OI Chg 18,025 at 26.00 strike (Opt Price -0.34)",24.96,,,,,pending
+2026-08-06,LCID,Signal B — Short Build-Up,bearish,7.00,2026-08-07,"OI Chg 2,294 at 7.00 strike (Opt Price -0.01)",6.98,,,,,pending
+2026-08-06,META,Signal B — Short Build-Up,bearish,585.00,2026-11-20,"OI Chg 2,948 at 585.00 strike (Opt Price -0.40) (+2 more strikes, total OI Chg 7,679)",589.9,,,,,pending
+2026-08-06,META,Signal B — Short Build-Up,bullish,585.00,2026-11-20,"OI Chg 2,899 at 585.00 strike (Opt Price -0.45)",589.9,,,,,pending
+2026-08-06,MSFT,Signal B — Short Build-Up,bullish,480.00,2026-08-07,"OI Chg 1,527 at 480.00 strike (Opt Price -2.36)",499.86,,,,,pending
+2026-08-06,MSTR,Signal B — Short Build-Up,bearish,99.00,2026-08-07,"OI Chg 4,283 at 99.00 strike (Opt Price -1.33) (+2 more strikes, total OI Chg 7,649)",96.85,,,,,pending
+2026-08-06,MU,Signal B — Short Build-Up,bullish,850.00,2026-08-07,"OI Chg 2,134 at 850.00 strike (Opt Price -9.12)",881.47,,,,,pending
+2026-08-06,NFLX,Signal B — Short Build-Up,bearish,75.00,2026-10-16,"OI Chg 1,707 at 75.00 strike (Opt Price -0.38)",73.69,,,,,pending
+2026-08-06,NVDA,Signal B — Short Build-Up,bearish,225.00,2026-08-07,"OI Chg 31,812 at 225.00 strike (Opt Price -0.61) (+16 more strikes, total OI Chg 147,459)",218.99,,,,,pending
+2026-08-06,NVDA,Signal B — Short Build-Up,bullish,215.00,2026-08-07,"OI Chg 7,997 at 215.00 strike (Opt Price -0.58) (+12 more strikes, total OI Chg 40,322)",218.99,,,,,pending
+2026-08-06,ONDS,Signal B — Short Build-Up,bullish,8.50,2026-08-07,"OI Chg 1,136 at 8.50 strike (Opt Price -0.03)",8.74,,,,,pending
+2026-08-06,ORCL,Signal B — Short Build-Up,bearish,148.00,2026-08-07,"OI Chg 2,758 at 148.00 strike (Opt Price -1.13) (+2 more strikes, total OI Chg 5,505)",143.47,,,,,pending
+2026-08-06,PLTR,Signal B — Short Build-Up,bearish,162.50,2026-08-14,"OI Chg 7,669 at 162.50 strike (Opt Price -1.36)",155.92,,,,,pending
+2026-08-06,PLTR,Signal B — Short Build-Up,bullish,149.00,2026-08-07,"OI Chg 1,757 at 149.00 strike (Opt Price -0.14)",155.92,,,,,pending
+2026-08-06,RGTI,Signal B — Short Build-Up,bearish,17.00,2026-08-14,"OI Chg 3,075 at 17.00 strike (Opt Price -0.20)",16.53,,,,,pending
+2026-08-06,RGTI,Signal B — Short Build-Up,bullish,17.00,2026-08-07,"OI Chg 1,108 at 17.00 strike (Opt Price -0.05)",16.53,,,,,pending
+2026-08-06,RIVN,Signal B — Short Build-Up,bearish,15.50,2026-08-07,"OI Chg 1,136 at 15.50 strike (Opt Price -0.16)",15.38,,,,,pending
+2026-08-06,RKLB,Signal B — Short Build-Up,bearish,76.00,2026-08-07,"OI Chg 1,110 at 76.00 strike (Opt Price -0.28) (+1 more strikes, total OI Chg 2,148)",75.67,,,,,pending
+2026-08-06,SOFI,Signal B — Short Build-Up,bullish,18.00,2026-08-07,"OI Chg 2,080 at 18.00 strike (Opt Price -0.02)",18.1,,,,,pending
+2026-08-06,SOFI,Signal B — Short Build-Up,bearish,19.00,2026-08-14,"OI Chg 1,688 at 19.00 strike (Opt Price -0.09)",18.1,,,,,pending
+2026-08-06,SPCX,Signal B — Short Build-Up,bullish,110.00,2026-08-07,"OI Chg 15,723 at 110.00 strike (Opt Price -4.81) (+5 more strikes, total OI Chg 47,027)",114.92,,,,,pending
+2026-08-06,SPCX,Signal B — Short Build-Up,bearish,120.00,2026-08-07,"OI Chg 4,127 at 120.00 strike (Opt Price -0.07)",114.92,,,,,pending
+2026-08-06,SYM,Signal B — Short Build-Up,bullish,40.00,2026-08-07,"OI Chg 1,777 at 40.00 strike (Opt Price -0.03)",39.6,,,,,pending
+2026-08-06,TSLA,Signal B — Short Build-Up,bullish,320.00,2026-08-07,"OI Chg 6,590 at 320.00 strike (Opt Price -0.65) (+4 more strikes, total OI Chg 14,301)",319.53,,,,,pending
+2026-08-06,TSLA,Signal B — Short Build-Up,bearish,332.50,2026-08-07,"OI Chg 5,023 at 332.50 strike (Opt Price -0.93) (+8 more strikes, total OI Chg 23,219)",319.53,,,,,pending
+2026-08-06,U,Signal B — Short Build-Up,bearish,41.00,2026-08-07,"OI Chg 6,329 at 41.00 strike (Opt Price -0.07)",40.81,,,,,pending
+2026-08-06,UNH,Signal B — Short Build-Up,bearish,420.00,2026-08-07,"OI Chg 2,499 at 420.00 strike (Opt Price -1.32) (+2 more strikes, total OI Chg 5,526)",403.97,,,,,pending
+2026-08-06,WMT,Signal B — Short Build-Up,bearish,115.00,2026-08-14,"OI Chg 1,234 at 115.00 strike (Opt Price -0.24)",112.07,,,,,pending
