@@ -1220,3 +1220,55 @@ Signal B evaluable strikes: 192 (price down: 133, price up: 57, flat: 2)
 Signal C (Confirmed Squeeze Setup): 2
 Signal A (Short Covering): 9
 Signal B (Short Build-Up): 51
+
+=== ANALYZE FLOW DIAGNOSTICS ===
+--- DIAGNOSTICS: Signal A (128 rows) ---
+  1. Total rows       : 128
+  2. Watchlist match  : 119
+  3. OI Sign (< 0)    : 119
+  4. OI Magnitude     : 119
+  5. Matched          : 119
+--- DIAGNOSTICS: Signal B (568 rows) ---
+  1. Total rows       : 568
+  2. Watchlist match  : 527
+  3. OI Sign (> 0)    : 527
+  4. Moneyness filter : 252
+  5. OI Magnitude     : 527
+  6. Matched BOTH     : 252
+---------------------------------
+Total Strikes excluded by Moneyness filter (>5.0%): 275
+Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 0
+Largest |OI Chg| seen in today's decoi file: 57095 (NVDA Put 170.00), vs current oi-chg-min threshold of 500.0
+   -> RAW ROW: {'Symbol': 'NVDA', 'Price~': '218.99', 'Exp Date': '2026-09-04', 'DTE': '29', 'Type': 'Put', 'Strike': '170.00', 'Moneyness': '-22.37%', 'Bid': '0.46', 'Ask': '0.56', 'Volume': '909', 'Open Int': '14401', 'OI Chg': '-57,095', 'Vol/OI': '0.06', 'IV': '52.96%', 'Delta': '-0.036994', 'Time': '2026-08-06'}
+Total Strikes skipped lacking prior-snapshot price data: 124
+Signal A evaluable strikes: 55 (price up: 9, price down: 45, flat: 1)
+Signal B evaluable strikes: 192 (price down: 133, price up: 57, flat: 2)
+Signal C (Confirmed Squeeze Setup): 2
+Signal A (Short Covering): 9
+Signal B (Short Build-Up): 51
+
+=== ANALYZE FLOW DIAGNOSTICS ===
+--- DIAGNOSTICS: Signal A (128 rows) ---
+  1. Total rows       : 128
+  2. Watchlist match  : 119
+  3. OI Sign (< 0)    : 119
+  4. OI Magnitude     : 119
+  5. Matched          : 119
+--- DIAGNOSTICS: Signal B (568 rows) ---
+  1. Total rows       : 568
+  2. Watchlist match  : 527
+  3. OI Sign (> 0)    : 527
+  4. Moneyness filter : 252
+  5. OI Magnitude     : 527
+  6. Matched BOTH     : 252
+---------------------------------
+Total Strikes excluded by Moneyness filter (>5.0%): 275
+Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 0
+Largest |OI Chg| seen in today's decoi file: 57095 (NVDA Put 170.00), vs current oi-chg-min threshold of 500.0
+   -> RAW ROW: {'Symbol': 'NVDA', 'Price~': '218.99', 'Exp Date': '2026-09-04', 'DTE': '29', 'Type': 'Put', 'Strike': '170.00', 'Moneyness': '-22.37%', 'Bid': '0.46', 'Ask': '0.56', 'Volume': '909', 'Open Int': '14401', 'OI Chg': '-57,095', 'Vol/OI': '0.06', 'IV': '52.96%', 'Delta': '-0.036994', 'Time': '2026-08-06'}
+Total Strikes skipped lacking prior-snapshot price data: 124
+Signal A evaluable strikes: 55 (price up: 9, price down: 45, flat: 1)
+Signal B evaluable strikes: 192 (price down: 133, price up: 57, flat: 2)
+Signal C (Confirmed Squeeze Setup): 2
+Signal A (Short Covering): 9
+Signal B (Short Build-Up): 51

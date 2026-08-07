@@ -69,7 +69,7 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
     
     top_scan = (
         f"=== {date_str} SCAN ===\n"
-        f"Watchlist: {len(watchlist)} | Signals: {len(stats['a_out'])}A / {len(stats['b_out'])}B / {len(stats['c_out'])}C\n"
+        f"Watchlist: {len(watchlist)} | Signals: {len(stats['a_out'])}TMG / {len(stats['b_out'])}TMJ / {len(stats['c_out'])}J+G\n"
         f"Bias: {bullish_only} bullish-only | {bearish_only} bearish-only | {mixed_count} mixed"
     )
     print(f"=== {date_str} SCAN ===")
@@ -111,7 +111,7 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
                 
             for r in sym_signals:
                 arr = '▲' if r['direction'] == 'bullish' else '▼'
-                code = 'C' if 'Signal C' in r['signal'] else ('A' if 'Signal A' in r['signal'] else 'B')
+                code = 'J+G' if 'Signal C' in r['signal'] else ('TMG' if 'Signal A' in r['signal'] else 'TMJ')
                 
                 strike = str(r['strike'])
                 exp = str(r['exp'])
