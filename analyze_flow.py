@@ -399,7 +399,7 @@ def main():
         f"Watchlist: {len(watchlist)} | Signals: {len(stats['a_out'])}A / {len(stats['b_out'])}B / {len(stats['c_out'])}C\n"
         f"Bias: {bullish_only} bullish-only | {bearish_only} bearish-only | {mixed_count} mixed"
     )
-    print(top_scan)
+    print(f"=== {date_str} SCAN ===")
 
     if args.out:
         out_dir = os.path.dirname(args.out)
@@ -459,12 +459,13 @@ def main():
     mixed_syms = sorted(list(symbols_mixed))
     single_syms = sorted([s for s in results_by_symbol if s not in symbols_mixed])
 
-    if mixed_syms:
-        quick_scan_title = "QUICK-SCAN LIST (Mixed Signals):"
-        print(quick_scan_title)
-        if f_txt: f_txt.write(quick_scan_title + "\n")
+    def print_quick_scan(syms, header_label):
+        if not syms: return
+        title = f"QUICK-SCAN LIST ({header_label}):"
+        print(title)
+        if f_txt: f_txt.write(title + "\n")
         
-        for sym in mixed_syms:
+        for sym in syms:
             sym_signals = results_by_symbol[sym]
             sym_signals.sort(key=lambda x: (rank.get(x['signal'], 99), x.get('exp', '')))
             codes = []
@@ -479,12 +480,16 @@ def main():
         print("-" * 140)
         if f_txt: f_txt.write("-" * 140 + "\n")
 
-    if mixed_syms:
-        lbl = "--- MIXED ---"
+    print_quick_scan(single_syms, "Single Direction")
+    print_quick_scan(mixed_syms, "Mixed Signals")
+
+    def print_block(syms, header_label):
+        if not syms: return
+        lbl = f"--- {header_label} ---"
         print(lbl)
         if f_txt: f_txt.write(lbl + "\n")
         
-        for sym in mixed_syms:
+        for sym in syms:
             sym_signals = results_by_symbol[sym]
             sym_signals.sort(key=lambda x: (rank.get(x['signal'], 99), x.get('exp', '')))
             
@@ -517,13 +522,8 @@ def main():
             print()
             if f_txt: f_txt.write("\n")
 
-    if single_syms:
-        # count total single signals
-        total_single_signals = sum(len(results_by_symbol[s]) for s in single_syms)
-        msg = f"{total_single_signals} single-direction signals — full list in {args.out}"
-        print(msg)
-        if f_txt:
-            f_txt.write(msg + "\n")
+    print_block(single_syms, "SINGLE DIRECTION")
+    print_block(mixed_syms, "MIXED")
 
     if f_txt:
         f_txt.close()
@@ -536,7 +536,7 @@ def main():
             w.writeheader()
             for r in results:
                 w.writerow(r)
-        print(f"\nWrote {len(results)} candidates to {args.out}")
+        # print(f"\nWrote {len(results)} candidates to {args.out}")  # suppress terminal output per request
 
     return results
 

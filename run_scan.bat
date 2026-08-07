@@ -35,8 +35,7 @@ set INCOI=inputs\stocks-increase-change-in-open-interest-%DATE%.csv
 set UNUSUAL=inputs\unusual-stock-options-activity-%DATE%.csv
 set OUT=outputs\flagged-%DATE%.csv
 
-echo.
-echo === Checking input files for %DATE% ===
+
 
 
 
@@ -75,8 +74,7 @@ if not exist "%UNUSUAL%" (
     set UNUSUAL_ARG=--unusual "%UNUSUAL%"
 )
 
-echo.
-echo === Running scan for %DATE% ===
+
 python analyze_flow.py --active "%ACTIVE%" %FLOW_ARG% --decoi "%DECOI%" %INCOI_ARG% %UNUSUAL_ARG% --out "%OUT%" %DEBUG_ARG%
 
 if errorlevel 1 (
@@ -90,9 +88,7 @@ set DD=%DATE:~3,2%
 set YYYY=%DATE:~6,4%
 set ISODATE=%YYYY%-%MM%-%DD%
 
-echo.
-echo === Updating log for %DATE% ===
+
 python manage_log.py --flagged "%OUT%" --date %ISODATE% --log options-log.csv %DEBUG_ARG%
 
-echo.
-echo === Done. Flagged candidates: %OUT%   Log: options-log.csv ===
+

@@ -2,6 +2,34 @@
 Watchlist: 338 | Signals: 9A / 51B / 2C
 Bias: 11 bullish-only | 15 bearish-only | 16 mixed
 
+QUICK-SCAN LIST (Single Direction):
+  AMD:  B▼
+  ASTS:  B▼
+  AVGO:  B▼
+  BMNR:  B▼
+  BTG:  B▼
+  CMG:  B▼
+  DDOG:  B▲
+  DIS:  A▲
+  DKNG:  B▲
+  EBAY:  B▼
+  EOSE:  B▲
+  GTM:  B▼
+  IREN:  B▲
+  KHC:  B▼
+  MSFT:  B▲
+  MSTR:  B▼
+  MU:  B▲
+  NFLX:  B▼
+  NVO:  A▲
+  ONDS:  B▲
+  ORCL:  B▼
+  RIVN:  B▼
+  SYM:  B▲
+  TSM:  A▲
+  UNH:  B▼
+  WMT:  B▼
+--------------------------------------------------------------------------------------------------------------------------------------------
 QUICK-SCAN LIST (Mixed Signals):
   AAPL:  B▲ B▼
   AMZN:  B▼ B▲
@@ -20,6 +48,111 @@ QUICK-SCAN LIST (Mixed Signals):
   TSLA:  B▲ B▼
   U:  A▲ B▼
 --------------------------------------------------------------------------------------------------------------------------------------------
+--- SINGLE DIRECTION ---
+AMD
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |   500.00 | 2026-08-07 |      2,490 |    -1.82
+
+ASTS
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |    69.00 | 2026-08-07 |      2,915 |    -1.22
+
+AVGO
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |   425.00 | 2026-08-07 |      1,882 |    -1.19
+
+BMNR
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |    18.00 | 2026-08-14 |      2,266 |    -0.17  (+1, Σ4,066)
+
+BTG
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |     4.00 | 2026-08-07 |      2,172 |    -0.03
+
+CMG
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |    35.00 | 2026-08-21 |      8,964 |    -0.42  (+1, Σ11,650)
+
+DDOG
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▲    | B   | Put   |   220.00 | 2026-08-07 |      1,042 |    -0.38
+
+DIS
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▲    | A   | Call  |   100.00 | 2026-08-07 |     -2,601 |    +2.50
+
+DKNG
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▲    | B   | Put   |    22.00 | 2026-08-07 |      1,940 |    -0.05
+
+EBAY
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |   110.00 | 2026-08-07 |      1,596 |    -4.29
+
+EOSE
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▲    | B   | Put   |     4.00 | 2026-08-07 |      1,081 |    -0.09
+
+GTM
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |     4.00 | 2026-08-07 |      1,323 |    -0.10
+
+IREN
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▲    | B   | Put   |    37.50 | 2026-08-07 |      1,239 |    -0.13
+
+KHC
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |    26.00 | 2026-08-14 |     18,025 |    -0.34
+
+MSFT
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▲    | B   | Put   |   480.00 | 2026-08-07 |      1,527 |    -2.36
+
+MSTR
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |    99.00 | 2026-08-07 |      4,283 |    -1.33  (+2, Σ7,649)
+
+MU
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▲    | B   | Put   |   850.00 | 2026-08-07 |      2,134 |    -9.12
+
+NFLX
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |    75.00 | 2026-10-16 |      1,707 |    -0.38
+
+NVO
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▲    | A   | Call  |    45.00 | 2026-08-07 |     -1,500 |    +0.74
+
+ONDS
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▲    | B   | Put   |     8.50 | 2026-08-07 |      1,136 |    -0.03
+
+ORCL
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |   148.00 | 2026-08-07 |      2,758 |    -1.13  (+2, Σ5,505)
+
+RIVN
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |    15.50 | 2026-08-07 |      1,136 |    -0.16
+
+SYM
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▲    | B   | Put   |    40.00 | 2026-08-07 |      1,777 |    -0.03
+
+TSM
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▲    | A   | Call  |   400.00 | 2026-09-18 |     -3,936 |    +1.42
+
+UNH
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |   420.00 | 2026-08-07 |      2,499 |    -1.32  (+2, Σ5,526)
+
+WMT
+  DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+  ▼    | B   | Call  |   115.00 | 2026-08-14 |      1,234 |    -0.24
+
 --- MIXED ---
 AAPL
   DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
@@ -105,4 +238,3 @@ U
   ▲    | A   | Call  |    36.00 | 2026-08-07 |     -1,575 |    +2.44
   ▼    | B   | Call  |    41.00 | 2026-08-07 |      6,329 |    -0.07
 
-26 single-direction signals — full list in outputs\flagged-08-06-2026.csv

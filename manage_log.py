@@ -172,7 +172,7 @@ def main():
     
     # Log: +<N new> | <total rows> total | Working <N> Failed <N> Unclear <N> Pending <N> | <N> lookups failed
     summary_line = f"Log: +{added} | {len(log_rows)} total | Working {working} Failed {failed} Unclear {unclear} Pending {pending} | {failed_lookups} lookups failed"
-    print(summary_line)
+    # print(summary_line)  # suppress terminal output per request
     
     if diag_msgs:
         diag_path = f"outputs/diagnostics-{date_flagged}.txt"
