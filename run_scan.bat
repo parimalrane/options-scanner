@@ -83,12 +83,3 @@ if errorlevel 1 (
     exit /b 1
 )
 
-set MM=%DATE:~0,2%
-set DD=%DATE:~3,2%
-set YYYY=%DATE:~6,4%
-set ISODATE=%YYYY%-%MM%-%DD%
-
-
-python manage_log.py --flagged "%OUT%" --date %ISODATE% --log options-log.csv %DEBUG_ARG%
-
-

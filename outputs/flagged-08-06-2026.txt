@@ -2,24 +2,6 @@
 Watchlist: 338 | Signals: 9A / 51B / 2C
 Bias: 11 bullish-only | 15 bearish-only | 16 mixed
 
-QUICK-SCAN LIST (Mixed Signals):
-  AAPL:  B▼ B▲
-  AMZN:  B▼ B▲
-  GME:  B▼ A▲
-  GOOG:  B▼ B▲
-  GOOGL:  B▼ B▲
-  INTC:  B▼ B▲
-  LCID:  B▼ A▲
-  META:  B▼ B▲
-  NVDA:  B▼ B▲
-  PLTR:  C▼ A▼ B▼ B▲
-  RGTI:  B▼ B▲
-  RKLB:  B▼ A▲
-  SOFI:  B▼ B▲
-  SPCX:  B▼ C▲ A▲ B▲
-  TSLA:  B▼ B▲
-  U:  B▼ A▲
---------------------------------------------------------------------------------------------------------------------------------------------
 --- SINGLE DIRECTION ---
 STOCK   | DIR  | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
 AMD     | ▼    | B   | Call  |   500.00 | 2026-08-07 |      2,490 |    -1.82
