@@ -488,18 +488,13 @@ def main():
         lbl = f"--- {header_label} ---"
         print(lbl)
         if f_txt: f_txt.write(lbl + "\n")
+        table_header = f"{'STOCK':7} | {'DIR':4} | {'SIG':3} | {'TYPE':5} | {'STRIKE':>8} | {'EXP':10} | {'OI CHG':>10} | {'PRICE Δ':>8}"
+        print(table_header)
+        if f_txt: f_txt.write(table_header + "\n")
         
         for sym in syms:
             sym_signals = results_by_symbol[sym]
             sym_signals.sort(key=lambda x: (rank.get(x['signal'], 99), x.get('exp', '')))
-            
-            sym_header = f"{sym}"
-            print(sym_header)
-            if f_txt: f_txt.write(sym_header + "\n")
-                
-            table_header = f"  {'DIR':4} | {'SIG':3} | {'TYPE':5} | {'STRIKE':>8} | {'EXP':10} | {'OI CHG':>10} | {'PRICE Δ':>8}"
-            print(table_header)
-            if f_txt: f_txt.write(table_header + "\n")
                 
             for r in sym_signals:
                 arr = '▲' if r['direction'] == 'bullish' else '▼'
@@ -511,7 +506,7 @@ def main():
                 oi_chg_str = f"{r.get('_oi_chg', float('nan')):,.0f}" if r.get('_oi_chg') == r.get('_oi_chg') else ""
                 price_diff_str = f"{r.get('_price_diff', float('nan')):+.2f}" if r.get('_price_diff') == r.get('_price_diff') else ""
                 
-                line = f"  {arr:4} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {oi_chg_str:>10} | {price_diff_str:>8}"
+                line = f"{sym:7} | {arr:4} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {oi_chg_str:>10} | {price_diff_str:>8}"
                 if r.get('_other_count', 0) > 0:
                     line += f"  (+{r['_other_count']}, Σ{r['_total_oi_chg']:,.0f})"
                 if r.get('vol_oi'):
@@ -519,8 +514,9 @@ def main():
                     
                 print(line)
                 if f_txt: f_txt.write(line + "\n")
-            print()
-            if f_txt: f_txt.write("\n")
+        
+        print()
+        if f_txt: f_txt.write("\n")
 
     print_block(single_syms, "SINGLE DIRECTION")
     print_block(mixed_syms, "MIXED")
