@@ -110,7 +110,7 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
                 sym_signals.sort(key=lambda x: (rank.get(x['signal'], 99), x.get('exp', '')))
                 
             for r in sym_signals:
-                arr = 'Bullish' if r['direction'] == 'bullish' else 'Bearish'
+                arr = 'BULLISH' if r['direction'] == 'bullish' else 'Bearish'
                 code = 'J+G' if 'Signal C' in r['signal'] else ('TMG' if 'Signal A' in r['signal'] else 'TMJ')
                 
                 strike = str(r['strike'])
