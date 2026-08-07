@@ -457,7 +457,8 @@ def main():
         results_by_symbol.setdefault(r['symbol'], []).append(r)
 
     mixed_syms = sorted(list(symbols_mixed))
-    single_syms = sorted([s for s in results_by_symbol if s not in symbols_mixed])
+    single_syms = [s for s in results_by_symbol if s not in symbols_mixed]
+    single_syms.sort(key=lambda s: (results_by_symbol[s][0]['direction'], s))
 
     def print_quick_scan(syms, header_label):
         if not syms: return
@@ -467,7 +468,10 @@ def main():
         
         for sym in syms:
             sym_signals = results_by_symbol[sym]
-            sym_signals.sort(key=lambda x: (rank.get(x['signal'], 99), x.get('exp', '')))
+            if "Mixed" in header_label:
+                sym_signals.sort(key=lambda x: (x['direction'], rank.get(x['signal'], 99), x.get('exp', '')))
+            else:
+                sym_signals.sort(key=lambda x: (rank.get(x['signal'], 99), x.get('exp', '')))
             codes = []
             for r in sym_signals:
                 code = 'C' if 'Signal C' in r['signal'] else ('A' if 'Signal A' in r['signal'] else 'B')
@@ -480,7 +484,6 @@ def main():
         print("-" * 140)
         if f_txt: f_txt.write("-" * 140 + "\n")
 
-    print_quick_scan(single_syms, "Single Direction")
     print_quick_scan(mixed_syms, "Mixed Signals")
 
     def print_block(syms, header_label):
@@ -494,7 +497,10 @@ def main():
         
         for sym in syms:
             sym_signals = results_by_symbol[sym]
-            sym_signals.sort(key=lambda x: (rank.get(x['signal'], 99), x.get('exp', '')))
+            if header_label == "MIXED":
+                sym_signals.sort(key=lambda x: (x['direction'], rank.get(x['signal'], 99), x.get('exp', '')))
+            else:
+                sym_signals.sort(key=lambda x: (rank.get(x['signal'], 99), x.get('exp', '')))
                 
             for r in sym_signals:
                 arr = '▲' if r['direction'] == 'bullish' else '▼'
