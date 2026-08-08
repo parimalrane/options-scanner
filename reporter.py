@@ -88,8 +88,18 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
         results_by_symbol.setdefault(r['symbol'], []).append(r)
 
     mixed_syms = sorted(list(symbols_mixed))
-    bullish_syms = sorted([s for s in results_by_symbol if s not in symbols_mixed and results_by_symbol[s][0]['direction'] == 'bullish'])
-    bearish_syms = sorted([s for s in results_by_symbol if s not in symbols_mixed and results_by_symbol[s][0]['direction'] == 'bearish'])
+
+    def get_sym_order(s):
+        return min(rank.get(r['signal'], 99) for r in results_by_symbol[s])
+
+    bullish_syms = sorted(
+        [s for s in results_by_symbol if s not in symbols_mixed and results_by_symbol[s][0]['direction'] == 'bullish'],
+        key=lambda s: (get_sym_order(s), s)
+    )
+    bearish_syms = sorted(
+        [s for s in results_by_symbol if s not in symbols_mixed and results_by_symbol[s][0]['direction'] == 'bearish'],
+        key=lambda s: (get_sym_order(s), s)
+    )
 
     def print_block(syms, header_label):
         if not syms: return

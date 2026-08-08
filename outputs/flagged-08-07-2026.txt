@@ -4,20 +4,21 @@ Bias: 9 bullish-only | 15 bearish-only | 3 mixed
 
 --- BULLISH DIRECTION ---
 STOCK   | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
-BTDR    | TMJ | Put   |    11.00 | 2026-08-21 |      1,023 |    -0.17
-INTC    | TMJ | Put   |    97.00 | 2026-08-14 |      1,440 |    -1.24
 NVDA    | J+G | Combo |    Multi | Multi      |            |         
 NVDA    | TMG | Call  |   222.50 | 2026-08-12 |     -2,407 |    +1.67  (+2, Σ-4,904)
 NVDA    | TMJ | Put   |   220.00 | 2026-08-28 |      4,535 |    -2.82  (+5, Σ15,874)
 ORCL    | TMG | Call  |   160.00 | 2026-09-18 |     -1,018 |    +1.05
 PFE     | TMG | Call  |    26.00 | 2026-09-18 |     -1,538 |    +0.33
 S       | TMG | Call  |    22.00 | 2026-09-18 |     -1,172 |    +0.22
+UBER    | TMG | Call  |    70.00 | 2026-08-21 |     -1,160 |    +3.17
+BTDR    | TMJ | Put   |    11.00 | 2026-08-21 |      1,023 |    -0.17
+INTC    | TMJ | Put   |    97.00 | 2026-08-14 |      1,440 |    -1.24
 SMCI    | TMJ | Put   |    30.00 | 2026-08-14 |      1,361 |    -0.92
 SOFI    | TMJ | Put   |    17.50 | 2026-08-14 |      2,200 |    -0.10
-UBER    | TMG | Call  |    70.00 | 2026-08-21 |     -1,160 |    +3.17
 
 --- BEARISH DIRECTION ---
 STOCK   | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+ZTS     | TMG | Put   |    70.00 | 2026-08-21 |     -1,193 |    +0.60
 AAPL    | TMJ | Call  |   322.50 | 2026-08-10 |      3,982 |    -0.18  (+8, Σ21,830)
 AMD     | TMJ | Call  |   495.00 | 2026-08-10 |      2,738 |    -6.17  (+1, Σ4,278)
 APLD    | TMJ | Call  |    30.00 | 2026-08-14 |      2,759 |    -0.14
@@ -32,7 +33,6 @@ PYPL    | TMJ | Call  |    60.00 | 2026-08-14 |      2,217 |    -0.42  (+2, Σ4,
 RKT     | TMJ | Call  |    14.00 | 2026-08-14 |      1,377 |    -0.04
 TSM     | TMJ | Call  |   440.00 | 2026-08-14 |      1,597 |    -0.85
 XOM     | TMJ | Call  |   160.00 | 2026-08-14 |      2,261 |    -0.58
-ZTS     | TMG | Put   |    70.00 | 2026-08-21 |     -1,193 |    +0.60
 
 --- MIXED ---
 STOCK   | DIR     | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
