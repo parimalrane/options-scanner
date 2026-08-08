@@ -76,3 +76,29 @@ Signal B evaluable strikes: 130 (price down: 50, price up: 80, flat: 0)
 Signal C (Confirmed Squeeze Setup): 1
 Signal A (Short Covering): 6
 Signal B (Short Build-Up): 25
+
+=== ANALYZE FLOW DIAGNOSTICS ===
+--- DIAGNOSTICS: Signal A (70 rows) ---
+  1. Total rows       : 70
+  2. Watchlist match  : 64
+  3. OI Sign (< 0)    : 64
+  4. OI Magnitude     : 64
+  5. Matched          : 64
+--- DIAGNOSTICS: Signal B (488 rows) ---
+  1. Total rows       : 488
+  2. Watchlist match  : 455
+  3. OI Sign (> 0)    : 455
+  4. Moneyness filter : 190
+  5. OI Magnitude     : 455
+  6. Matched BOTH     : 190
+---------------------------------
+Total Strikes excluded by Moneyness filter (>5.0%): 265
+Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 0
+Largest |OI Chg| seen in today's decoi file: 21647 (TTWO Call 310.00), vs current oi-chg-min threshold of 500.0
+   -> RAW ROW: {'Symbol': 'TTWO', 'Price~': '246.5', 'Exp Date': '2026-09-18', 'DTE': '41', 'Type': 'Call', 'Strike': '310.00', 'Moneyness': '-25.76%', 'Bid': '1.55', 'Ask': '2', 'Volume': '1162', 'Open Int': '6603', 'OI Chg': '-21,647', 'Vol/OI': '0.18', 'IV': '49.04%', 'Delta': '0.099037', 'Time': '2026-08-07'}
+Total Strikes skipped lacking prior-snapshot price data: 108
+Signal A evaluable strikes: 16 (price up: 8, price down: 8, flat: 0)
+Signal B evaluable strikes: 130 (price down: 50, price up: 80, flat: 0)
+Signal C (Confirmed Squeeze Setup): 1
+Signal A (Short Covering): 6
+Signal B (Short Build-Up): 25
