@@ -88,17 +88,21 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
         results_by_symbol.setdefault(r['symbol'], []).append(r)
 
     mixed_syms = sorted(list(symbols_mixed))
-    single_syms = [s for s in results_by_symbol if s not in symbols_mixed]
-    single_syms.sort(key=lambda s: (results_by_symbol[s][0]['direction'], s))
-
-
+    bullish_syms = sorted([s for s in results_by_symbol if s not in symbols_mixed and results_by_symbol[s][0]['direction'] == 'bullish'])
+    bearish_syms = sorted([s for s in results_by_symbol if s not in symbols_mixed and results_by_symbol[s][0]['direction'] == 'bearish'])
 
     def print_block(syms, header_label):
         if not syms: return
         lbl = f"--- {header_label} ---"
         print(lbl)
         if f_txt: f_txt.write(lbl + "\n")
-        table_header = f"{'STOCK':7} | {'DIR':4} | {'SIG':3} | {'TYPE':5} | {'STRIKE':>8} | {'EXP':10} | {'OI CHG':>10} | {'PRICE Δ':>8}"
+        
+        # Determine if we should show the DIR column based on the header label
+        if header_label == "MIXED":
+            table_header = f"{'STOCK':7} | {'DIR':7} | {'SIG':3} | {'TYPE':5} | {'STRIKE':>8} | {'EXP':10} | {'OI CHG':>10} | {'PRICE Δ':>8}"
+        else:
+            table_header = f"{'STOCK':7} | {'SIG':3} | {'TYPE':5} | {'STRIKE':>8} | {'EXP':10} | {'OI CHG':>10} | {'PRICE Δ':>8}"
+            
         print(table_header)
         if f_txt: f_txt.write(table_header + "\n")
         
@@ -119,7 +123,11 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
                 oi_chg_str = f"{r.get('_oi_chg', float('nan')):,.0f}" if r.get('_oi_chg') == r.get('_oi_chg') else ""
                 price_diff_str = f"{r.get('_price_diff', float('nan')):+.2f}" if r.get('_price_diff') == r.get('_price_diff') else ""
                 
-                line = f"{sym:7} | {arr:4} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {oi_chg_str:>10} | {price_diff_str:>8}"
+                if header_label == "MIXED":
+                    line = f"{sym:7} | {arr:7} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {oi_chg_str:>10} | {price_diff_str:>8}"
+                else:
+                    line = f"{sym:7} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {oi_chg_str:>10} | {price_diff_str:>8}"
+                    
                 if r.get('_other_count', 0) > 0:
                     line += f"  (+{r['_other_count']}, Σ{r['_total_oi_chg']:,.0f})"
                 if r.get('vol_oi'):
@@ -131,7 +139,8 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
         print()
         if f_txt: f_txt.write("\n")
 
-    print_block(single_syms, "SINGLE DIRECTION")
+    print_block(bullish_syms, "BULLISH DIRECTION")
+    print_block(bearish_syms, "BEARISH DIRECTION")
     print_block(mixed_syms, "MIXED")
 
     if f_txt:
