@@ -1,0 +1,104 @@
+
+=== ANALYZE FLOW DIAGNOSTICS ===
+--- DIAGNOSTICS: Signal A (96 rows) ---
+  1. Total rows       : 96
+  2. Watchlist match  : 85
+  3. OI Sign (< 0)    : 85
+  4. OI Magnitude     : 85
+  5. Matched          : 85
+--- DIAGNOSTICS: Signal B (685 rows) ---
+  1. Total rows       : 685
+  2. Watchlist match  : 659
+  3. OI Sign (> 0)    : 659
+  4. Moneyness filter : 297
+  5. OI Magnitude     : 659
+  6. Matched BOTH     : 297
+---------------------------------
+Total Strikes excluded by Moneyness filter (>5.0%): 362
+Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 0
+Largest |OI Chg| seen in today's decoi file: 50385 (PLTR Call 155.00), vs current oi-chg-min threshold of 500.0
+   -> RAW ROW: {'Symbol': 'PLTR', 'Price~': '175.23', 'Exp Date': '2026-09-18', 'DTE': '39', 'Type': 'Call', 'Strike': '155.00', 'Moneyness': '+11.54%', 'Bid': '24.3', 'Ask': '24.45', 'Volume': '539', 'Open Int': '9836', 'OI Chg': '-50,385', 'Vol/OI': '0.05', 'IV': '51.01%', 'Delta': '0.800368', 'Time': '2026-08-10'}
+Total Strikes skipped lacking prior-snapshot price data: 290
+Signal A evaluable strikes: 35 (price up: 15, price down: 20, flat: 0)
+Signal B evaluable strikes: 57 (price down: 24, price up: 32, flat: 1)
+Signal C (Confirmed Squeeze Setup): 1
+Signal A (Short Covering): 10
+Signal B (Short Build-Up): 15
+
+=== ANALYZE FLOW DIAGNOSTICS ===
+--- DIAGNOSTICS: Signal A (96 rows) ---
+  1. Total rows       : 96
+  2. Watchlist match  : 85
+  3. OI Sign (< 0)    : 85
+  4. OI Magnitude     : 85
+  5. Matched          : 85
+--- DIAGNOSTICS: Signal B (685 rows) ---
+  1. Total rows       : 685
+  2. Watchlist match  : 659
+  3. OI Sign (> 0)    : 659
+  4. Moneyness filter : 297
+  5. OI Magnitude     : 659
+  6. Matched BOTH     : 297
+---------------------------------
+Total Strikes excluded by Moneyness filter (>5.0%): 362
+Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 0
+Largest |OI Chg| seen in today's decoi file: 50385 (PLTR Call 155.00), vs current oi-chg-min threshold of 500.0
+   -> RAW ROW: {'Symbol': 'PLTR', 'Price~': '175.23', 'Exp Date': '2026-09-18', 'DTE': '39', 'Type': 'Call', 'Strike': '155.00', 'Moneyness': '+11.54%', 'Bid': '24.3', 'Ask': '24.45', 'Volume': '539', 'Open Int': '9836', 'OI Chg': '-50,385', 'Vol/OI': '0.05', 'IV': '51.01%', 'Delta': '0.800368', 'Time': '2026-08-10'}
+Total Strikes skipped lacking prior-snapshot price data: 290
+Signal A evaluable strikes: 35 (price up: 15, price down: 20, flat: 0)
+Signal B evaluable strikes: 57 (price down: 24, price up: 32, flat: 1)
+Signal C (Confirmed Squeeze Setup): 1
+Signal A (Short Covering): 10
+Signal B (Short Build-Up): 15
+
+=== ANALYZE FLOW DIAGNOSTICS ===
+--- DIAGNOSTICS: Signal A (96 rows) ---
+  1. Total rows       : 96
+  2. Watchlist match  : 85
+  3. OI Sign (< 0)    : 85
+  4. OI Magnitude     : 85
+  5. Matched          : 85
+--- DIAGNOSTICS: Signal B (685 rows) ---
+  1. Total rows       : 685
+  2. Watchlist match  : 659
+  3. OI Sign (> 0)    : 659
+  4. Moneyness filter : 297
+  5. OI Magnitude     : 659
+  6. Matched BOTH     : 297
+---------------------------------
+Total Strikes excluded by Moneyness filter (>5.0%): 362
+Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 0
+Largest |OI Chg| seen in today's decoi file: 50385 (PLTR Call 155.00), vs current oi-chg-min threshold of 500.0
+   -> RAW ROW: {'Symbol': 'PLTR', 'Price~': '175.23', 'Exp Date': '2026-09-18', 'DTE': '39', 'Type': 'Call', 'Strike': '155.00', 'Moneyness': '+11.54%', 'Bid': '24.3', 'Ask': '24.45', 'Volume': '539', 'Open Int': '9836', 'OI Chg': '-50,385', 'Vol/OI': '0.05', 'IV': '51.01%', 'Delta': '0.800368', 'Time': '2026-08-10'}
+Total Strikes skipped lacking prior-snapshot price data: 290
+Signal A evaluable strikes: 35 (price up: 15, price down: 20, flat: 0)
+Signal B evaluable strikes: 57 (price down: 24, price up: 32, flat: 1)
+Signal C (Confirmed Squeeze Setup): 1
+Signal A (Short Covering): 10
+Signal B (Short Build-Up): 15
+
+=== ANALYZE FLOW DIAGNOSTICS ===
+--- DIAGNOSTICS: Signal A (96 rows) ---
+  1. Total rows       : 96
+  2. Watchlist match  : 85
+  3. OI Sign (< 0)    : 85
+  4. OI Magnitude     : 85
+  5. Matched          : 85
+--- DIAGNOSTICS: Signal B (685 rows) ---
+  1. Total rows       : 685
+  2. Watchlist match  : 659
+  3. OI Sign (> 0)    : 659
+  4. Moneyness filter : 297
+  5. OI Magnitude     : 659
+  6. Matched BOTH     : 297
+---------------------------------
+Total Strikes excluded by Moneyness filter (>5.0%): 362
+Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 0
+Largest |OI Chg| seen in today's decoi file: 50385 (PLTR Call 155.00), vs current oi-chg-min threshold of 500.0
+   -> RAW ROW: {'Symbol': 'PLTR', 'Price~': '175.23', 'Exp Date': '2026-09-18', 'DTE': '39', 'Type': 'Call', 'Strike': '155.00', 'Moneyness': '+11.54%', 'Bid': '24.3', 'Ask': '24.45', 'Volume': '539', 'Open Int': '9836', 'OI Chg': '-50,385', 'Vol/OI': '0.05', 'IV': '51.01%', 'Delta': '0.800368', 'Time': '2026-08-10'}
+Total Strikes skipped lacking prior-snapshot price data: 290
+Signal A evaluable strikes: 35 (price up: 15, price down: 20, flat: 0)
+Signal B evaluable strikes: 57 (price down: 24, price up: 32, flat: 1)
+Signal C (Confirmed Squeeze Setup): 1
+Signal A (Short Covering): 10
+Signal B (Short Build-Up): 15

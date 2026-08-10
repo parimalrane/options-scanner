@@ -1,0 +1,44 @@
+=== 2026-08-10 SCAN ===
+Watchlist: 331 | Signals: 10TMG / 15TMJ / 1J+G
+Bias: 10 bullish-only | 10 bearish-only | 2 mixed
+
+--- BULLISH DIRECTION ---
+STOCK   | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+AMZN    | TMG | Call  |   295.00 | 2026-08-21 |     -1,525 |    +0.21
+BTG     | TMG | Call  |     4.00 | 2027-01-15 |     -1,361 |    +0.03
+GOOG    | TMG | Call  |   400.00 | 2026-09-18 |     -2,356 |    +0.00
+S       | TMG | Call  |    22.00 | 2026-09-18 |     -1,984 |    +0.43
+UBER    | TMG | Call  |    70.00 | 2026-08-21 |     -3,241 |    +2.85  (+1, Σ-5,097)
+VST     | TMG | Call  |   165.00 | 2026-08-21 |    -34,062 |    +0.01  (+1, Σ-43,192)
+BAC     | TMJ | Put   |    63.00 | 2026-08-14 |      1,064 |    -0.35
+NU      | TMJ | Put   |    14.00 | 2026-08-14 |      3,263 |    -0.06
+SKHY    | TMJ | Put   |   130.00 | 2026-08-14 |      2,034 |    -0.45
+SMCI    | TMJ | Put   |    30.00 | 2026-08-14 |      1,269 |    -0.23
+
+--- BEARISH DIRECTION ---
+STOCK   | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+NVDA    | J+G | Combo |    Multi | Multi      |            |         
+NVDA    | TMG | Put   |   200.00 | 2026-08-21 |     -1,399 |    +0.22
+NVDA    | TMJ | Call  |   225.00 | 2026-08-14 |     11,808 |    -2.63  (+4, Σ31,451)
+INTC    | TMG | Put   |    80.00 | 2026-12-18 |     -1,205 |    +0.25
+RIOT    | TMG | Put   |    19.00 | 2026-08-21 |     -1,922 |    +0.30
+AAPL    | TMJ | Call  |   315.00 | 2026-08-14 |      3,815 |    -2.07  (+2, Σ8,591)
+APLD    | TMJ | Call  |    30.00 | 2026-08-14 |      1,110 |    -0.23
+COIN    | TMJ | Call  |   155.00 | 2026-08-14 |      4,613 |    -2.80
+F       | TMJ | Call  |    14.00 | 2026-08-14 |      4,464 |    -0.04
+MRNA    | TMJ | Call  |    59.00 | 2026-08-14 |      3,644 |    -0.02
+MSTR    | TMJ | Call  |   100.00 | 2026-08-14 |     10,838 |    -1.81  (+1, Σ16,020)
+TSLA    | TMJ | Call  |   330.00 | 2026-08-10 |      3,404 |    -1.92  (+1, Σ6,598)
+
+--- MIXED ---
+STOCK   | DIR     | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+SOFI    | bearish | TMJ | Call  |    18.50 | 2026-08-14 |      3,857 |    -0.17  (+1, Σ6,088)
+SOFI    | BULLISH | TMJ | Put   |    17.50 | 2026-08-14 |      1,590 |    -0.01
+SPCX    | BULLISH | TMG | Call  |   120.00 | 2026-08-14 |     -4,800 |    +3.58  (+3, Σ-11,213)
+SPCX    | bearish | TMJ | Call  |   145.00 | 2026-08-14 |      1,426 |    -0.10
+
+--- TRADINGVIEW WATCHLIST ---
+###BULLISH,AMZN,BTG,GOOG,S,UBER,VST,BAC,NU,SKHY,SMCI
+###BEARISH,NVDA,INTC,RIOT,AAPL,APLD,COIN,F,MRNA,MSTR,TSLA
+###MIXED,SOFI,SPCX
+

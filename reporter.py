@@ -116,35 +116,53 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
         print(table_header)
         if f_txt: f_txt.write(table_header + "\n")
         
-        for sym in syms:
-            sym_signals = results_by_symbol[sym]
-            if header_label == "MIXED":
-                sym_signals.sort(key=lambda x: (x['direction'], rank.get(x['signal'], 99), x.get('exp', '')))
-            else:
+        if header_label == "MIXED":
+            for sym in syms:
+                sym_signals = results_by_symbol[sym]
+                sym_signals.sort(key=lambda x: (rank.get(x['signal'], 99), x['direction'], x.get('exp', '')))
+                
+                for r in sym_signals:
+                    sym_local = r['symbol']
+                    arr = 'BULLISH' if r['direction'] == 'bullish' else 'bearish'
+                    code = 'J+G' if 'Signal C' in r['signal'] else ('TMG' if 'Signal A' in r['signal'] else 'TMJ')
+                    
+                    strike = str(r['strike'])
+                    exp = str(r['exp'])
+                    
+                    oi_chg_str = f"{r.get('_oi_chg', float('nan')):,.0f}" if r.get('_oi_chg') == r.get('_oi_chg') else ""
+                    price_diff_str = f"{r.get('_price_diff', float('nan')):+.2f}" if r.get('_price_diff') == r.get('_price_diff') else ""
+                    
+                    line = f"{sym_local:7} | {arr:7} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {oi_chg_str:>10} | {price_diff_str:>8}"
+                    if r.get('_other_count', 0) > 0:
+                        line += f"  (+{r['_other_count']}, Σ{r['_total_oi_chg']:,.0f})"
+                    if r.get('vol_oi'):
+                        line += f"  (Vol/OI {r['vol_oi']})"
+                        
+                    print(line)
+                    if f_txt: f_txt.write(line + "\n")
+        else:
+            for sym in syms:
+                sym_signals = results_by_symbol[sym]
                 sym_signals.sort(key=lambda x: (rank.get(x['signal'], 99), x.get('exp', '')))
                 
-            for r in sym_signals:
-                arr = 'BULLISH' if r['direction'] == 'bullish' else 'bearish'
-                code = 'J+G' if 'Signal C' in r['signal'] else ('TMG' if 'Signal A' in r['signal'] else 'TMJ')
-                
-                strike = str(r['strike'])
-                exp = str(r['exp'])
-                
-                oi_chg_str = f"{r.get('_oi_chg', float('nan')):,.0f}" if r.get('_oi_chg') == r.get('_oi_chg') else ""
-                price_diff_str = f"{r.get('_price_diff', float('nan')):+.2f}" if r.get('_price_diff') == r.get('_price_diff') else ""
-                
-                if header_label == "MIXED":
-                    line = f"{sym:7} | {arr:7} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {oi_chg_str:>10} | {price_diff_str:>8}"
-                else:
-                    line = f"{sym:7} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {oi_chg_str:>10} | {price_diff_str:>8}"
+                for r in sym_signals:
+                    sym_local = r['symbol']
+                    code = 'J+G' if 'Signal C' in r['signal'] else ('TMG' if 'Signal A' in r['signal'] else 'TMJ')
                     
-                if r.get('_other_count', 0) > 0:
-                    line += f"  (+{r['_other_count']}, Σ{r['_total_oi_chg']:,.0f})"
-                if r.get('vol_oi'):
-                    line += f"  (Vol/OI {r['vol_oi']})"
+                    strike = str(r['strike'])
+                    exp = str(r['exp'])
                     
-                print(line)
-                if f_txt: f_txt.write(line + "\n")
+                    oi_chg_str = f"{r.get('_oi_chg', float('nan')):,.0f}" if r.get('_oi_chg') == r.get('_oi_chg') else ""
+                    price_diff_str = f"{r.get('_price_diff', float('nan')):+.2f}" if r.get('_price_diff') == r.get('_price_diff') else ""
+                    
+                    line = f"{sym_local:7} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {oi_chg_str:>10} | {price_diff_str:>8}"
+                    if r.get('_other_count', 0) > 0:
+                        line += f"  (+{r['_other_count']}, Σ{r['_total_oi_chg']:,.0f})"
+                    if r.get('vol_oi'):
+                        line += f"  (Vol/OI {r['vol_oi']})"
+                        
+                    print(line)
+                    if f_txt: f_txt.write(line + "\n")
         
         print()
         if f_txt: f_txt.write("\n")
@@ -152,6 +170,21 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
     print_block(bullish_syms, "BULLISH DIRECTION")
     print_block(bearish_syms, "BEARISH DIRECTION")
     print_block(mixed_syms, "MIXED")
+
+    tv_lbl = "--- TRADINGVIEW WATCHLIST ---"
+    print(tv_lbl)
+    if f_txt: f_txt.write(tv_lbl + "\n")
+    
+    bullish_str = "###BULLISH," + ",".join(bullish_syms) if bullish_syms else "###BULLISH,"
+    bearish_str = "###BEARISH," + ",".join(bearish_syms) if bearish_syms else "###BEARISH,"
+    mixed_str = "###MIXED," + ",".join(mixed_syms) if mixed_syms else "###MIXED,"
+    
+    for l in [bullish_str, bearish_str, mixed_str]:
+        print(l)
+        if f_txt: f_txt.write(l + "\n")
+        
+    print()
+    if f_txt: f_txt.write("\n")
 
     if f_txt:
         f_txt.close()
