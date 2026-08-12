@@ -1,0 +1,26 @@
+
+=== ANALYZE FLOW DIAGNOSTICS ===
+--- DIAGNOSTICS: Signal A (67 rows) ---
+  1. Total rows       : 67
+  2. Watchlist match  : 61
+  3. OI Sign (< 0)    : 61
+  4. OI Magnitude     : 61
+  5. Matched          : 61
+--- DIAGNOSTICS: Signal B (652 rows) ---
+  1. Total rows       : 652
+  2. Watchlist match  : 622
+  3. OI Sign (> 0)    : 622
+  4. Moneyness filter : 299
+  5. OI Magnitude     : 622
+  6. Matched BOTH     : 299
+---------------------------------
+Total Strikes excluded by Moneyness filter (>5.0%): 323
+Total Strikes excluded by Minimum OI Magnitude filter (<500.0): 0
+Largest |OI Chg| seen in today's decoi file: 49838 (HL Put 10.00), vs current oi-chg-min threshold of 500.0
+   -> RAW ROW: {'Symbol': 'HL', 'Price~': '17.76', 'Exp Date': '2027-01-15', 'DTE': '157', 'Type': 'Put', 'Strike': '10.00', 'Moneyness': '-43.69%', 'Bid': '0.29', 'Ask': '0.31', 'Volume': '55776', 'Open Int': '84874', 'OI Chg': '-49,838', 'Vol/OI': '0.66', 'IV': '71.26%', 'Delta': '-0.067574', 'Time': '2026-08-11'}
+Total Strikes skipped lacking prior-snapshot price data: 250
+Signal A evaluable strikes: 24 (price up: 4, price down: 20, flat: 0)
+Signal B evaluable strikes: 86 (price down: 62, price up: 24, flat: 0)
+Signal C (Confirmed Squeeze Setup): 1
+Signal A (Short Covering): 4
+Signal B (Short Build-Up): 26

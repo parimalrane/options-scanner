@@ -1,0 +1,49 @@
+=== 2026-08-11 SCAN ===
+Watchlist: 303 | Signals: 4TMG / 26TMJ / 1J+G
+Bias: 6 bullish-only | 15 bearish-only | 4 mixed
+
+--- BULLISH DIRECTION ---
+STOCK   | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+NOK     | TMG | Call  |    15.00 | 2026-12-18 |     -1,626 |    +0.04
+PCT     | TMG | Call  |    10.00 | 2027-01-15 |     -1,094 |    +0.10
+SMCI    | TMG | Call  |    34.00 | 2026-08-21 |    -34,675 |    +0.21
+BAC     | TMJ | Put   |    63.00 | 2026-08-14 |      2,852 |    -0.05
+BMNR    | TMJ | Put   |    18.00 | 2026-08-14 |      1,606 |    -0.09
+GME     | TMJ | Put   |    19.00 | 2026-08-14 |      1,696 |    -0.03
+
+--- BEARISH DIRECTION ---
+STOCK   | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+AMZN    | J+G | Combo |    Multi | Multi      |            |         
+AMZN    | TMG | Put   |   265.00 | 2026-08-12 |     -1,005 |    +0.07
+AMZN    | TMJ | Call  |   285.00 | 2026-08-14 |      5,886 |    -1.08  (+3, Σ11,532)
+AAPL    | TMJ | Call  |   320.00 | 2026-08-14 |      5,717 |    -0.29  (+2, Σ8,926)
+AMC     | TMJ | Call  |     2.50 | 2026-08-21 |      1,010 |    -0.02
+ASTS    | TMJ | Call  |    75.00 | 2026-08-14 |      2,264 |    -0.89
+GOOG    | TMJ | Call  |   360.00 | 2026-08-14 |      1,070 |    -2.65
+GOOGL   | TMJ | Call  |   360.00 | 2026-08-14 |      1,720 |    -3.38
+HIMS    | TMJ | Call  |    32.00 | 2026-08-14 |      1,412 |    -1.82
+HOOD    | TMJ | Call  |    95.00 | 2026-08-14 |      1,866 |    -0.40
+MSTR    | TMJ | Call  |   100.00 | 2026-08-14 |      1,362 |    -0.86
+MU      | TMJ | Call  |   880.00 | 2026-08-12 |      1,730 |    -3.82
+NFLX    | TMJ | Call  |    78.00 | 2026-08-14 |      4,494 |    -0.40  (+5, Σ18,815)
+NOW     | TMJ | Call  |   130.00 | 2026-08-14 |      1,453 |    -0.48
+RIVN    | TMJ | Call  |    17.00 | 2026-08-14 |     11,596 |    -0.10  (+2, Σ14,902)
+SOFI    | TMJ | Call  |    18.00 | 2026-08-14 |      5,980 |    -0.10  (+2, Σ10,773)
+TSLA    | TMJ | Call  |   340.00 | 2026-08-14 |      2,916 |    -0.24  (+3, Σ9,193)
+
+--- MIXED ---
+STOCK   | DIR     | SIG | TYPE  |   STRIKE | EXP        |     OI CHG |  PRICE Δ
+MARA    | bearish | TMJ | Call  |    10.00 | 2026-08-14 |      1,871 |    -0.01
+MARA    | BULLISH | TMJ | Put   |     9.50 | 2026-08-14 |      1,887 |    -0.11
+NVDA    | bearish | TMJ | Call  |   220.00 | 2026-08-21 |     14,413 |    -0.52  (+8, Σ51,078)
+NVDA    | BULLISH | TMJ | Put   |   210.00 | 2026-08-14 |      9,313 |    -0.31  (+7, Σ34,452)
+PLTR    | bearish | TMJ | Call  |   180.00 | 2026-08-14 |      8,923 |    -0.69  (+2, Σ12,703)
+PLTR    | BULLISH | TMJ | Put   |   170.00 | 2026-08-14 |      4,640 |    -0.42  (+1, Σ8,202)
+TTD     | bearish | TMJ | Call  |    14.00 | 2026-08-14 |      3,344 |    -0.01  (+1, Σ5,305)
+TTD     | BULLISH | TMJ | Put   |    13.00 | 2026-08-14 |      2,892 |    -0.09
+
+--- TRADINGVIEW WATCHLIST ---
+###BULLISH,NOK,PCT,SMCI,BAC,BMNR,GME
+###BEARISH,AMZN,AAPL,AMC,ASTS,GOOG,GOOGL,HIMS,HOOD,MSTR,MU,NFLX,NOW,RIVN,SOFI,TSLA
+###MIXED,MARA,NVDA,PLTR,TTD
+
