@@ -110,7 +110,7 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
         
         conf_map = {'true': 'TRUE', 'false': 'FALS', 'neutral': 'NEUT'}
         
-        if header_label == "MIXED / CONFLICTED":
+        if header_label == "SIDEWAYS":
             table_header = f"{'STOCK':7} | {'DIR':7} | {'SIG':3} | {'TYPE':5} | {'STRIKE':>8} | {'EXP':10} | {'DTE':>3} | {'CONF':>4} | {'NOTIONAL':>10} | {'OI CHG':>10} | {'PRICE Δ':>8}"
         else:
             table_header = f"{'STOCK':7} | {'SIG':3} | {'TYPE':5} | {'STRIKE':>8} | {'EXP':10} | {'DTE':>3} | {'CONF':>4} | {'NOTIONAL':>10} | {'OI CHG':>10} | {'PRICE Δ':>8}"
@@ -118,7 +118,7 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
         print(table_header)
         if f_txt: f_txt.write(table_header + "\n")
         
-        if header_label == "MIXED / CONFLICTED":
+        if header_label == "SIDEWAYS":
             for sym in syms:
                 sym_signals = results_by_symbol[sym]
                 sym_signals.sort(key=lambda x: (rank.get(x['signal'], 99), x['direction'], x.get('exp', '')))
@@ -183,7 +183,7 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
 
     print_block(bullish_syms, "BULLISH DIRECTION")
     print_block(bearish_syms, "BEARISH DIRECTION")
-    print_block(mixed_syms, "MIXED / CONFLICTED")
+    print_block(mixed_syms, "SIDEWAYS")
 
     if f_txt:
         f_txt.close()

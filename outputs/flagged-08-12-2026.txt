@@ -71,7 +71,7 @@ TTD     | TMJ | Call  |    14.50 | 2026-08-21 |   9 | TRUE |    $26,489 |      1
 UBER    | TMJ | Call  |    82.50 | 2026-09-18 |  37 | TRUE |   $835,335 |      8,793 |    -0.90
 XPEV    | TMJ | Call  |    11.50 | 2026-08-21 |   9 | TRUE |   $284,837 |      5,813 |    -0.19
 
---- MIXED / CONFLICTED ---
+--- SIDEWAYS ---
 STOCK   | DIR     | SIG | TYPE  |   STRIKE | EXP        | DTE | CONF |   NOTIONAL |     OI CHG |  PRICE Δ
 AMD     | bearish | TMJ | Call  |   500.00 | 2026-08-14 |   2 | FALS |   $287,287 |      1,078 |    -0.33
 AMD     | BULLISH | TMJ | Put   |   455.00 | 2026-08-14 |   2 | TRUE |   $213,381 |      2,258 |    -2.93
