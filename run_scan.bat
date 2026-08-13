@@ -13,13 +13,13 @@ REM    stocks-increase-change-in-open-interest-MM-DD-YYYY.csv
 REM    unusual-stock-options-activity-MM-DD-YYYY.csv
 REM ============================================================
 
-set DATE=%1
+set TARGET_DATE=%1
 
-if "%DATE%"=="" (
-    echo ERROR: You must pass the market closing date ^(matching your renamed files^).
-    echo Usage: run_scan.bat MM-DD-YYYY [debug]
-    echo Example: run_scan.bat 07-31-2026
-    exit /b 1
+if "%TARGET_DATE%"=="" (
+    for /f "usebackq tokens=*" %%i in (`powershell -NoProfile -Command "Get-Date -Format 'MM-dd-yyyy'"`) do set TARGET_DATE=%%i
+    echo No date provided. Defaulting to today's date: %TARGET_DATE%
+) else (
+    echo Running scan for date: %TARGET_DATE%
 )
 
 set DEBUG_ARG=
@@ -28,17 +28,17 @@ if /I "%2"=="debug" (
 )
 
 set MISSING=
-set ACTIVE=inputs\most-active-stock-options-%DATE%.csv
-set FLOW=inputs\options-flow-%DATE%.csv
-set DECOI=inputs\stocks-decrease-change-in-open-interest-%DATE%.csv
-set INCOI=inputs\stocks-increase-change-in-open-interest-%DATE%.csv
-set UNUSUAL=inputs\unusual-stock-options-activity-%DATE%.csv
-set OUT=outputs\flagged-%DATE%.csv
+set ACTIVE=inputs\most-active-stock-options-%TARGET_DATE%.csv
+set FLOW=inputs\options-flow-%TARGET_DATE%.csv
+set DECOI=inputs\stocks-decrease-change-in-open-interest-%TARGET_DATE%.csv
+set INCOI=inputs\stocks-increase-change-in-open-interest-%TARGET_DATE%.csv
+set UNUSUAL=inputs\unusual-stock-options-activity-%TARGET_DATE%.csv
+set OUT=outputs\flagged-%TARGET_DATE%.csv
 
-set ACTIVE_ETF=inputs\most-active-etf-options-%DATE%.csv
-set DECOI_ETF=inputs\etfs-decrease-change-in-open-interest-%DATE%.csv
-set INCOI_ETF=inputs\etfs-increase-change-in-open-interest-%DATE%.csv
-set UNUSUAL_ETF=inputs\unusual-etf-options-activity-%DATE%.csv
+set ACTIVE_ETF=inputs\most-active-etf-options-%TARGET_DATE%.csv
+set DECOI_ETF=inputs\etfs-decrease-change-in-open-interest-%TARGET_DATE%.csv
+set INCOI_ETF=inputs\etfs-increase-change-in-open-interest-%TARGET_DATE%.csv
+set UNUSUAL_ETF=inputs\unusual-etf-options-activity-%TARGET_DATE%.csv
 
 set ACTIVE_ARGS="%ACTIVE%"
 if exist "%ACTIVE_ETF%" set ACTIVE_ARGS="%ACTIVE%" "%ACTIVE_ETF%"
@@ -57,7 +57,7 @@ if not exist "%DECOI%" (
 
 if defined MISSING (
     echo.
-    echo One or more required files are missing. Check the filenames match %DATE% exactly, then try again.
+    echo One or more required files are missing. Check the filenames match %TARGET_DATE% exactly, then try again.
     exit /b 1
 )
 
@@ -84,7 +84,7 @@ if not exist "%UNUSUAL%" (
 )
 
 
-python analyze_flow.py --active %ACTIVE_ARGS% %FLOW_ARG% --decoi %DECOI_ARGS% %INCOI_ARG% %UNUSUAL_ARG% --out "%OUT%" %DEBUG_ARG%
+python analyze_flow.py --moneyness-max 15 --liquidity-min 3000 --active %ACTIVE_ARGS% %FLOW_ARG% --decoi %DECOI_ARGS% %INCOI_ARG% %UNUSUAL_ARG% --out "%OUT%" %DEBUG_ARG%
 
 if errorlevel 1 (
     echo.
