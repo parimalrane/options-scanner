@@ -6,8 +6,10 @@ def build_watchlist(active_rows, liquidity_min):
         sym = r.get('Symbol', '').strip()
         vol = data_loader.to_num(r.get('Options Vol'))
         if sym and vol >= liquidity_min:
+            pc = data_loader.to_num(r.get('%Change', '0').replace('%', ''))
             watchlist[sym] = {
                 'price': data_loader.to_num(r.get('Latest')),
+                'pct_change': pc
             }
     return watchlist
 
@@ -25,8 +27,9 @@ def get_mid_price(r):
         return (bid + ask) / 2
     return float('nan')
 
-def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_chg_min, signal_type):
+def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_chg_min, signal_type, current_date=None, exclude_same_day=True):
     groups = {}
+
     
     diag_1_total = len(rows)
     diag_2_watchlist = 0
@@ -105,6 +108,18 @@ def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_c
         exp = r.get('Exp Date')
         key = (sym, opt_type, strike, exp)
         
+        days_to_expiry = 0
+        if current_date and exp:
+            try:
+                from datetime import datetime
+                exp_date = datetime.strptime(exp, '%Y-%m-%d')
+                days_to_expiry = (exp_date - current_date).days
+            except:
+                pass
+                
+        if exclude_same_day and days_to_expiry <= 0:
+            continue
+        
         mid_today = get_mid_price(r)
         if mid_today != mid_today:
             continue
@@ -138,6 +153,16 @@ def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_c
         if not direction:
             continue
             
+        pct_chg = watchlist[sym]['pct_change']
+        if abs(pct_chg) <= 0.2:
+            price_confirmed = 'neutral'
+        elif (direction == 'bullish' and pct_chg > 0.2) or (direction == 'bearish' and pct_chg < -0.2):
+            price_confirmed = 'true'
+        else:
+            price_confirmed = 'false'
+            
+        notional_value = abs(oi_chg) * mid_today * 100
+        
         entry = {
             'symbol': sym,
             'type': opt_type,
@@ -147,6 +172,9 @@ def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_c
             'oi_chg': oi_chg,
             'price_diff': price_diff,
             'vol_oi': voloi_map.get(key, ''),
+            'notional_value': notional_value,
+            'days_to_expiry': days_to_expiry,
+            'price_confirmed': price_confirmed
         }
         groups.setdefault((sym, direction), []).append(entry)
         
@@ -176,10 +204,11 @@ def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_c
 def consolidate_groups(groups, signal_name, watchlist):
     out = []
     for (sym, direction), entries in groups.items():
-        entries.sort(key=lambda e: abs(e['oi_chg']), reverse=True)
+        entries.sort(key=lambda e: e['notional_value'], reverse=True)
         lead = entries[0]
         other_count = len(entries) - 1
         total_oi_chg = sum(e['oi_chg'] for e in entries)
+        total_notional = sum(e['notional_value'] for e in entries)
         
         note = f"OI Chg {lead['oi_chg']:,.0f} at {lead['strike']} strike (Opt Price {lead['price_diff']:+.2f})"
         if other_count:
@@ -200,5 +229,9 @@ def consolidate_groups(groups, signal_name, watchlist):
             '_price_diff': lead['price_diff'],
             '_other_count': other_count,
             '_total_oi_chg': total_oi_chg,
+            '_notional_value': total_notional,
+            '_lead_notional': lead['notional_value'],
+            'days_to_expiry': lead['days_to_expiry'],
+            'price_confirmed': lead['price_confirmed']
         })
     return out

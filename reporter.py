@@ -54,15 +54,10 @@ def write_diagnostics(stats, args, date_str):
         diag_msgs.append(f"Signal A (Short Covering): {len(stats['a_out'])}")
         diag_msgs.append(f"Signal B (Short Build-Up): {len(stats['b_out'])}")
 
-    if diag_msgs:
-        diag_path = f"outputs/diagnostics-{date_str}.txt"
-        os.makedirs("outputs", exist_ok=True)
-        with open(diag_path, "a", encoding="utf-8") as df:
-            df.write(f"\n=== ANALYZE FLOW DIAGNOSTICS ===\n")
-            for m in diag_msgs:
-                if getattr(args, 'debug', False):
-                    print(m)
-                df.write(m + "\n")
+    if diag_msgs and getattr(args, 'debug', False):
+        print(f"\n=== ANALYZE FLOW DIAGNOSTICS ===")
+        for m in diag_msgs:
+            print(m)
 
 def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
     bullish_only, bearish_only, mixed_count, symbols_mixed = evaluate_market_bias(results)
@@ -87,7 +82,13 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
     for r in results:
         results_by_symbol.setdefault(r['symbol'], []).append(r)
 
-    mixed_syms = sorted(list(symbols_mixed))
+    net_signals = {}
+    for sym in symbols_mixed:
+        bull_val = sum(abs(r.get('_total_oi_chg', 0)) for r in results_by_symbol[sym] if r['direction'] == 'bullish')
+        bear_val = sum(abs(r.get('_total_oi_chg', 0)) for r in results_by_symbol[sym] if r['direction'] == 'bearish')
+        net_signals[sym] = bull_val - bear_val
+
+    mixed_syms = sorted(list(symbols_mixed), key=lambda s: net_signals[s], reverse=True)
 
     def get_sym_order(s):
         return min(rank.get(r['signal'], 99) for r in results_by_symbol[s])
@@ -107,16 +108,17 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
         print(lbl)
         if f_txt: f_txt.write(lbl + "\n")
         
-        # Determine if we should show the DIR column based on the header label
-        if header_label == "MIXED":
-            table_header = f"{'STOCK':7} | {'DIR':7} | {'SIG':3} | {'TYPE':5} | {'STRIKE':>8} | {'EXP':10} | {'OI CHG':>10} | {'PRICE Δ':>8}"
+        conf_map = {'true': 'TRUE', 'false': 'FALS', 'neutral': 'NEUT'}
+        
+        if header_label == "MIXED / CONFLICTED":
+            table_header = f"{'STOCK':7} | {'DIR':7} | {'SIG':3} | {'TYPE':5} | {'STRIKE':>8} | {'EXP':10} | {'DTE':>3} | {'CONF':>4} | {'NOTIONAL':>10} | {'OI CHG':>10} | {'PRICE Δ':>8}"
         else:
-            table_header = f"{'STOCK':7} | {'SIG':3} | {'TYPE':5} | {'STRIKE':>8} | {'EXP':10} | {'OI CHG':>10} | {'PRICE Δ':>8}"
+            table_header = f"{'STOCK':7} | {'SIG':3} | {'TYPE':5} | {'STRIKE':>8} | {'EXP':10} | {'DTE':>3} | {'CONF':>4} | {'NOTIONAL':>10} | {'OI CHG':>10} | {'PRICE Δ':>8}"
             
         print(table_header)
         if f_txt: f_txt.write(table_header + "\n")
         
-        if header_label == "MIXED":
+        if header_label == "MIXED / CONFLICTED":
             for sym in syms:
                 sym_signals = results_by_symbol[sym]
                 sym_signals.sort(key=lambda x: (rank.get(x['signal'], 99), x['direction'], x.get('exp', '')))
@@ -132,7 +134,11 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
                     oi_chg_str = f"{r.get('_oi_chg', float('nan')):,.0f}" if r.get('_oi_chg') == r.get('_oi_chg') else ""
                     price_diff_str = f"{r.get('_price_diff', float('nan')):+.2f}" if r.get('_price_diff') == r.get('_price_diff') else ""
                     
-                    line = f"{sym_local:7} | {arr:7} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {oi_chg_str:>10} | {price_diff_str:>8}"
+                    notional_str = f"${int(r.get('_lead_notional', 0)):,}"
+                    dte = str(r.get('days_to_expiry', 0))
+                    conf = conf_map.get(str(r.get('price_confirmed')), 'NEUT')
+                    
+                    line = f"{sym_local:7} | {arr:7} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {dte:>3} | {conf:>4} | {notional_str:>10} | {oi_chg_str:>10} | {price_diff_str:>8}"
                     if r.get('_other_count', 0) > 0:
                         line += f"  (+{r['_other_count']}, Σ{r['_total_oi_chg']:,.0f})"
                     if r.get('vol_oi'):
@@ -140,6 +146,10 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
                         
                     print(line)
                     if f_txt: f_txt.write(line + "\n")
+                    
+                net_line = f"{'':7} |         |     |       |          |            |     |      |            | NET VOL: | {net_signals[sym]:+,.0f}"
+                print(net_line)
+                if f_txt: f_txt.write(net_line + "\n")
         else:
             for sym in syms:
                 sym_signals = results_by_symbol[sym]
@@ -155,7 +165,11 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
                     oi_chg_str = f"{r.get('_oi_chg', float('nan')):,.0f}" if r.get('_oi_chg') == r.get('_oi_chg') else ""
                     price_diff_str = f"{r.get('_price_diff', float('nan')):+.2f}" if r.get('_price_diff') == r.get('_price_diff') else ""
                     
-                    line = f"{sym_local:7} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {oi_chg_str:>10} | {price_diff_str:>8}"
+                    notional_str = f"${int(r.get('_lead_notional', 0)):,}"
+                    dte = str(r.get('days_to_expiry', 0))
+                    conf = conf_map.get(str(r.get('price_confirmed')), 'NEUT')
+                    
+                    line = f"{sym_local:7} | {code:3} | {r['type']:5} | {strike:>8} | {exp:10} | {dte:>3} | {conf:>4} | {notional_str:>10} | {oi_chg_str:>10} | {price_diff_str:>8}"
                     if r.get('_other_count', 0) > 0:
                         line += f"  (+{r['_other_count']}, Σ{r['_total_oi_chg']:,.0f})"
                     if r.get('vol_oi'):
@@ -169,22 +183,7 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
 
     print_block(bullish_syms, "BULLISH DIRECTION")
     print_block(bearish_syms, "BEARISH DIRECTION")
-    print_block(mixed_syms, "MIXED")
-
-    tv_lbl = "--- TRADINGVIEW WATCHLIST ---"
-    print(tv_lbl)
-    if f_txt: f_txt.write(tv_lbl + "\n")
-    
-    bullish_str = "###BULLISH," + ",".join(bullish_syms) if bullish_syms else "###BULLISH,"
-    bearish_str = "###BEARISH," + ",".join(bearish_syms) if bearish_syms else "###BEARISH,"
-    mixed_str = "###MIXED," + ",".join(mixed_syms) if mixed_syms else "###MIXED,"
-    
-    for l in [bullish_str, bearish_str, mixed_str]:
-        print(l)
-        if f_txt: f_txt.write(l + "\n")
-        
-    print()
-    if f_txt: f_txt.write("\n")
+    print_block(mixed_syms, "MIXED / CONFLICTED")
 
     if f_txt:
         f_txt.close()

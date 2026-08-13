@@ -17,6 +17,7 @@ def main():
     ap.add_argument('--move-min', type=float, default=3)
     ap.add_argument('--out', default=None)
     ap.add_argument('--debug', action='store_true')
+    ap.add_argument('--exclude-same-day', action='store_true', default=True)
     args = ap.parse_args()
 
     date_obj = data_loader.extract_file_date(args.active[0])
@@ -49,8 +50,8 @@ def main():
     }
 
     if prior_prices is not None:
-        groups_a, stats_a = signal_engine.process_signal(decoi_rows, watchlist, prior_prices, voloi_map, args.moneyness_max, args.oi_chg_min, 'A')
-        groups_b, stats_b = signal_engine.process_signal(incoi_rows, watchlist, prior_prices, voloi_map, args.moneyness_max, args.oi_chg_min, 'B')
+        groups_a, stats_a = signal_engine.process_signal(decoi_rows, watchlist, prior_prices, voloi_map, args.moneyness_max, args.oi_chg_min, 'A', current_date=date_obj, exclude_same_day=args.exclude_same_day)
+        groups_b, stats_b = signal_engine.process_signal(incoi_rows, watchlist, prior_prices, voloi_map, args.moneyness_max, args.oi_chg_min, 'B', current_date=date_obj, exclude_same_day=args.exclude_same_day)
         
         stats['a_stats'] = stats_a
         stats['b_stats'] = stats_b
@@ -75,8 +76,22 @@ def main():
                     '_price_diff': float('nan'),
                     '_other_count': 0,
                     '_total_oi_chg': 0,
+                    '_notional_value': 0,
+                    '_lead_notional': 0,
+                    'days_to_expiry': 0,
+                    'price_confirmed': 'neutral'
                 })
 
+    for sym_res in stats['c_out']:
+        # attempt to steal signal a's notional and confirmation
+        for a_res in stats['a_out']:
+            if a_res['symbol'] == sym_res['symbol']:
+                sym_res['_notional_value'] = a_res['_notional_value']
+                sym_res['_lead_notional'] = a_res['_lead_notional']
+                sym_res['days_to_expiry'] = a_res['days_to_expiry']
+                sym_res['price_confirmed'] = a_res['price_confirmed']
+                break
+                
     results = stats['c_out'] + stats['a_out'] + stats['b_out']
     rank = {'Signal C — Confirmed Squeeze Setup': 1, 'Signal A — Short Covering': 2, 'Signal B — Short Build-Up': 3}
     results.sort(key=lambda x: (rank.get(x['signal'], 99), x['symbol']))
