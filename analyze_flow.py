@@ -5,11 +5,11 @@ import reporter
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--active', required=True)
-    ap.add_argument('--flow', required=False)
-    ap.add_argument('--decoi', required=True)
-    ap.add_argument('--incoi', required=False)
-    ap.add_argument('--unusual', required=False)
+    ap.add_argument('--active', nargs='+', required=True)
+    ap.add_argument('--flow', nargs='+', required=False)
+    ap.add_argument('--decoi', nargs='+', required=True)
+    ap.add_argument('--incoi', nargs='+', required=False)
+    ap.add_argument('--unusual', nargs='+', required=False)
     ap.add_argument('--liquidity-min', type=float, default=10000)
     ap.add_argument('--moneyness-max', type=float, default=5.0)
     ap.add_argument('--oi-chg-min', type=float, default=500.0)
@@ -19,12 +19,21 @@ def main():
     ap.add_argument('--debug', action='store_true')
     args = ap.parse_args()
 
-    date_obj = data_loader.extract_file_date(args.active)
-
-    active_rows = data_loader.read_csv(args.active)
-    decoi_rows = data_loader.read_csv(args.decoi)
-    incoi_rows = data_loader.read_csv(args.incoi) if args.incoi else []
-    unusual_rows = data_loader.read_csv(args.unusual) if args.unusual else []
+    date_obj = data_loader.extract_file_date(args.active[0])
+    
+    active_rows = []
+    for f in args.active: active_rows.extend(data_loader.read_csv(f))
+        
+    decoi_rows = []
+    for f in args.decoi: decoi_rows.extend(data_loader.read_csv(f))
+        
+    incoi_rows = []
+    if args.incoi:
+        for f in args.incoi: incoi_rows.extend(data_loader.read_csv(f))
+            
+    unusual_rows = []
+    if args.unusual:
+        for f in args.unusual: unusual_rows.extend(data_loader.read_csv(f))
 
     watchlist = signal_engine.build_watchlist(active_rows, args.liquidity_min)
     voloi_map = signal_engine.build_voloi_map(unusual_rows)

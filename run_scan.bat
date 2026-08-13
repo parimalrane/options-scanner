@@ -35,9 +35,16 @@ set INCOI=inputs\stocks-increase-change-in-open-interest-%DATE%.csv
 set UNUSUAL=inputs\unusual-stock-options-activity-%DATE%.csv
 set OUT=outputs\flagged-%DATE%.csv
 
+set ACTIVE_ETF=inputs\most-active-etf-options-%DATE%.csv
+set DECOI_ETF=inputs\etfs-decrease-change-in-open-interest-%DATE%.csv
+set INCOI_ETF=inputs\etfs-increase-change-in-open-interest-%DATE%.csv
+set UNUSUAL_ETF=inputs\unusual-etf-options-activity-%DATE%.csv
 
+set ACTIVE_ARGS="%ACTIVE%"
+if exist "%ACTIVE_ETF%" set ACTIVE_ARGS="%ACTIVE%" "%ACTIVE_ETF%"
 
-
+set DECOI_ARGS="%DECOI%"
+if exist "%DECOI_ETF%" set DECOI_ARGS="%DECOI%" "%DECOI_ETF%"
 
 if not exist "%ACTIVE%" (
     echo MISSING: %ACTIVE%
@@ -65,6 +72,7 @@ if not exist "%INCOI%" (
     set INCOI_ARG=
 ) else (
     set INCOI_ARG=--incoi "%INCOI%"
+    if exist "%INCOI_ETF%" set INCOI_ARG=--incoi "%INCOI%" "%INCOI_ETF%"
 )
 
 if not exist "%UNUSUAL%" (
@@ -72,10 +80,11 @@ if not exist "%UNUSUAL%" (
     set UNUSUAL_ARG=
 ) else (
     set UNUSUAL_ARG=--unusual "%UNUSUAL%"
+    if exist "%UNUSUAL_ETF%" set UNUSUAL_ARG=--unusual "%UNUSUAL%" "%UNUSUAL_ETF%"
 )
 
 
-python analyze_flow.py --active "%ACTIVE%" %FLOW_ARG% --decoi "%DECOI%" %INCOI_ARG% %UNUSUAL_ARG% --out "%OUT%" %DEBUG_ARG%
+python analyze_flow.py --active %ACTIVE_ARGS% %FLOW_ARG% --decoi %DECOI_ARGS% %INCOI_ARG% %UNUSUAL_ARG% --out "%OUT%" %DEBUG_ARG%
 
 if errorlevel 1 (
     echo.
