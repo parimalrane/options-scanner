@@ -84,7 +84,7 @@ if not exist "%UNUSUAL%" (
 )
 
 
-python analyze_flow.py --moneyness-max 15 --liquidity-min 3000 --active %ACTIVE_ARGS% %FLOW_ARG% --decoi %DECOI_ARGS% %INCOI_ARG% %UNUSUAL_ARG% --out "%OUT%" %DEBUG_ARG%
+python analyze_flow.py --active %ACTIVE_ARGS% %FLOW_ARG% --decoi %DECOI_ARGS% %INCOI_ARG% %UNUSUAL_ARG% --out "%OUT%" %DEBUG_ARG%
 
 if errorlevel 1 (
     echo.

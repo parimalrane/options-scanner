@@ -185,6 +185,21 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
     print_block(bearish_syms, "BEARISH DIRECTION")
     print_block(mixed_syms, "SIDEWAYS")
 
+    tv_lbl = "--- TRADINGVIEW WATCHLIST ---"
+    print(tv_lbl)
+    if f_txt: f_txt.write(tv_lbl + "\n")
+    
+    bullish_str = "###BULLISH," + ",".join(bullish_syms) if bullish_syms else "###BULLISH,"
+    bearish_str = "###BEARISH," + ",".join(bearish_syms) if bearish_syms else "###BEARISH,"
+    mixed_str = "###SIDEWAYS," + ",".join(mixed_syms) if mixed_syms else "###SIDEWAYS,"
+    
+    for l in [bullish_str, bearish_str, mixed_str]:
+        print(l)
+        if f_txt: f_txt.write(l + "\n")
+        
+    print()
+    if f_txt: f_txt.write("\n")
+
     if f_txt:
         f_txt.close()
 
