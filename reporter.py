@@ -82,13 +82,13 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
     for r in results:
         results_by_symbol.setdefault(r['symbol'], []).append(r)
 
-    net_signals = {}
+    net_signal = {}
     for sym in symbols_mixed:
         bull_val = sum(abs(r.get('_total_oi_chg', 0)) for r in results_by_symbol[sym] if r['direction'] == 'bullish')
         bear_val = sum(abs(r.get('_total_oi_chg', 0)) for r in results_by_symbol[sym] if r['direction'] == 'bearish')
-        net_signals[sym] = bull_val - bear_val
+        net_signal[sym] = bull_val - bear_val
 
-    mixed_syms = sorted(list(symbols_mixed), key=lambda s: net_signals[s], reverse=True)
+    mixed_syms = sorted(list(symbols_mixed), key=lambda s: net_signal[s], reverse=True)
 
     def get_sym_order(s):
         return min(rank.get(r['signal'], 99) for r in results_by_symbol[s])
@@ -143,11 +143,13 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
                         line += f"  (+{r['_other_count']}, Σ{r['_total_oi_chg']:,.0f})"
                     if r.get('vol_oi'):
                         line += f"  (Vol/OI {r['vol_oi']})"
+                    if r.get('flags'):
+                        line += f"  [{r['flags']}]"
                         
                     print(line)
                     if f_txt: f_txt.write(line + "\n")
                     
-                net_line = f"{'':7} |         |     |       |          |            |     |      |            | NET VOL: | {net_signals[sym]:+,.0f}"
+                net_line = f"{'':7} |         |     |       |          |            |     |      |            | net_signal: | {net_signal[sym]:+,.0f}"
                 print(net_line)
                 if f_txt: f_txt.write(net_line + "\n")
         else:
@@ -174,6 +176,8 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
                         line += f"  (+{r['_other_count']}, Σ{r['_total_oi_chg']:,.0f})"
                     if r.get('vol_oi'):
                         line += f"  (Vol/OI {r['vol_oi']})"
+                    if r.get('flags'):
+                        line += f"  [{r['flags']}]"
                         
                     print(line)
                     if f_txt: f_txt.write(line + "\n")

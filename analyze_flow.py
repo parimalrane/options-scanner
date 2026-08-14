@@ -18,6 +18,9 @@ def main():
     ap.add_argument('--out', default=None)
     ap.add_argument('--debug', action='store_true')
     ap.add_argument('--exclude-same-day', action='store_true', default=True)
+    ap.add_argument('--earnings', nargs='*')
+    ap.add_argument('--ivr-high', nargs='*')
+    ap.add_argument('--ivrv-high', nargs='*')
     args = ap.parse_args()
 
     date_obj = data_loader.extract_file_date(args.active[0])
@@ -42,6 +45,14 @@ def main():
     data_loader.update_snapshot(date_obj, [decoi_rows, incoi_rows, unusual_rows])
     prior_prices = data_loader.load_prior_snapshot(date_obj)
 
+    context_flags = {'er': set(), 'ivr_high': set(), 'ivrv_high': set()}
+    if args.earnings:
+        for f in args.earnings: context_flags['er'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
+    if args.ivr_high:
+        for f in args.ivr_high: context_flags['ivr_high'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
+    if args.ivrv_high:
+        for f in args.ivrv_high: context_flags['ivrv_high'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
+
     stats = {
         'a_out': [], 'b_out': [], 'c_out': [],
         'missing_snapshot': prior_prices is None,
@@ -50,8 +61,8 @@ def main():
     }
 
     if prior_prices is not None:
-        groups_a, stats_a = signal_engine.process_signal(decoi_rows, watchlist, prior_prices, voloi_map, args.moneyness_max, args.oi_chg_min, 'A', current_date=date_obj, exclude_same_day=args.exclude_same_day)
-        groups_b, stats_b = signal_engine.process_signal(incoi_rows, watchlist, prior_prices, voloi_map, args.moneyness_max, args.oi_chg_min, 'B', current_date=date_obj, exclude_same_day=args.exclude_same_day)
+        groups_a, stats_a = signal_engine.process_signal(decoi_rows, watchlist, prior_prices, voloi_map, context_flags, args.moneyness_max, args.oi_chg_min, 'A', current_date=date_obj, exclude_same_day=args.exclude_same_day)
+        groups_b, stats_b = signal_engine.process_signal(incoi_rows, watchlist, prior_prices, voloi_map, context_flags, args.moneyness_max, args.oi_chg_min, 'B', current_date=date_obj, exclude_same_day=args.exclude_same_day)
         
         stats['a_stats'] = stats_a
         stats['b_stats'] = stats_b
@@ -79,7 +90,8 @@ def main():
                     '_notional_value': 0,
                     '_lead_notional': 0,
                     'days_to_expiry': 0,
-                    'price_confirmed': 'neutral'
+                    'price_confirmed': 'neutral',
+                    'flags': ''
                 })
 
     for sym_res in stats['c_out']:
@@ -90,6 +102,7 @@ def main():
                 sym_res['_lead_notional'] = a_res['_lead_notional']
                 sym_res['days_to_expiry'] = a_res['days_to_expiry']
                 sym_res['price_confirmed'] = a_res['price_confirmed']
+                sym_res['flags'] = a_res.get('flags', '')
                 break
                 
     results = stats['c_out'] + stats['a_out'] + stats['b_out']

@@ -40,6 +40,21 @@ set DECOI_ETF=inputs\etfs-decrease-change-in-open-interest-%TARGET_DATE%.csv
 set INCOI_ETF=inputs\etfs-increase-change-in-open-interest-%TARGET_DATE%.csv
 set UNUSUAL_ETF=inputs\unusual-etf-options-activity-%TARGET_DATE%.csv
 
+set ER=inputs\earnings-in-the-next-trading-day-%TARGET_DATE%.csv
+set IVR_HIGH=inputs\implied-volatility-iv-rank-and-iv-percentile-high-%TARGET_DATE%.csv
+set IV_RV_HIGH=inputs\stocks-high-implied-volatility-vs-realized-volatility-us-%TARGET_DATE%.csv
+set IV_RV_HIGH_ETF=inputs\etfs-high-implied-volatility-vs-realized-volatility-us-%TARGET_DATE%.csv
+
+set ER_ARG=
+if exist "%ER%" set ER_ARG=--earnings "%ER%"
+
+set IVR_HIGH_ARG=
+if exist "%IVR_HIGH%" set IVR_HIGH_ARG=--ivr-high "%IVR_HIGH%"
+
+set IV_RV_HIGH_ARG=
+if exist "%IV_RV_HIGH%" set IV_RV_HIGH_ARG=--ivrv-high "%IV_RV_HIGH%"
+if exist "%IV_RV_HIGH_ETF%" set IV_RV_HIGH_ARG=%IV_RV_HIGH_ARG% "%IV_RV_HIGH_ETF%"
+
 set ACTIVE_ARGS="%ACTIVE%"
 if exist "%ACTIVE_ETF%" set ACTIVE_ARGS="%ACTIVE%" "%ACTIVE_ETF%"
 
@@ -84,7 +99,7 @@ if not exist "%UNUSUAL%" (
 )
 
 
-python analyze_flow.py --active %ACTIVE_ARGS% %FLOW_ARG% --decoi %DECOI_ARGS% %INCOI_ARG% %UNUSUAL_ARG% --out "%OUT%" %DEBUG_ARG%
+python analyze_flow.py --active %ACTIVE_ARGS% %FLOW_ARG% --decoi %DECOI_ARGS% %INCOI_ARG% %UNUSUAL_ARG% %ER_ARG% %IVR_HIGH_ARG% %IV_RV_HIGH_ARG% --out "%OUT%" %DEBUG_ARG%
 
 if errorlevel 1 (
     echo.

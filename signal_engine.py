@@ -27,7 +27,7 @@ def get_mid_price(r):
         return (bid + ask) / 2
     return float('nan')
 
-def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_chg_min, signal_type, current_date=None, exclude_same_day=True):
+def process_signal(rows, watchlist, prior_prices, voloi_map, context_flags, moneyness_max, oi_chg_min, signal_type, current_date=None, exclude_same_day=True):
     groups = {}
 
     
@@ -163,6 +163,12 @@ def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_c
             
         notional_value = abs(oi_chg) * mid_today * 100
         
+        flag_list = []
+        if context_flags:
+            if sym in context_flags.get('er', set()): flag_list.append('ER')
+            if sym in context_flags.get('ivr_high', set()): flag_list.append('IVR+')
+            if sym in context_flags.get('ivrv_high', set()): flag_list.append('OVRP')
+
         entry = {
             'symbol': sym,
             'type': opt_type,
@@ -174,7 +180,8 @@ def process_signal(rows, watchlist, prior_prices, voloi_map, moneyness_max, oi_c
             'vol_oi': voloi_map.get(key, ''),
             'notional_value': notional_value,
             'days_to_expiry': days_to_expiry,
-            'price_confirmed': price_confirmed
+            'price_confirmed': price_confirmed,
+            'flags': ",".join(flag_list)
         }
         groups.setdefault((sym, direction), []).append(entry)
         
@@ -232,6 +239,7 @@ def consolidate_groups(groups, signal_name, watchlist):
             '_notional_value': total_notional,
             '_lead_notional': lead['notional_value'],
             'days_to_expiry': lead['days_to_expiry'],
-            'price_confirmed': lead['price_confirmed']
+            'price_confirmed': lead['price_confirmed'],
+            'flags': lead.get('flags', '')
         })
     return out
