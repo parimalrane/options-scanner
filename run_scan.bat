@@ -69,10 +69,26 @@ if not exist "%DECOI%" (
     echo MISSING: %DECOI%
     set MISSING=1
 )
+if not exist "%INCOI%" (
+    echo MISSING: %INCOI%
+    set MISSING=1
+)
+if not exist "%UNUSUAL%" (
+    echo MISSING: %UNUSUAL%
+    set MISSING=1
+)
 
 if defined MISSING (
     echo.
-    echo One or more required files are missing. Check the filenames match %TARGET_DATE% exactly, then try again.
+    echo ---------------------------------------------------
+    echo  ERROR: CORE FILES MISSING!
+    echo  The pipeline absolutely requires the following 4 files:
+    echo  - most-active-stock-options
+    echo  - stocks-decrease-change-in-open-interest
+    echo  - stocks-increase-change-in-open-interest
+    echo  - unusual-stock-options-activity
+    echo  Please download them to the inputs\ directory.
+    echo ---------------------------------------------------
     exit /b 1
 )
 
@@ -82,21 +98,11 @@ if not exist "%FLOW%" (
     set FLOW_ARG=--flow "%FLOW%"
 )
 
-if not exist "%INCOI%" (
-    echo NOTE: %INCOI% not found - skipping Signal B ^(Short Build-Up^).
-    set INCOI_ARG=
-) else (
-    set INCOI_ARG=--incoi "%INCOI%"
-    if exist "%INCOI_ETF%" set INCOI_ARG=--incoi "%INCOI%" "%INCOI_ETF%"
-)
+set INCOI_ARG=--incoi "%INCOI%"
+if exist "%INCOI_ETF%" set INCOI_ARG=--incoi "%INCOI%" "%INCOI_ETF%"
 
-if not exist "%UNUSUAL%" (
-    echo NOTE: %UNUSUAL% not found - continuing without it, Vol/OI cross-check will be blank.
-    set UNUSUAL_ARG=
-) else (
-    set UNUSUAL_ARG=--unusual "%UNUSUAL%"
-    if exist "%UNUSUAL_ETF%" set UNUSUAL_ARG=--unusual "%UNUSUAL%" "%UNUSUAL_ETF%"
-)
+set UNUSUAL_ARG=--unusual "%UNUSUAL%"
+if exist "%UNUSUAL_ETF%" set UNUSUAL_ARG=--unusual "%UNUSUAL%" "%UNUSUAL_ETF%"
 
 
 python analyze_flow.py --active %ACTIVE_ARGS% %FLOW_ARG% --decoi %DECOI_ARGS% %INCOI_ARG% %UNUSUAL_ARG% %ER_ARG% %IVR_HIGH_ARG% %IV_RV_HIGH_ARG% --out "%OUT%" %DEBUG_ARG%
