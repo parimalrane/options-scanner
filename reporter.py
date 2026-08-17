@@ -67,6 +67,17 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
         f"Watchlist: {len(watchlist)} | Signals: {len(stats['a_out'])}TMG / {len(stats['b_out'])}TMJ / {len(stats['c_out'])}J+G\n"
         f"Bias: {bullish_only} bullish-only | {bearish_only} bearish-only | {mixed_count} mixed"
     )
+    
+    legend = (
+        "--- LEGEND FOR AI ---\n"
+        "SIG Types      : TMG = Short Covering | TMJ = Short Build-Up | J+G = Combo\n"
+        "CONF           : TRUE if underlying stock confirmed the directional flow\n"
+        "PRICE Δ        : Intraday price change of the options premium\n"
+        "(+X, ΣY)       : Breadth: +X identical block trades found | Macro Net: Aggregated total OI volume of Y across all strikes\n"
+        "Context Flags  : [IVR+] = High IV Rank (Sell premium) | [OVRP] = IV > RV (Expensive) | [ER] = Imminent Earnings\n"
+        "---------------------"
+    )
+
     print(f"=== {date_str} SCAN ===")
     
     if args.out:
@@ -76,7 +87,7 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
     f_txt = open(txt_out, 'w', encoding='utf-8') if txt_out else None
 
     if f_txt:
-        f_txt.write(top_scan + "\n\n")
+        f_txt.write(top_scan + "\n\n" + legend + "\n\n")
 
     results_by_symbol = {}
     for r in results:

@@ -2,6 +2,14 @@
 Watchlist: 389 | Signals: 9TMG / 70TMJ / 4J+G
 Bias: 14 bullish-only | 37 bearish-only | 12 mixed
 
+--- LEGEND FOR AI ---
+SIG Types      : TMG = Short Covering | TMJ = Short Build-Up | J+G = Combo
+CONF           : TRUE if underlying stock confirmed the directional flow
+PRICE Δ        : Intraday price change of the options premium
+(+X, ΣY)       : Breadth: +X identical block trades found | Macro Net: Aggregated total OI volume of Y across all strikes
+Context Flags  : [IVR+] = High IV Rank (Sell premium) | [OVRP] = IV > RV (Expensive) | [ER] = Imminent Earnings
+---------------------
+
 --- BULLISH DIRECTION ---
 STOCK   | SIG | TYPE  |   STRIKE | EXP        | DTE | CONF |   NOTIONAL |     OI CHG |  PRICE Δ
 INFQ    | TMG | Call  |    12.50 | 2026-08-21 |   7 | TRUE |   $209,385 |     -2,538 |    +0.22  (+1, Σ-4,263)  [IVR+]
