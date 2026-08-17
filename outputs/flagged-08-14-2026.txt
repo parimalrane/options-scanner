@@ -1,0 +1,113 @@
+=== 2026-08-14 SCAN ===
+Watchlist: 389 | Signals: 9TMG / 70TMJ / 4J+G
+Bias: 14 bullish-only | 37 bearish-only | 12 mixed
+
+--- BULLISH DIRECTION ---
+STOCK   | SIG | TYPE  |   STRIKE | EXP        | DTE | CONF |   NOTIONAL |     OI CHG |  PRICE Δ
+INFQ    | TMG | Call  |    12.50 | 2026-08-21 |   7 | TRUE |   $209,385 |     -2,538 |    +0.22  (+1, Σ-4,263)  [IVR+]
+NOK     | TMG | Call  |    10.00 | 2026-08-21 |   7 | TRUE |   $563,587 |     -6,441 |    +0.13  (+1, Σ-8,973)  [IVR+]
+WBD     | TMG | Call  |    29.00 | 2026-09-18 |  35 | TRUE |   $135,787 |     -3,621 |    +0.08  (+1, Σ-6,273)  [IVR+]
+ARM     | TMJ | Put   |   270.00 | 2026-10-16 |  63 | TRUE | $5,174,460 |      1,938 |    -2.12  [IVR+]
+CELH    | TMJ | Put   |    28.00 | 2026-08-21 |   7 | TRUE |    $57,359 |      1,399 |    -0.14  [IVR+]
+CRWV    | TMJ | Put   |   100.00 | 2026-08-21 |   7 | FALS |   $230,570 |      1,122 |    -0.12  [IVR+]
+EEM     | TMJ | Put   |    66.00 | 2026-08-21 |   7 | NEUT |    $68,820 |      1,480 |    -0.26
+ETHA    | TMJ | Put   |    14.00 | 2026-08-21 |   7 | FALS |   $323,010 |     17,460 |    -0.03  [OVRP]
+GME     | TMJ | Put   |    18.50 | 2026-08-21 |   7 | TRUE |    $23,306 |      1,084 |    -0.05  [IVR+]
+IREN    | TMJ | Put   |    43.00 | 2026-08-21 |   7 | FALS |   $146,117 |      1,029 |    -0.13  [IVR+]
+KRE     | TMJ | Put   |    76.00 | 2026-09-18 |  35 | TRUE |   $311,860 |      4,024 |    -1.17  (+1, Σ7,717)  [OVRP]
+LRCX    | TMJ | Put   |   330.00 | 2026-08-21 |   7 | FALS |   $984,540 |      1,076 |    -0.70  [IVR+]
+SNDK    | TMJ | Put   | 1,600.00 | 2026-08-21 |   7 | TRUE | $11,441,895 |      2,113 |   -67.60  [IVR+]
+XLE     | TMJ | Put   |    61.00 | 2026-08-21 |   7 | TRUE |   $180,655 |      4,153 |    -0.28  [OVRP]
+
+--- BEARISH DIRECTION ---
+STOCK   | SIG | TYPE  |   STRIKE | EXP        | DTE | CONF |   NOTIONAL |     OI CHG |  PRICE Δ
+GOOGL   | J+G | Combo |    Multi | Multi      |   7 | NEUT | $6,000,750 |            |           [IVR+]
+GOOGL   | TMG | Put   |   390.00 | 2026-08-21 |   7 | NEUT | $6,000,750 |     -1,350 |    +0.53  [IVR+]
+GOOGL   | TMJ | Call  |   350.00 | 2026-08-19 |   5 | NEUT |   $796,703 |      3,697 |    -1.29  (+3, Σ10,778)  [IVR+]
+TLT     | J+G | Combo |    Multi | Multi      |  35 | TRUE |   $223,161 |            |           [OVRP]
+TLT     | TMG | Put   |    82.00 | 2026-09-18 |  35 | TRUE |   $223,161 |     -2,038 |    +0.29  (+2, Σ-6,425)  [OVRP]
+TLT     | TMJ | Call  |    82.00 | 2026-12-18 | 126 | TRUE |   $566,069 |      2,702 |    -0.25  (+1, Σ4,079)  [OVRP]
+HTZ     | TMG | Put   |     2.50 | 2026-08-21 |   7 | TRUE |    $41,272 |     -1,232 |    +0.02  [IVR+]
+VALE    | TMG | Put   |    16.00 | 2026-08-21 |   7 | TRUE | $1,619,703 |     -6,777 |    +0.14  [IVR+]
+AMZN    | TMJ | Call  |   275.00 | 2026-08-21 |   7 | TRUE |   $117,807 |      2,202 |    -0.69  (+2, Σ6,015)  [IVR+]
+ARKK    | TMJ | Call  |    85.00 | 2026-08-21 |   7 | TRUE |    $48,285 |      2,610 |    -0.29
+BRK.B   | TMJ | Call  |   510.00 | 2026-08-21 |   7 | TRUE |   $318,512 |      2,075 |    -1.56  [IVR+]
+CCL     | TMJ | Call  |    28.50 | 2026-08-21 |   7 | TRUE |    $48,360 |      1,240 |    -0.23  [IVR+]
+COIN    | TMJ | Call  |   150.00 | 2026-08-21 |   7 | TRUE | $3,497,340 |      8,327 |    -3.50  (+1, Σ17,607)  [IVR+]
+CSCO    | TMJ | Call  |   115.00 | 2026-10-16 |  63 | TRUE |   $610,304 |      1,403 |    -1.12  (+1, Σ2,984)  [IVR+]
+DRAM    | TMJ | Call  |    60.00 | 2026-09-18 |  35 | FALS | $1,688,662 |      4,595 |    -0.05  (+1, Σ6,320)
+FXI     | TMJ | Call  |    36.00 | 2026-08-28 |  14 | NEUT |    $64,428 |      4,602 |    -0.04  [OVRP]
+HIMS    | TMJ | Call  |    29.50 | 2026-08-21 |   7 | TRUE |    $51,537 |      1,085 |    -0.46  [IVR+]
+IBIT    | TMJ | Call  |    37.00 | 2026-09-18 |  35 | TRUE |   $206,541 |      2,209 |    -0.16  (+1, Σ12,002)  [OVRP]
+JD      | TMJ | Call  |    30.00 | 2026-08-21 |   7 | TRUE |    $32,637 |      1,978 |    -0.18  [IVR+]
+KWEB    | TMJ | Call  |    28.00 | 2026-09-18 |  35 | FALS |   $157,640 |      2,815 |    -0.05  [OVRP]
+LQD     | TMJ | Call  |   106.50 | 2026-08-21 |   7 | TRUE |    $28,314 |      1,452 |    -0.21  [OVRP]
+MRNA    | TMJ | Call  |    65.00 | 2026-08-21 |   7 | TRUE |   $926,820 |      6,504 |    -0.31  [IVR+]
+MSFT    | TMJ | Call  |   505.00 | 2026-08-17 |   3 | TRUE |   $130,356 |      3,834 |    -1.17  [IVR+]
+MSTR    | TMJ | Call  |    97.50 | 2026-08-21 |   7 | TRUE | $1,986,165 |     13,110 |    -2.06  [IVR+,OVRP]
+MU      | TMJ | Call  | 1,005.00 | 2026-08-17 |   3 | FALS |   $913,440 |      2,112 |    -1.20  (+1, Σ3,838)  [IVR+]
+NFLX    | TMJ | Call  |    79.00 | 2026-08-21 |   7 | NEUT |   $225,730 |      2,467 |    -0.30  (+2, Σ7,170)  [IVR+]
+NKE     | TMJ | Call  |    42.50 | 2026-09-18 |  35 | TRUE |   $176,880 |      2,144 |    -0.40  [IVR+]
+OPEN    | TMJ | Call  |     3.50 | 2026-08-21 |   7 | TRUE |    $74,180 |      3,709 |    -0.03  (+1, Σ4,839)  [IVR+]
+PLTR    | TMJ | Call  |   180.00 | 2026-08-21 |   7 | TRUE | $1,120,557 |      6,313 |    -2.80  (+1, Σ8,022)  [IVR+]
+QCOM    | TMJ | Call  |   165.00 | 2026-09-11 |  28 | FALS | $2,461,690 |      3,197 |    -0.52  [IVR+]
+RBLX    | TMJ | Call  |    40.00 | 2026-08-21 |   7 | FALS |    $70,555 |      1,370 |    -0.12  [IVR+]
+S       | TMJ | Call  |    24.00 | 2026-08-21 |   7 | TRUE |    $41,690 |      1,516 |    -0.38  [IVR+,OVRP]
+SLV     | TMJ | Call  |    59.00 | 2026-08-17 |   3 | FALS |    $48,285 |      1,665 |    -0.12  (+1, Σ2,746)  [OVRP]
+SPXS    | TMJ | Call  |    24.00 | 2026-08-21 |   7 | FALS |    $93,013 |      3,958 |    -0.05  [OVRP]
+SQQQ    | TMJ | Call  |    36.00 | 2026-08-21 |   7 | FALS |   $458,737 |      4,705 |    -0.06  (+1, Σ5,765)
+TQQQ    | TMJ | Call  |    78.00 | 2026-08-21 |   7 | TRUE |   $166,819 |      1,373 |    -0.55  (+1, Σ3,858)
+TTD     | TMJ | Call  |    14.50 | 2026-08-28 |  14 | TRUE |    $49,321 |      1,147 |    -0.28  [IVR+]
+U       | TMJ | Call  |    47.00 | 2026-08-21 |   7 | FALS |    $93,980 |      1,016 |    -0.02  [IVR+]
+UBER    | TMJ | Call  |    78.00 | 2026-08-21 |   7 | NEUT |   $246,279 |      4,829 |    -0.17  [IVR+]
+VXX     | TMJ | Call  |    19.50 | 2026-08-21 |   7 | TRUE |   $132,463 |      4,273 |    -0.14  [OVRP]
+WEN     | TMJ | Call  |     9.00 | 2026-08-21 |   7 | NEUT |    $26,092 |      1,491 |    -0.05  [IVR+]
+
+--- SIDEWAYS ---
+STOCK   | DIR     | SIG | TYPE  |   STRIKE | EXP        | DTE | CONF |   NOTIONAL |     OI CHG |  PRICE Δ
+SPY     | bearish | TMJ | Call  |   784.00 | 2026-08-21 |   7 | NEUT |   $390,532 |      4,388 |    -1.13  (+13, Σ25,126)  [OVRP]
+SPY     | BULLISH | TMJ | Put   |   739.00 | 2026-09-18 |  35 | NEUT | $5,708,099 |     17,950 |    -0.05  (+20, Σ105,890)  [OVRP]
+        |         |     |       |          |            |     |      |            | net_signal: | +80,764
+IWM     | BULLISH | J+G | Combo |    Multi | Multi      |   7 | TRUE |   $281,010 |            |           [OVRP]
+IWM     | BULLISH | TMG | Call  |   310.00 | 2026-08-21 |   7 | TRUE |   $281,010 |     -6,612 |    +0.05  [OVRP]
+IWM     | bearish | TMJ | Call  |   307.50 | 2026-08-17 |   3 | FALS |    $31,083 |      2,391 |    -0.04  [OVRP]
+IWM     | BULLISH | TMJ | Put   |   290.00 | 2026-09-18 |  35 | TRUE | $2,846,761 |     13,989 |    -0.21  (+5, Σ43,037)  [OVRP]
+        |         |     |       |          |            |     |      |            | net_signal: | +47,258
+QQQ     | bearish | TMJ | Call  |   740.00 | 2026-09-18 |  35 | NEUT | $10,684,548 |      7,938 |    -1.67  (+5, Σ21,420)
+QQQ     | BULLISH | TMJ | Put   |   725.00 | 2026-12-18 | 126 | NEUT | $21,761,496 |      7,038 |    -0.19  (+13, Σ37,609)
+        |         |     |       |          |            |     |      |            | net_signal: | +16,189
+SPCX    | bearish | TMJ | Call  |   145.00 | 2026-08-21 |   7 | TRUE |   $536,673 |      1,857 |    -1.41  [IVR+]
+SPCX    | BULLISH | TMJ | Put   |   145.00 | 2026-09-18 |  35 | FALS | $4,164,800 |      3,040 |    -0.05  (+2, Σ7,399)  [IVR+]
+        |         |     |       |          |            |     |      |            | net_signal: | +5,542
+SMCI    | BULLISH | J+G | Combo |    Multi | Multi      |   7 | TRUE | $1,316,462 |            |           [IVR+]
+SMCI    | BULLISH | TMG | Call  |    34.00 | 2026-08-21 |   7 | TRUE | $1,316,462 |     -2,185 |    +0.50  (+2, Σ-9,608)  [IVR+]
+SMCI    | bearish | TMJ | Call  |    41.00 | 2026-08-21 |   7 | FALS | $1,262,184 |     10,928 |    -0.06  [IVR+]
+SMCI    | BULLISH | TMJ | Put   |    41.00 | 2026-08-21 |   7 | TRUE |   $290,551 |      1,247 |    -0.70  (+2, Σ3,721)  [IVR+]
+        |         |     |       |          |            |     |      |            | net_signal: | +2,401
+XLF     | bearish | TMJ | Call  |    58.00 | 2026-08-21 |   7 | NEUT |    $52,725 |      1,110 |    -0.06  [OVRP]
+XLF     | BULLISH | TMJ | Put   |    57.50 | 2026-08-21 |   7 | NEUT |    $21,750 |      1,740 |    -0.08  [OVRP]
+        |         |     |       |          |            |     |      |            | net_signal: | +630
+HYG     | bearish | TMJ | Call  |    79.50 | 2026-08-21 |   7 | NEUT |   $105,140 |      5,257 |    -0.15  [OVRP]
+HYG     | BULLISH | TMJ | Put   |    78.00 | 2026-11-20 |  98 | NEUT |   $252,803 |      5,006 |    -0.07  [OVRP]
+        |         |     |       |          |            |     |      |            | net_signal: | -251
+EWZ     | bearish | TMJ | Call  |    35.00 | 2026-08-21 |   7 | FALS |    $60,812 |      5,288 |    -0.03  [OVRP]
+EWZ     | BULLISH | TMJ | Put   |    33.00 | 2026-08-21 |   7 | TRUE |    $44,702 |      3,193 |    -0.00  [OVRP]
+        |         |     |       |          |            |     |      |            | net_signal: | -2,095
+AAPL    | bearish | TMJ | Call  |   305.00 | 2026-09-11 |  28 | FALS | $1,318,709 |      1,556 |    -0.28  (+4, Σ7,145)  [IVR+]
+AAPL    | BULLISH | TMJ | Put   |   300.00 | 2026-08-17 |   3 | TRUE |    $38,544 |      2,336 |    -0.54  [IVR+]
+        |         |     |       |          |            |     |      |            | net_signal: | -4,809
+TSLA    | bearish | TMJ | Call  |   340.00 | 2026-08-17 |   3 | FALS |   $858,150 |      1,907 |    -0.05  (+4, Σ8,083)  [IVR+]
+TSLA    | BULLISH | TMJ | Put   |   330.00 | 2026-08-28 |  14 | TRUE |   $549,165 |      1,181 |    -1.00  [IVR+]
+        |         |     |       |          |            |     |      |            | net_signal: | -6,902
+NVDA    | bearish | TMJ | Call  |   230.00 | 2026-08-28 |  14 | NEUT | $1,906,980 |      3,436 |    -0.45  (+11, Σ25,034)  [IVR+]
+NVDA    | BULLISH | TMJ | Put   |   225.00 | 2026-08-21 |   7 | NEUT |   $578,220 |      1,676 |    -0.55  (+4, Σ7,260)  [IVR+]
+        |         |     |       |          |            |     |      |            | net_signal: | -17,774
+MARA    | bearish | TMJ | Call  |     9.50 | 2026-08-21 |   7 | NEUT | $1,251,616 |     49,083 |    -0.07  (+1, Σ50,995)  [IVR+]
+MARA    | BULLISH | TMJ | Put   |     9.50 | 2026-08-21 |   7 | NEUT |    $73,148 |      1,318 |    -0.04  [IVR+]
+        |         |     |       |          |            |     |      |            | net_signal: | -49,677
+
+--- TRADINGVIEW WATCHLIST ---
+###BULLISH,INFQ,NOK,WBD,ARM,CELH,CRWV,EEM,ETHA,GME,IREN,KRE,LRCX,SNDK,XLE
+###BEARISH,GOOGL,TLT,HTZ,VALE,AMZN,ARKK,BRK.B,CCL,COIN,CSCO,DRAM,FXI,HIMS,IBIT,JD,KWEB,LQD,MRNA,MSFT,MSTR,MU,NFLX,NKE,OPEN,PLTR,QCOM,RBLX,S,SLV,SPXS,SQQQ,TQQQ,TTD,U,UBER,VXX,WEN
+###SIDEWAYS,SPY,IWM,QQQ,SPCX,SMCI,XLF,HYG,EWZ,AAPL,TSLA,NVDA,MARA
+
