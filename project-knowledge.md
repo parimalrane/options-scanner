@@ -58,8 +58,18 @@ If the algorithm detects extreme catalysts, it will append Bracket Tags to the e
 
 1.  **`[ER]` (Earnings Imminent):** The stock reports earnings immediately (within 24 hours). The massive volume you see is merely a binary hedge/gamble. Lower your organic technical conviction. You should search for what the expected consensus earnings EPS is.
 2.  **`[IVR+]` (High IV Rank):** Implied Volatility Rank is critically high (80-100%). The options are historically ultra-expensive. If you see a `TMJ` (Selling) accompanied by `[IVR+]`, it is a textbook "Volatility Crush". They are selling options solely to exploit peak fear/premium. 
-3.  **`[OVRP]` (Overpriced Premium):** Implied Volatility is astronomically higher than the stock's actual Realized Volatility. If institutions are *buying* (Signal A / TMG) into an `OVRP` environment, they are willingly overpaying for premium because they know an "Earthquake" (massive move) is imminent.
+3.  **`[OVRP]` (Overpriced Premium):** Implied Volatility is astronomically higher than the stock's actual Realized Volatility. If institutions are *buying* (`TMG`) into an `OVRP` environment, they are willingly overpaying for premium because they know an "Earthquake" (massive move) is imminent. If they are selling (`TMJ`), they are harvesting mathematically rich premium.
+4.  **`[IVR-]` (Low IV Rank):** Implied Volatility Rank is critically low (0-20%). The options are historically ultra-cheap. A very high-conviction directional setup appearing here means options are drastically underpriced. This is an immaculate "Buy Premium" setup.
+5.  **`[UNDP]` (Underpriced Premium):** Implied Volatility is mathematically *lower* than the stock's historical Realized Volatility. The market is asleep. A directional block trade printed here means the Market Makers are mispricing the actual velocity of the stock breakout.
+6.  **`[UVOL]` (Unusually High Volume):** A pure intraday momentum cross-check. Highlights extreme sheer volume regardless of structural Open Interest. When layered on top of a `J+G` combo, it signifies the rest of the market has recognized and joined the institutional avalanche.
 
+---
+
+## 5. Breadth and Macro Net: `(+X, ΣY)`
+
+At the end of heavily consolidated rows, you will see a Breadth metric, e.g. `(+4, Σ22,400)`.
+* **The `+X`:** Means there were `X` *additional* block trades across different strikes pointing the exact same way. (+4 means they sprayed across 5 total strikes). High = massive unshakeable conviction.
+* **The `ΣY`:** The total, aggregated Open Interest volume manipulated across that entire spray. This quantifies the overall macro footprint.
 ---
 
 ## 5. The "SIDEWAYS" Block (Short Strangles)
