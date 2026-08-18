@@ -75,11 +75,11 @@ def print_terminal_tables(results, stats, args, date_str, watchlist, rank):
         "PRICE Δ        : Intraday price change of the options premium\n"
         "(+X, ΣY)       : Breadth: +X identical block trades found | Macro Net: Aggregated total OI volume of Y across all strikes\n"
         "Context Flags  : [IVR+] = High IV Rank (Sell premium) | [OVRP] = IV > RV (Expensive) | [ER] = Imminent Earnings\n"
+        "                 [IVR-] = Low IV Rank (Buy premium)   | [UNDP] = IV < RV (Underpriced) | [UVOL] = Unusually High Volume\n"
         "---------------------"
     )
 
-    print(f"=== {date_str} SCAN ===")
-    
+    print(top_scan + "\n\n" + legend + "\n")
     if args.out:
         out_dir = os.path.dirname(args.out)
         if out_dir: os.makedirs(out_dir, exist_ok=True)

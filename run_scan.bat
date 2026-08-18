@@ -55,6 +55,23 @@ set IV_RV_HIGH_ARG=
 if exist "%IV_RV_HIGH%" set IV_RV_HIGH_ARG=--ivrv-high "%IV_RV_HIGH%"
 if exist "%IV_RV_HIGH_ETF%" set IV_RV_HIGH_ARG=%IV_RV_HIGH_ARG% "%IV_RV_HIGH_ETF%"
 
+set IVR_LOW=inputs\implied-volatility-iv-rank-and-iv-percentile-low-%TARGET_DATE%.csv
+set IV_RV_LOW=inputs\stocks-low-implied-volatility-vs-realized-volatility-us-%TARGET_DATE%.csv
+set IV_RV_LOW_ETF=inputs\etfs-low-implied-volatility-vs-realized-volatility-us-%TARGET_DATE%.csv
+set UVOL=inputs\unusual-stock-options-volume-%TARGET_DATE%.csv
+set UVOL_ETF=inputs\unusual-etf-options-volume-%TARGET_DATE%.csv
+
+set IVR_LOW_ARG=
+if exist "%IVR_LOW%" set IVR_LOW_ARG=--ivr-low "%IVR_LOW%"
+
+set IV_RV_LOW_ARG=
+if exist "%IV_RV_LOW%" set IV_RV_LOW_ARG=--ivrv-low "%IV_RV_LOW%"
+if exist "%IV_RV_LOW_ETF%" set IV_RV_LOW_ARG=%IV_RV_LOW_ARG% "%IV_RV_LOW_ETF%"
+
+set UVOL_ARG=
+if exist "%UVOL%" set UVOL_ARG=--uvol "%UVOL%"
+if exist "%UVOL_ETF%" set UVOL_ARG=%UVOL_ARG% "%UVOL_ETF%"
+
 set ACTIVE_ARGS="%ACTIVE%"
 if exist "%ACTIVE_ETF%" set ACTIVE_ARGS="%ACTIVE%" "%ACTIVE_ETF%"
 
@@ -105,7 +122,7 @@ set UNUSUAL_ARG=--unusual "%UNUSUAL%"
 if exist "%UNUSUAL_ETF%" set UNUSUAL_ARG=--unusual "%UNUSUAL%" "%UNUSUAL_ETF%"
 
 
-python analyze_flow.py --active %ACTIVE_ARGS% %FLOW_ARG% --decoi %DECOI_ARGS% %INCOI_ARG% %UNUSUAL_ARG% %ER_ARG% %IVR_HIGH_ARG% %IV_RV_HIGH_ARG% --out "%OUT%" %DEBUG_ARG%
+python analyze_flow.py --active %ACTIVE_ARGS% %FLOW_ARG% --decoi %DECOI_ARGS% %INCOI_ARG% %UNUSUAL_ARG% %ER_ARG% %IVR_HIGH_ARG% %IV_RV_HIGH_ARG% %IVR_LOW_ARG% %IV_RV_LOW_ARG% %UVOL_ARG% --out "%OUT%" %DEBUG_ARG%
 
 if errorlevel 1 (
     echo.

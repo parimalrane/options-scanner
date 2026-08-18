@@ -168,6 +168,9 @@ def process_signal(rows, watchlist, prior_prices, voloi_map, context_flags, mone
             if sym in context_flags.get('er', set()): flag_list.append('ER')
             if sym in context_flags.get('ivr_high', set()): flag_list.append('IVR+')
             if sym in context_flags.get('ivrv_high', set()): flag_list.append('OVRP')
+            if sym in context_flags.get('ivr_low', set()): flag_list.append('IVR-')
+            if sym in context_flags.get('ivrv_low', set()): flag_list.append('UNDP')
+            if sym in context_flags.get('uvol', set()): flag_list.append('UVOL')
 
         entry = {
             'symbol': sym,

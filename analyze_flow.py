@@ -21,6 +21,9 @@ def main():
     ap.add_argument('--earnings', nargs='*')
     ap.add_argument('--ivr-high', nargs='*')
     ap.add_argument('--ivrv-high', nargs='*')
+    ap.add_argument('--ivr-low', nargs='*')
+    ap.add_argument('--ivrv-low', nargs='*')
+    ap.add_argument('--uvol', nargs='*')
     args = ap.parse_args()
 
     date_obj = data_loader.extract_file_date(args.active[0])
@@ -45,13 +48,19 @@ def main():
     data_loader.update_snapshot(date_obj, [decoi_rows, incoi_rows, unusual_rows])
     prior_prices = data_loader.load_prior_snapshot(date_obj)
 
-    context_flags = {'er': set(), 'ivr_high': set(), 'ivrv_high': set()}
+    context_flags = {'er': set(), 'ivr_high': set(), 'ivrv_high': set(), 'ivr_low': set(), 'ivrv_low': set(), 'uvol': set()}
     if args.earnings:
         for f in args.earnings: context_flags['er'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
     if args.ivr_high:
         for f in args.ivr_high: context_flags['ivr_high'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
     if args.ivrv_high:
         for f in args.ivrv_high: context_flags['ivrv_high'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
+    if args.ivr_low:
+        for f in args.ivr_low: context_flags['ivr_low'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
+    if args.ivrv_low:
+        for f in args.ivrv_low: context_flags['ivrv_low'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
+    if args.uvol:
+        for f in args.uvol: context_flags['uvol'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
 
     stats = {
         'a_out': [], 'b_out': [], 'c_out': [],
