@@ -52,11 +52,21 @@ def main():
     if args.earnings:
         for f in args.earnings: context_flags['er'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
     if args.ivr_high:
-        for f in args.ivr_high: context_flags['ivr_high'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
+        for f in args.ivr_high:
+            for r in data_loader.read_csv(f):
+                sym = r.get('Symbol')
+                ivr = data_loader.to_num(r.get('IV Rank') or r.get('IV Pctl'))
+                if sym and ivr == ivr and ivr >= 80:
+                    context_flags['ivr_high'].add(sym)
     if args.ivrv_high:
         for f in args.ivrv_high: context_flags['ivrv_high'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
     if args.ivr_low:
-        for f in args.ivr_low: context_flags['ivr_low'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
+        for f in args.ivr_low:
+            for r in data_loader.read_csv(f):
+                sym = r.get('Symbol')
+                ivr = data_loader.to_num(r.get('IV Rank') or r.get('IV Pctl'))
+                if sym and ivr == ivr and ivr <= 20:
+                    context_flags['ivr_low'].add(sym)
     if args.ivrv_low:
         for f in args.ivrv_low: context_flags['ivrv_low'].update(r.get('Symbol') for r in data_loader.read_csv(f) if r.get('Symbol'))
     if args.uvol:
