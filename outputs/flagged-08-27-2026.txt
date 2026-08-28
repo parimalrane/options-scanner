@@ -1,0 +1,74 @@
+=== 2026-08-27 SCAN ===
+Watchlist: 328 | Signals: 6TMG / 36TMJ / 1J+G
+Bias: 14 bullish-only | 19 bearish-only | 4 mixed
+
+--- LEGEND FOR AI ---
+SIG Types      : TMG = Short Covering | TMJ = Short Build-Up | J+G = Combo
+CONF           : TRUE if underlying stock confirmed the directional flow
+PRICE Δ        : Intraday price change of the options premium
+(+X, ΣY)       : Breadth: +X identical block trades found | Macro Net: Aggregated total OI volume of Y across all strikes
+Context Flags  : [IVR+] = High IV Rank (Sell premium) | [OVRP] = IV > RV (Expensive) | [ER] = Imminent Earnings
+                 [IVR-] = Low IV Rank (Buy premium)   | [UNDP] = IV < RV (Underpriced) | [UVOL] = Unusually High Volume
+---------------------
+
+--- BULLISH DIRECTION ---
+STOCK   | SIG | TYPE  |   STRIKE | EXP        | DTE | CONF |   NOTIONAL |     OI CHG |  PRICE Δ
+COIN    | TMG | Call  |   200.00 | 2026-08-28 |   1 | TRUE |   $139,357 |     -1,679 |    +0.44
+MARA    | TMG | Call  |    15.00 | 2026-09-18 |  22 | TRUE |    $26,038 |     -1,108 |    +0.08
+MSTR    | TMG | Call  |   123.00 | 2026-08-28 |   1 | TRUE | $4,791,720 |     -3,282 |   +11.50
+SOFI    | TMG | Call  |    18.50 | 2026-08-28 |   1 | TRUE |    $74,288 |     -1,039 |    +0.19
+ZETA    | TMG | Call  |    30.00 | 2026-09-18 |  22 | TRUE |   $400,309 |     -2,158 |    +0.87
+GLXY    | TMJ | Put   |    25.00 | 2026-09-04 |   8 | TRUE |   $705,549 |      6,162 |    -0.41
+INTC    | TMJ | Put   |    89.00 | 2026-08-28 |   1 | TRUE |   $193,280 |      5,857 |    -2.00
+MSFT    | TMJ | Put   |   490.00 | 2026-08-28 |   1 | TRUE |    $38,377 |      2,193 |    -1.66
+PLTR    | TMJ | Put   |   177.50 | 2026-08-28 |   1 | TRUE |    $18,864 |      1,179 |    -2.99
+RCAT    | TMJ | Put   |     9.00 | 2026-09-04 |   8 | TRUE |    $46,085 |      1,511 |    -0.34
+SKHY    | TMJ | Put   |   155.00 | 2026-09-04 |   8 | TRUE |   $682,625 |      2,150 |    -2.48
+TSLA    | TMJ | Put   |   345.00 | 2026-08-31 |   4 | TRUE |   $239,904 |      1,764 |    -4.02  (+2, Σ7,978)
+TSM     | TMJ | Put   |   407.50 | 2026-08-28 |   1 | TRUE |    $23,070 |      1,538 |    -1.63
+WBD     | TMJ | Put   |    28.00 | 2026-10-16 |  50 | TRUE |   $778,186 |     13,417 |    -0.06
+
+--- BEARISH DIRECTION ---
+STOCK   | SIG | TYPE  |   STRIKE | EXP        | DTE | CONF |   NOTIONAL |     OI CHG |  PRICE Δ
+AEO     | TMJ | Call  |    17.50 | 2026-09-18 |  22 | TRUE |   $683,532 |      6,329 |    -0.48
+AMZN    | TMJ | Call  |   265.00 | 2026-09-18 |  22 | TRUE |   $415,642 |      1,131 |    -1.92  (+1, Σ3,187)
+ANET    | TMJ | Call  |   205.00 | 2026-08-28 |   1 | TRUE |    $99,742 |      1,023 |    -1.49
+BAC     | TMJ | Call  |    63.00 | 2026-09-04 |   8 | TRUE |   $159,146 |     12,242 |    -0.31
+CRWV    | TMJ | Call  |    90.00 | 2026-08-28 |   1 | TRUE |   $134,860 |      3,065 |    -1.36
+CVNA    | TMJ | Call  |    72.00 | 2026-08-28 |   1 | NEUT |   $403,675 |      1,675 |    -0.16
+GOOGL   | TMJ | Call  |   342.50 | 2026-08-28 |   1 | TRUE |   $144,202 |      1,131 |    -1.68
+KHC     | TMJ | Call  |    25.50 | 2026-09-04 |   8 | FALS |   $380,038 |     20,002 |    -0.01
+KO      | TMJ | Call  |    89.00 | 2026-09-04 |   8 | TRUE |   $207,357 |      2,023 |    -0.76  (+1, Σ3,478)
+KSS     | TMJ | Call  |    18.00 | 2026-08-28 |   1 | FALS |   $158,553 |      4,014 |    -0.04
+MO      | TMJ | Call  |    70.00 | 2026-09-04 |   8 | TRUE |    $30,934 |      1,509 |    -0.40
+MU      | TMJ | Call  |   950.00 | 2026-09-25 |  29 | TRUE | $5,850,000 |      1,040 |    -9.45
+NVTS    | TMJ | Call  |    12.50 | 2026-08-28 |   1 | TRUE |    $54,350 |      2,174 |    -0.25
+ORCL    | TMJ | Call  |   155.00 | 2026-08-28 |   1 | FALS |   $280,637 |      3,575 |    -0.10
+PCG     | TMJ | Call  |    18.00 | 2026-09-18 |  22 | TRUE |   $274,456 |      3,016 |    -0.25
+PFE     | TMJ | Call  |    29.00 | 2026-09-18 |  22 | TRUE |    $80,997 |      3,306 |    -0.12
+QBTS    | TMJ | Call  |    18.50 | 2026-08-28 |   1 | FALS |    $31,537 |      2,867 |    -0.03
+SMCI    | TMJ | Call  |    40.00 | 2026-08-28 |   1 | FALS |   $134,513 |      7,271 |    -0.07
+SPCX    | TMJ | Call  |   145.00 | 2026-09-18 |  22 | FALS | $1,929,900 |      3,676 |    -0.12  (+4, Σ12,593)
+
+--- SIDEWAYS ---
+STOCK   | DIR     | SIG | TYPE  |   STRIKE | EXP        | DTE | CONF |   NOTIONAL |     OI CHG |  PRICE Δ
+AAPL    | bearish | TMJ | Call  |   320.00 | 2026-09-09 |  13 | FALS |   $962,390 |      2,692 |    -0.07  (+4, Σ8,989)
+AAPL    | BULLISH | TMJ | Put   |   315.00 | 2026-08-31 |   4 | TRUE |   $960,424 |      3,577 |    -1.27  (+4, Σ12,712)
+        |         |     |       |          |            |     |      |            | net_signal: | +3,723
+META    | bearish | TMJ | Call  |   572.50 | 2026-08-31 |   4 | TRUE | $1,520,977 |      2,349 |    -5.53  (+5, Σ12,079)
+META    | BULLISH | TMJ | Put   |   575.00 | 2026-08-28 |   1 | FALS |   $986,294 |      1,399 |    -0.15
+        |         |     |       |          |            |     |      |            | net_signal: | -10,680
+NKE     | bearish | TMJ | Call  |    40.00 | 2027-06-17 | 294 | TRUE |   $804,387 |      1,585 |    -0.10  (+9, Σ18,353)
+NKE     | BULLISH | TMJ | Put   |    38.50 | 2026-08-28 |   1 | FALS |    $71,187 |      2,334 |    -0.02
+        |         |     |       |          |            |     |      |            | net_signal: | -16,019
+NVDA    | BULLISH | J+G | Combo |    Multi | Multi      |  22 | TRUE | $2,788,004 |            |         
+NVDA    | BULLISH | TMG | Call  |   225.00 | 2026-09-18 |  22 | TRUE | $2,788,004 |     -3,047 |    +5.27
+NVDA    | bearish | TMJ | Call  |   235.00 | 2026-08-28 |   1 | FALS |   $420,767 |     15,878 |    -0.35  (+1, Σ22,033)
+NVDA    | BULLISH | TMJ | Put   |   217.50 | 2026-09-18 |  22 | TRUE |   $444,210 |      1,340 |    -9.76
+        |         |     |       |          |            |     |      |            | net_signal: | -17,646
+
+--- TRADINGVIEW WATCHLIST ---
+###BULLISH,COIN,MARA,MSTR,SOFI,ZETA,GLXY,INTC,MSFT,PLTR,RCAT,SKHY,TSLA,TSM,WBD,
+###BEARISH,AEO,AMZN,ANET,BAC,CRWV,CVNA,GOOGL,KHC,KO,KSS,MO,MU,NVTS,ORCL,PCG,PFE,QBTS,SMCI,SPCX,
+###SIDEWAYS,AAPL,META,NKE,NVDA,
+
