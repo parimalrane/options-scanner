@@ -1,0 +1,48 @@
+=== 2026-08-28 SCAN ===
+Watchlist: 308 | Signals: 3TMG / 16TMJ / 1J+G
+Bias: 5 bullish-only | 11 bearish-only | 1 mixed
+
+--- LEGEND FOR AI ---
+SIG Types      : TMG = Short Covering | TMJ = Short Build-Up | J+G = Combo
+CONF           : TRUE if underlying stock confirmed the directional flow
+PRICE Δ        : Intraday price change of the options premium
+(+X, ΣY)       : Breadth: +X identical block trades found | Macro Net: Aggregated total OI volume of Y across all strikes
+Context Flags  : [IVR+] = High IV Rank (Sell premium) | [OVRP] = IV > RV (Expensive) | [ER] = Imminent Earnings
+                 [IVR-] = Low IV Rank (Buy premium)   | [UNDP] = IV < RV (Underpriced) | [UVOL] = Unusually High Volume
+---------------------
+
+--- BULLISH DIRECTION ---
+STOCK   | SIG | TYPE  |   STRIKE | EXP        | DTE | CONF |   NOTIONAL |     OI CHG |  PRICE Δ
+NKE     | TMG | Call  |    40.00 | 2026-09-11 |  14 | TRUE |   $120,060 |     -2,070 |    +0.29
+UBER    | TMG | Call  |    80.00 | 2026-09-18 |  21 | TRUE |   $426,689 |     -2,155 |    +0.69
+AAPL    | TMJ | Put   |   307.50 | 2026-09-18 |  21 | TRUE |   $429,335 |      1,602 |    -1.57
+BILI    | TMJ | Put   |    16.00 | 2026-09-18 |  21 | FALS |    $32,955 |      1,690 |    -0.18
+NCLH    | TMJ | Put   |    16.00 | 2026-10-16 |  49 | NEUT |   $356,748 |      5,208 |    -0.07
+
+--- BEARISH DIRECTION ---
+STOCK   | SIG | TYPE  |   STRIKE | EXP        | DTE | CONF |   NOTIONAL |     OI CHG |  PRICE Δ
+NVDA    | J+G | Combo |    Multi | Multi      |  21 | TRUE |   $637,320 |            |         
+NVDA    | TMG | Put   |   210.00 | 2026-09-18 |  21 | TRUE |   $637,320 |     -1,808 |    +1.69  (+4, Σ-14,055)
+NVDA    | TMJ | Call  |   225.00 | 2026-09-04 |   7 | TRUE | $6,885,067 |     47,158 |    -4.99  (+5, Σ60,483)
+AVGO    | TMJ | Call  |   370.00 | 2026-09-04 |   7 | TRUE | $14,807,262 |     10,265 |    -2.77
+BB      | TMJ | Call  |     8.00 | 2026-09-11 |  14 | TRUE |   $206,094 |      4,907 |    -0.40
+CLSK    | TMJ | Call  |    12.00 | 2026-09-04 |   7 | TRUE |    $78,787 |      2,101 |    -0.84
+INTC    | TMJ | Call  |    91.00 | 2026-08-31 |   3 | TRUE |   $122,058 |      2,491 |    -2.01
+META    | TMJ | Call  |   585.00 | 2026-08-31 |   3 | FALS |   $249,087 |      1,051 |    -0.17
+MU      | TMJ | Call  |   920.00 | 2026-09-04 |   7 | TRUE | $6,531,245 |      1,954 |    -7.25  (+2, Σ4,335)
+SPCX    | TMJ | Call  |   140.00 | 2026-09-04 |   7 | FALS |   $651,034 |      1,463 |    -0.15
+TSLA    | TMJ | Call  |   360.00 | 2026-09-04 |   7 | TRUE | $1,007,748 |      3,348 |    -3.19  (+2, Σ6,906)
+TSM     | TMJ | Call  |   432.50 | 2026-09-04 |   7 | TRUE |   $456,884 |      2,411 |    -4.13  (+1, Σ4,073)
+XOM     | TMJ | Call  |   160.00 | 2026-09-04 |   7 | NEUT |   $219,235 |      2,383 |    -0.22
+
+--- SIDEWAYS ---
+STOCK   | DIR     | SIG | TYPE  |   STRIKE | EXP        | DTE | CONF |   NOTIONAL |     OI CHG |  PRICE Δ
+PLTR    | bearish | TMJ | Call  |   187.50 | 2026-09-04 |   7 | NEUT | $1,663,807 |      4,239 |    -0.65  (+2, Σ19,335)
+PLTR    | BULLISH | TMJ | Put   |   185.00 | 2026-09-04 |   7 | NEUT |   $969,379 |      2,551 |    -0.92  (+2, Σ5,121)
+        |         |     |       |          |            |     |      |            | net_signal: | -14,214
+
+--- TRADINGVIEW WATCHLIST ---
+###BULLISH,NKE,UBER,AAPL,BILI,NCLH,
+###BEARISH,NVDA,AVGO,BB,CLSK,INTC,META,MU,SPCX,TSLA,TSM,XOM,
+###SIDEWAYS,PLTR,
+
