@@ -117,7 +117,7 @@ def process_signal(rows, watchlist, prior_prices, voloi_map, context_flags, mone
             except:
                 pass
                 
-        if exclude_same_day and days_to_expiry <= 0:
+        if days_to_expiry < 4:
             continue
         
         mid_today = get_mid_price(r)
